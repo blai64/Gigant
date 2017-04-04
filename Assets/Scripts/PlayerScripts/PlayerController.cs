@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void FixedUpdate () {
+	void Update () {
 		isGrounded = Physics2D.Linecast (transform.position, groundCheck.position, 1 << LayerMask.NameToLayer ("Ground"));
 		remainingJumps = (isGrounded) ? maxJumps : remainingJumps;
 
@@ -57,7 +57,11 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		//Vertical Movement
-		if (remainingJumps > 0 && Input.GetKeyDown(KeyCode.UpArrow)){
+		//Should only jump if you have remaining jumps and also if you are slow enough
+		//to prevent using both jumps immediately
+		if (remainingJumps > 0 && 
+			rb2d.velocity.y <= 1.0f &&
+			Input.GetKeyDown(KeyCode.UpArrow)){
 			doJump = true;
 		}
 	}
