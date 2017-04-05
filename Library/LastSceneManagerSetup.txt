@@ -1,4 +1,12 @@
 sceneSetups:
+<<<<<<< HEAD
 - path: Assets/Scenes/Alex Scene.unity
+=======
+<<<<<<< HEAD
+- path: Assets/Scenes/zao1.unity
+=======
+- path: Assets/Scenes/Brian_Scene.unity
+>>>>>>> 5e351337ea02596d65b8183a78af08ffe7c3a61f
+>>>>>>> b5cf087444ac2cc1f6869bde1caaa7e73bab1a8f
   isLoaded: 1
   isActive: 1
