@@ -1,20 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PauseGame : MonoBehaviour {
 
 	public Transform canvas;
-	private bool paused = false;
+	private bool paused;
 
 	void Start() {
-		canvas.gameObject.SetActive (false);
 		paused = false;
+		MakeActive(paused);
 	}
 
 	void Update () {
 		if (Input.GetKeyDown(KeyCode.Escape)) {
-			Debug.Log ("pause");
 			Pause();
 		}
 	}
@@ -22,18 +22,20 @@ public class PauseGame : MonoBehaviour {
 	public void Pause() {
 
 		if (!paused) {
-			canvas.gameObject.SetActive (true);
-			paused = true;
-			Time.timeScale = 0;
+			MakeActive(true);
 		} else {
-			canvas.gameObject.SetActive (false);
-			paused = false;
-			Time.timeScale = 1;
-
+			MakeActive(false);
 		}
 	}
 
 	public bool isPaused() {
 		return paused;
+	}
+
+	private void MakeActive(bool active) {
+		paused = active;
+		canvas.gameObject.GetComponent<Canvas>().enabled = active;
+		int t = active ? 0 : 1;
+		Time.timeScale = t;
 	}
 }

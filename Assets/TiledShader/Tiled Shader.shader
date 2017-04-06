@@ -7,11 +7,14 @@
 	}
 	SubShader
 	{
-		Tags { "RenderType"="Transparent" }
+		Tags { "Queue"="Transparent" "IgnoreProjector"="True" "RenderType"="Transparent" }
 		LOD 100
 
 		Pass
 		{
+			ZWrite On
+	        ColorMask 0
+
 			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
