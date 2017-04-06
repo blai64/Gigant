@@ -56,21 +56,21 @@ public class ButtonMenu : MonoBehaviour {
 		}
 	}
 
-	void Resume() {
-		pg.Pause ();
+	public void Resume() {
+		if (pg != null) pg.Pause ();
 	}
 
-	void Mute() {
+	public void Mute() {
 		// TODO
 	}
 
-	void ChangeScene(string sceneName) {
-		if (pg != null) Resume ();
+	public void ChangeScene(string sceneName) {
+		Resume ();
 		SceneManager.LoadScene (sceneName);
 	}
 
-	void Quit() {
-		if (pg != null) Resume ();
+	public void Quit() {
+		Resume ();
 		Application.Quit ();
 	}
 }
