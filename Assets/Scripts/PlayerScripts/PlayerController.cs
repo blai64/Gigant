@@ -27,6 +27,11 @@ public class PlayerController : MonoBehaviour {
 	//####################################################################
 	//Combat logic
 
+
+	//####################################################################
+	//Checkpoint
+	Vector3 checkpointLocation; 
+
 	public GameObject weapon; //Sword gameObject
 	[HideInInspector] public bool isAttacking;
 
@@ -102,6 +107,12 @@ public class PlayerController : MonoBehaviour {
 		if (Input.GetKeyDown(KeyCode.Space)){
 			isAttacking = true;
 		}
+
+		//Testing area
+		if (Input.GetKeyDown(KeyCode.R)){
+			StartCoroutine (Respawn ());
+		}
+
 	}
 
 	void ClimbingInputManager(){
@@ -129,6 +140,12 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	//#################################### Triggers #########################
+	void OnTriggerEnter2D(Collider2D col){
+		if (col.CompareTag ("Checkpoint")) {
+			checkpointLocation = transform.position;
+		}
+	}
+
 	void OnTriggerStay2D(Collider2D col){
 		if (col.CompareTag ("Beanstalk") &&
 		    Input.GetKeyDown (KeyCode.UpArrow) &&
@@ -142,4 +159,12 @@ public class PlayerController : MonoBehaviour {
 			Climb (false);
 		}
 	}
+	
+	//#################################### Coroutines #########################
+	IEnumerator Respawn(){
+		yield return new WaitForSeconds (2.0f);
+		transform.position = checkpointLocation;
+	}
 }
+
+
