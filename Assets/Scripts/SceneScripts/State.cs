@@ -16,12 +16,12 @@ public class State : MonoBehaviour {
 		
 		Scene currentScene = SceneManager.GetActiveScene ();
 		sceneName = currentScene.name;
-		if (sceneName == "zao2") {
+		if (sceneName == "Prototype_Scene1") {
 			timer = 0f;
 		} else{
 			timer = PlayerPrefs.GetFloat ("health");
 		}
-		Debug.Log ("initial value of timer is " + timer);
+		//Debug.Log ("initial value of timer is " + timer);
 		//
 		//timer = 0f;
 	}
@@ -33,7 +33,7 @@ public class State : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		Debug.Log (timer);
+		//Debug.Log (timer);
 
 		timer = timer + 0.001f;
 		testbar.fillAmount = timer;

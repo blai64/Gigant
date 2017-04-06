@@ -6,7 +6,7 @@ public class BasicEnemyBehavior : BaseEnemyBehavior {
 
 	override protected IEnumerator Activate(){
 		Debug.Log ("Do Basic Enemy Activation Stuff");
-		while (transform.localScale.x < 2) {
+		while (transform.localScale.x < 0.5) {
 			transform.localScale += new Vector3 (0.01f, 0.01f, 0);
 			yield return 0;
 		}

@@ -109,10 +109,14 @@ public class PlayerController : MonoBehaviour {
 			isAttacking = true;
 		}
 
-		//Testing area
+		//###############Testing area##################
+		//delete when done
 		if (Input.GetKeyDown(KeyCode.R)) {
 			StartCoroutine (Respawn ());
 		}
+
+
+
 
 	}
 
