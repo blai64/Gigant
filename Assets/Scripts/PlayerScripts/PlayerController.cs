@@ -151,7 +151,7 @@ public class PlayerController : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D col) {
 		if (col.CompareTag ("Checkpoint")) {
-			checkpointLocation = transform.position;
+			checkpointLocation = col.transform.position;
 		}
 	}
 
@@ -176,6 +176,7 @@ public class PlayerController : MonoBehaviour {
 	IEnumerator Respawn(){
 		yield return new WaitForSeconds (2.0f);
 		transform.position = checkpointLocation;
+		rb2d.velocity = Vector3.zero;
 	}
 }
 
