@@ -1,5 +1,8 @@
 sceneSetups:
 <<<<<<< HEAD
+- path: Assets/Scenes/Brian_Scene_1.unity
+=======
+<<<<<<< HEAD
 <<<<<<< HEAD
 - path: Assets/Scenes/zao1.unity
 =======
@@ -8,5 +11,6 @@ sceneSetups:
 =======
 - path: Assets/Scenes/Michelle Scene.unity
 >>>>>>> 908774b497236dc16fa26ab5b1f7ebef2d8ffc45
+>>>>>>> 390c57526458141db81618265b18f4dba38dd208
   isLoaded: 1
   isActive: 1
