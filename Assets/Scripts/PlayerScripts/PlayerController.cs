@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
+	
 	[HideInInspector] public bool isGrounded = false;
 	[HideInInspector] public bool isLeft = false;
 
@@ -21,12 +22,10 @@ public class PlayerController : MonoBehaviour {
 	public Transform groundCheck;
 	private Rigidbody2D rb2d;
 
-	// Use this for initialization
 	void Start () {
 		rb2d = GetComponent<Rigidbody2D>();
 	}
-	
-	// Update is called once per frame
+
 	void Update () {
 		isGrounded = Physics2D.Linecast (transform.position, groundCheck.position, 1 << LayerMask.NameToLayer ("Ground"));
 		remainingJumps = (isGrounded) ? maxJumps : remainingJumps;
@@ -44,14 +43,16 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
-	void InputManager(){
+	void InputManager() {
 		//Lateral Movement
 		direction = 0;
-		if (Input.GetKey (KeyCode.LeftArrow)) {
+
+		if (Input.GetKey (KeyCode.LeftArrow) || Input.GetKey (KeyCode.A)) {
 			isLeft = true;
 			direction = -1;
 		} 
-		else if (Input.GetKey (KeyCode.RightArrow)) {
+
+		else if (Input.GetKey (KeyCode.RightArrow) || Input.GetKey (KeyCode.D)) {
 			isLeft = false; 
 			direction = 1; 
 		}
@@ -61,7 +62,7 @@ public class PlayerController : MonoBehaviour {
 		//to prevent using both jumps immediately
 		if (remainingJumps > 0 && 
 			rb2d.velocity.y <= 1.0f &&
-			Input.GetKeyDown(KeyCode.UpArrow)){
+			(Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKey (KeyCode.W))){
 			doJump = true;
 		}
 	}
