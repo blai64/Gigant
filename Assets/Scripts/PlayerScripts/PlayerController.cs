@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
+	
 	public static PlayerController instance;
+
+	private Animator anim;
 
 	[HideInInspector] public bool isGrounded = false;
 	[HideInInspector] public bool isLeft = false;
@@ -38,7 +41,7 @@ public class PlayerController : MonoBehaviour {
 	public Transform groundCheck;
 	private Rigidbody2D rb2d;
 
-	void Awake(){
+	void Awake() {
 		if (instance == null)
 			instance = this;
 		else
@@ -48,6 +51,7 @@ public class PlayerController : MonoBehaviour {
 
 	void Start () {
 		rb2d = GetComponent<Rigidbody2D>();
+		anim = GetComponentInChildren<Animator> ();
 		initialGravity = rb2d.gravityScale;
 	}
 
@@ -66,13 +70,12 @@ public class PlayerController : MonoBehaviour {
 			rb2d.velocity = new Vector2 (direction * maxSpeed, rb2d.velocity.y);
 
 			//update vertical movememnt
-			if (doJump){
+			if (doJump) {
 				remainingJumps--;
 				rb2d.velocity =  new Vector2 (rb2d.velocity.x, jumpForce);
 				doJump = false; 
 			}
 		}
-
 
 		//Do Combat thing
 	}
@@ -84,13 +87,11 @@ public class PlayerController : MonoBehaviour {
 		direction = 0;
 
 		if (Input.GetKey (KeyCode.LeftArrow) || Input.GetKey (KeyCode.A)) {
-			isLeft = true;
-			direction = -1;
+			ChangeDirection (true);
 		} 
 
 		else if (Input.GetKey (KeyCode.RightArrow) || Input.GetKey (KeyCode.D)) {
-			isLeft = false; 
-			direction = 1; 
+			ChangeDirection (false);
 		}
 
 		//Vertical Movement
@@ -98,24 +99,24 @@ public class PlayerController : MonoBehaviour {
 		//to prevent using both jumps immediately
 		if (remainingJumps > 0 && 
 			rb2d.velocity.y <= 1.0f &&
-			(Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown (KeyCode.W))){
+			(Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown (KeyCode.W))) {
 			doJump = true;
 		}
 
 
 		//Combat
-		if (Input.GetKeyDown(KeyCode.Space)){
+		if (Input.GetKeyDown(KeyCode.Space)) {
 			isAttacking = true;
 		}
 
 		//Testing area
-		if (Input.GetKeyDown(KeyCode.R)){
+		if (Input.GetKeyDown(KeyCode.R)) {
 			StartCoroutine (Respawn ());
 		}
 
 	}
 
-	void ClimbingInputManager(){
+	void ClimbingInputManager() {
 		direction = 0;
 
 		if (Input.GetKey (KeyCode.UpArrow) || Input.GetKey (KeyCode.W)) {
@@ -133,20 +134,28 @@ public class PlayerController : MonoBehaviour {
 
 
 	//#################################### State Changing Helper Functions #########################
+
 	void Climb(bool climb){
 		Debug.Log (climb);
 		isClimbing = climb;
 		rb2d.gravityScale = (climb) ? 0 : initialGravity;
 	}
 
+	void ChangeDirection(bool left) {
+		isLeft = left;
+		direction = left ? -1 : 1;
+		anim.SetBool ("isLeft", left);
+	}
+
 	//#################################### Triggers #########################
-	void OnTriggerEnter2D(Collider2D col){
+
+	void OnTriggerEnter2D(Collider2D col) {
 		if (col.CompareTag ("Checkpoint")) {
 			checkpointLocation = transform.position;
 		}
 	}
 
-	void OnTriggerStay2D(Collider2D col){
+	void OnTriggerStay2D(Collider2D col) {
 		if (col.CompareTag ("Beanstalk") &&
 		    Input.GetKeyDown (KeyCode.UpArrow) &&
 		    !isClimbing) {
@@ -154,7 +163,7 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
-	void OnTriggerExit2D(Collider2D col){
+	void OnTriggerExit2D(Collider2D col) {
 		if (col.CompareTag ("Beanstalk") && isClimbing) {
 			Climb (false);
 		}
