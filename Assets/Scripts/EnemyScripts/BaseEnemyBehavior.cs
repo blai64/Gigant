@@ -7,7 +7,7 @@ public class BaseEnemyBehavior : MonoBehaviour {
 	[HideInInspector] public bool isDead; //flag for defeated/dead state
 	[HideInInspector] public bool isAttacking; //flag for attacking state
 
-	private float moveSpeed = 0.5f;
+	private float moveSpeed = 1.0f;
 
 	private Rigidbody2D rb2d; 
 
