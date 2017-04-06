@@ -7,12 +7,11 @@ namespace BlackImpSoftware.MosaicShader.Source
 		/* Move Camera */
 		public Camera myCam;
 		public Transform camPos1;
-		public float speed;
-		private float startTime;
-		private float journeyLength;
-		private bool isMoving;
-		private bool arrived; // check if camera reached next position
+		//public float speed;
+		//private float startTime;
+		//private float journeyLength;
 		private bool depixelizing;
+		private bool pixelizing;
 
 		public bool isMosaic;
 		public GameObject white;
@@ -54,14 +53,15 @@ namespace BlackImpSoftware.MosaicShader.Source
         {
 			isMosaic = false;
 			myCam = Camera.main;
-			startTime = Time.time;
-			journeyLength = Vector3.Distance (myCam.transform.position, camPos1.transform.position);
+			//startTime = Time.time;
+			//journeyLength = Vector3.Distance (myCam.transform.position, camPos1.transform.position);
 			tmp = white.GetComponent<SpriteRenderer> ().color;
 			tmp.a = 0f;
 			white.GetComponent<SpriteRenderer> ().color = tmp;
-			isMoving = false;
-			arrived = false;
+			//isMoving = false;
+			//arrived = false;
 			depixelizing = false;
+			pixelizing = false;
 		}
 
         void Awake()
@@ -91,8 +91,11 @@ namespace BlackImpSoftware.MosaicShader.Source
 
         void Update()
         {
+			pixelizing = triggerscenechange.instance.isColliding;
+
 			timer = State.instance.timer;
-			if (!depixelizing && timer >= 0.1f) {
+
+			if (pixelizing && !depixelizing) {
 				isMosaic = true;
 				MosaicOpacity += 0.1f;
 				tmp.a += 0.05f;
@@ -110,11 +113,12 @@ namespace BlackImpSoftware.MosaicShader.Source
 				myCam.transform.position = Vector3.Lerp (myCam.transform.position, camPos1.transform.position, fracJourney);
 				*/
 				depixelizing = true;
+				pixelizing = false;
 				myCam.transform.position = camPos1.transform.position;
 			}
 
 			if (depixelizing && MosaicOpacity > 0f) {
-				MosaicOpacity -= 0.05f;
+				MosaicOpacity -= 0.1f;
 				tmp.a -= 0.05f;
 				white.GetComponent<SpriteRenderer> ().color = tmp;
 			}
