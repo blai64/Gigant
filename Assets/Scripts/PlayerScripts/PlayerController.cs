@@ -159,6 +159,9 @@ public class PlayerController : MonoBehaviour {
 		if (col.CompareTag ("Beanstalk") &&
 		    Input.GetKeyDown (KeyCode.UpArrow) &&
 		    !isClimbing) {
+			transform.position = new Vector3 (col.transform.position.x, 
+				transform.position.y, 
+				transform.position.z);
 			Climb (true);
 		}
 	}
