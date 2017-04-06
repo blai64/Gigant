@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
-	
+	public static PlayerController instance;
+
 	[HideInInspector] public bool isGrounded = false;
 	[HideInInspector] public bool isLeft = false;
 
@@ -21,6 +22,14 @@ public class PlayerController : MonoBehaviour {
 
 	public Transform groundCheck;
 	private Rigidbody2D rb2d;
+
+	void Awake(){
+		if (instance == null)
+			instance = this;
+		else
+			Destroy (gameObject);
+	}
+
 
 	void Start () {
 		rb2d = GetComponent<Rigidbody2D>();
@@ -62,7 +71,7 @@ public class PlayerController : MonoBehaviour {
 		//to prevent using both jumps immediately
 		if (remainingJumps > 0 && 
 			rb2d.velocity.y <= 1.0f &&
-			(Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKey (KeyCode.W))){
+			(Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown (KeyCode.W))){
 			doJump = true;
 		}
 	}
