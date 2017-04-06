@@ -16,7 +16,7 @@ public class State : MonoBehaviour {
 		
 		Scene currentScene = SceneManager.GetActiveScene ();
 		sceneName = currentScene.name;
-		if (sceneName == "zao1") {
+		if (sceneName == "zao2") {
 			timer = 0f;
 		} else{
 			timer = PlayerPrefs.GetFloat ("health");
@@ -39,7 +39,7 @@ public class State : MonoBehaviour {
 		testbar.fillAmount = timer;
 
 		//here can add certain condition.
-		PlayerPrefs.SetFloat ("health", timer);
+		//PlayerPrefs.SetFloat ("health", timer);
 
 		// Four parameters here: next scene name, fade out & fade in time,
 		// and fade color.
