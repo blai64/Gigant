@@ -11,6 +11,9 @@ public class PlayerController : MonoBehaviour {
 	[HideInInspector] public bool isGrounded = false;
 	[HideInInspector] public bool isLeft = false;
 
+	// Beanstalk object
+	public GameObject beanstalkPrefab;
+
 	public float initialGravity; 
 	//####################################################################
 	//Movement Logic 
@@ -115,6 +118,11 @@ public class PlayerController : MonoBehaviour {
 			StartCoroutine (Respawn ());
 		}
 
+		// Planting a beanstalk seed
+		if (Input.GetKeyDown (KeyCode.P) && isGrounded) {
+			PlantBeanstalk ();
+		}
+
 
 
 
@@ -123,23 +131,24 @@ public class PlayerController : MonoBehaviour {
 	void ClimbingInputManager() {
 		direction = 0;
 
-		if (Input.GetKey (KeyCode.UpArrow) || Input.GetKey (KeyCode.W)) {
-			direction = 1;
-		} else if (Input.GetKey (KeyCode.DownArrow) || Input.GetKey (KeyCode.S)) {
-			direction = -1; 
-		}
-		else if (Input.GetKeyDown (KeyCode.LeftArrow) || Input.GetKeyDown (KeyCode.RightArrow)) {
-			isLeft = Input.GetKeyDown(KeyCode.LeftArrow); 
-			Climb (false);
+		if (BeanstalkScript.instance.ReadyToClimb ()) 
+		{
+			if (Input.GetKey (KeyCode.UpArrow) || Input.GetKey (KeyCode.W)) {
+				direction = 1;
+			} else if (Input.GetKey (KeyCode.DownArrow) || Input.GetKey (KeyCode.S)) {
+				direction = -1; 
+			} else if (Input.GetKeyDown (KeyCode.LeftArrow) || Input.GetKeyDown (KeyCode.RightArrow)) {
+				isLeft = Input.GetKeyDown (KeyCode.LeftArrow); 
+				Climb (false);
 
+			}
 		}
-
 	}
 
 
 	//#################################### State Changing Helper Functions #########################
 
-	void Climb(bool climb){
+	public void Climb(bool climb){
 		Debug.Log (climb);
 		isClimbing = climb;
 		rb2d.gravityScale = (climb) ? 0 : initialGravity;
@@ -160,6 +169,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void OnTriggerStay2D(Collider2D col) {
+		// trigger for climbing the beanstalk
 		if (col.CompareTag ("Beanstalk") &&
 		    Input.GetKeyDown (KeyCode.UpArrow) &&
 		    !isClimbing) {
@@ -167,6 +177,11 @@ public class PlayerController : MonoBehaviour {
 				transform.position.y, 
 				transform.position.z);
 			Climb (true);
+		}
+		// trigger for being in range to cut the beanstalk
+		if (col == BeanstalkScript.instance.swordCollider && isAttacking && 
+			BeanstalkScript.instance.ReadyToClimb()) {
+			BeanstalkScript.instance.cutBeanstalk ();
 		}
 	}
 
@@ -181,6 +196,12 @@ public class PlayerController : MonoBehaviour {
 		yield return new WaitForSeconds (2.0f);
 		transform.position = checkpointLocation;
 		rb2d.velocity = Vector3.zero;
+	}
+
+	//#################################### Beanstalk #########################
+	void PlantBeanstalk(){
+		GameObject bean = Instantiate (beanstalkPrefab);
+		bean.transform.position = new Vector3 (transform.position.x, transform.position.y - 1.22f,transform.position.z);
 	}
 }
 
