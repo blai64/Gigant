@@ -32,6 +32,9 @@ public class BeanBush : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D col){
 		if (col.CompareTag("Player")) {
+			PlayerController.instance.beanCount = Mathf.Min (PlayerController.instance.beanCount + beanCount,
+				PlayerController.instance.maxBeans);
+			Debug.Log (PlayerController.instance.beanCount);
 			beanCount = 0; 
 			for (int i = 0; i < maxBeans; i++) {
 				transform.GetChild (i).gameObject.SetActive (false);
