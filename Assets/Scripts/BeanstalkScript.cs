@@ -5,6 +5,7 @@ using UnityEngine;
 public class BeanstalkScript : MonoBehaviour {
 	public static BeanstalkScript instance;
 	public BoxCollider2D swordCollider;
+	public GameObject pivotPoint;
 
 	SpriteRenderer renderer;
 
@@ -60,7 +61,9 @@ public class BeanstalkScript : MonoBehaviour {
 
 		// Makes beanstalk fall when it's cut
 		if (cut) {
-			//transform.RotateAround (new Vector3(transform.position.x, , new Vector3 (0, 0, 1), 5);
+			pivotPoint.GetComponent<Rigidbody2D> ().AddForce (new Vector2(100, 0));
+			//transform.RotateAround (new Vector3(transform.position.x,transform.position.y - 5 ,0) , new Vector3 (0, 0, -1), 1);
+			//transform.Translate (new Vector3 (.1f, 0, 0));
 		}
 	}
 
