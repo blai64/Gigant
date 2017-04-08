@@ -25,7 +25,7 @@ public class BaseEnemyBehavior : MonoBehaviour {
 
 	}
 
-void OnTriggerEnter2D (Collider2D col){
+	void OnTriggerEnter2D (Collider2D col){
 		if (col.CompareTag("Player") && !isActive){
 			StartCoroutine (Activate ());
 		}

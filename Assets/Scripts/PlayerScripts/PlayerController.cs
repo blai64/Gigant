@@ -38,6 +38,12 @@ public class PlayerController : MonoBehaviour {
 	//Checkpoint
 	Vector3 checkpointLocation; 
 
+	//####################################################################
+	//Bean Logic
+
+	[HideInInspector] public int beanCount;
+	public int maxBeans = 5;
+
 	public GameObject weapon; //Sword gameObject
 	[HideInInspector] public bool isAttacking;
 
