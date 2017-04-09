@@ -113,11 +113,11 @@ public class MosaicCameraScript : MonoBehaviour
 		}
 
 		if (MosaicOpacity <= 0.0f) {
-			health.SetActive (true);
+			//health.SetActive (true);
 			isMosaic = false;
 			depixelizing = false;
 		} else {
-			health.SetActive (false);
+			//health.SetActive (false);
 		}
 			
 
