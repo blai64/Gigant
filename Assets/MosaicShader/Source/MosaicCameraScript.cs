@@ -18,7 +18,6 @@ public class MosaicCameraScript : MonoBehaviour
 
     // The material containing the mosaic shader
     private Material material;
-	private float timer;
 
     public Shader mosaicShader;
 
@@ -91,7 +90,6 @@ public class MosaicCameraScript : MonoBehaviour
     void Update()
     {
 
-		timer = State.instance.timer;
 
 		if (pixelizing && !depixelizing) {
 			isMosaic = true;
@@ -115,11 +113,11 @@ public class MosaicCameraScript : MonoBehaviour
 		}
 
 		if (MosaicOpacity <= 0.0f) {
-			health.SetActive (true);
+			//health.SetActive (true);
 			isMosaic = false;
 			depixelizing = false;
 		} else {
-			health.SetActive (false);
+			//health.SetActive (false);
 		}
 			
 
