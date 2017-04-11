@@ -11,6 +11,8 @@ public class PlayerController : MonoBehaviour {
 	[HideInInspector] public bool isGrounded = false;
 	[HideInInspector] public bool isLeft = false;
 
+	private bool disabled;
+
 	// Beanstalk object
 	public GameObject beanstalkPrefab;
 
@@ -28,8 +30,11 @@ public class PlayerController : MonoBehaviour {
 	private int remainingJumps; // Remaining number of jumps
 	private bool doJump; // try to start jump on current frame
 
+
 	//Vertical beanstalk 
 	private bool isClimbing;
+
+	private bool isKnocking;
 	//####################################################################
 	//Combat logic
 
@@ -65,28 +70,38 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void Update () {
-		isGrounded = Physics2D.Linecast (transform.position, groundCheck.position, 1 << LayerMask.NameToLayer ("Ground"));
-		remainingJumps = (isGrounded) ? maxJumps : remainingJumps;
+		if (!disabled) {
+			isGrounded = Physics2D.Linecast (transform.position, groundCheck.position, 1 << LayerMask.NameToLayer ("Ground"));
+			remainingJumps = (isGrounded) ? maxJumps : remainingJumps;
 
-		//case on whether or not currently latched onto beanstalk
-		if (isClimbing) {
-			ClimbingInputManager ();
-			rb2d.velocity = new Vector2 (0f, direction * maxSpeed);
-		}
-		else {
-			InputManager ();
-			//update lateral movement
-			rb2d.velocity = new Vector2 (direction * maxSpeed, rb2d.velocity.y);
+			//case on whether or not currently latched onto beanstalk
+			if (isClimbing) {
+				ClimbingInputManager ();
+				rb2d.velocity = new Vector2 (0f, direction * maxSpeed);
+			}
+			else {
+				InputManager ();
+				//update lateral movement
+				rb2d.velocity = new Vector2 (direction * maxSpeed, rb2d.velocity.y);
 
-			//update vertical movememnt
-			if (doJump) {
-				remainingJumps--;
-				rb2d.velocity =  new Vector2 (rb2d.velocity.x, jumpForce);
-				doJump = false; 
+				//update vertical movememnt
+				if (doJump) {
+					remainingJumps--;
+					rb2d.velocity =  new Vector2 (rb2d.velocity.x, jumpForce);
+					doJump = false; 
+				}
 			}
 		}
 
+
+			
 		//Do Combat thing
+	}
+
+	void FixedUpdate(){
+		if (isKnocking) {
+			Knocked ();
+		}
 	}
 
 
@@ -143,7 +158,7 @@ public class PlayerController : MonoBehaviour {
 	void ClimbingInputManager() {
 		direction = 0;
 
-		if (BeanstalkScript.instance.ReadyToClimb ()) 
+		if (BeanstalkScript.instance.FullyGrown ()) 
 		{
 			if (Input.GetKey (KeyCode.UpArrow) || Input.GetKey (KeyCode.W)) {
 				direction = 1;
@@ -161,7 +176,6 @@ public class PlayerController : MonoBehaviour {
 	//#################################### State Changing Helper Functions #########################
 
 	public void Climb(bool climb){
-		Debug.Log (climb);
 		isClimbing = climb;
 		rb2d.gravityScale = (climb) ? 0 : initialGravity;
 	}
@@ -195,9 +209,9 @@ public class PlayerController : MonoBehaviour {
 			Climb (true);
 		}
 		// trigger for being in range to cut the beanstalk
-		if (col == BeanstalkScript.instance.swordCollider && isAttacking && 
-			BeanstalkScript.instance.ReadyToClimb()) {
-			BeanstalkScript.instance.cutBeanstalk ();
+		else if (col.CompareTag ("Beanstalk") && isAttacking && 
+			BeanstalkScript.instance.FullyGrown()) {
+			BeanstalkScript.instance.CutBeanstalk ();
 		}
 	}
 
@@ -209,10 +223,20 @@ public class PlayerController : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D col){
 		if (col.gameObject.CompareTag ("Enemy")) {
-			Debug.Log ("Collide with enemy");
+			Debug.Log ("Collides with Enemy");
 			Health.instance.hp--;
+			isKnocking = true;
+			//Knocked ();
 		}
 	}
+
+	void OnCollisionExit2D(Collision2D col){
+		if(col.gameObject.CompareTag("Enemy")){
+			isKnocking = false;
+
+		}
+	}
+		
 	
 	//#################################### Coroutines #########################
 	IEnumerator Respawn(){
@@ -225,6 +249,18 @@ public class PlayerController : MonoBehaviour {
 	void PlantBeanstalk(){
 		GameObject bean = Instantiate (beanstalkPrefab);
 		bean.transform.position = new Vector3 (transform.position.x, transform.position.y - 1.22f,transform.position.z);
+	}
+
+	//#################################### Knocked by Enemy #########################
+	void Knocked(){
+		disabled = true;
+		rb2d.velocity = new Vector2(maxSpeed	, 5.0f);
+		StartCoroutine (Wait ());
+	}
+
+	IEnumerator Wait(){
+		yield return new WaitForSeconds (1.5f);
+		disabled = false;
 	}
 }
 

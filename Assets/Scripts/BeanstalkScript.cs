@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class BeanstalkScript : MonoBehaviour {
 	public static BeanstalkScript instance;
-	public BoxCollider2D swordCollider;
-	public GameObject pivotPoint;
+
+	public GameObject pivotPointPrefab;
+	private Rigidbody2D pivotBody;
 
 	SpriteRenderer renderer;
 
@@ -24,18 +25,23 @@ public class BeanstalkScript : MonoBehaviour {
 	void Start () {
 		renderer = this.GetComponent<SpriteRenderer> ();
 		colorChangeRate = .001f * (10 / decayCountdown);
+		// Place the pivot gameobject on the top of the beanstalk
+		GameObject pivotPoint = Instantiate (pivotPointPrefab);
+		pivotPoint.transform.position = new Vector2 (transform.position.x,transform.position.y + .5f);
+		pivotPoint.transform.parent = this.transform;
+		pivotBody = pivotPoint.GetComponent<Rigidbody2D> ();
 		grown = false;
 		if (instance == null)
 			instance = this;
 	}
 
 	// Allows player to climb only if the beanstalk is sufficiently large
-	public bool ReadyToClimb(){
+	public bool FullyGrown(){
 		return grown;
 	}
 
 	// Begins to tilt over the beanstalk if the player cuts it down
-	public void cutBeanstalk(){
+	public void CutBeanstalk(){
 		cut = true;
 	}
 
@@ -61,9 +67,10 @@ public class BeanstalkScript : MonoBehaviour {
 
 		// Makes beanstalk fall when it's cut
 		if (cut) {
-			pivotPoint.GetComponent<Rigidbody2D> ().AddForce (new Vector2(100, 0));
-			//transform.RotateAround (new Vector3(transform.position.x,transform.position.y - 5 ,0) , new Vector3 (0, 0, -1), 1);
-			//transform.Translate (new Vector3 (.1f, 0, 0));
+			this.transform.GetComponent<Rigidbody2D>().gravityScale = 1f;
+			//this.transform.GetComponent<CapsuleCollider2D> ().isTrigger = false;
+			if(transform.eulerAngles.z < 10)
+				transform.Rotate(0,0,-.1f);
 		}
 	}
 
