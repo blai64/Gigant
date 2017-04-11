@@ -121,6 +121,7 @@ public class MosaicCameraScript : MonoBehaviour
 			bean.SetActive (true);
 			isMosaic = false;
 			depixelizing = false;
+			PlayerController.instance.disabled = false;
 		} else {
 			health.SetActive (false);
 			bean.SetActive (false);
@@ -139,6 +140,7 @@ public class MosaicCameraScript : MonoBehaviour
     }
 
 	public void SetTargetPosition(Vector3 newTarget, BoxCollider2D newBounds){
+		PlayerController.instance.disabled = true;
 		targetPosition = newTarget;
 		targetBounds = newBounds;
 		pixelizing = true;

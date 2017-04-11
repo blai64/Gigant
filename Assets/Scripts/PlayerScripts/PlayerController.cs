@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour {
 	[HideInInspector] public bool isGrounded = false;
 	[HideInInspector] public bool isLeft = false;
 
-	private bool disabled;
+	[HideInInspector] public bool disabled;
 
 	// Beanstalk object
 	public GameObject beanstalkPrefab;
@@ -254,7 +254,11 @@ public class PlayerController : MonoBehaviour {
 	//#################################### Knocked by Enemy #########################
 	void Knocked(){
 		disabled = true;
-		rb2d.velocity = new Vector2(maxSpeed	, 5.0f);
+		if (direction == 1) {
+			rb2d.velocity = new Vector2 (-maxSpeed * 3.0f, 10.0f);
+		} else if (direction == -1) {
+			rb2d.velocity = new Vector2 (maxSpeed * 3.0f, 10.0f);
+		}
 		StartCoroutine (Wait ());
 	}
 
