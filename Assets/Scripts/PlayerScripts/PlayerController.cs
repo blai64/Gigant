@@ -6,8 +6,6 @@ public class PlayerController : MonoBehaviour {
 	
 	public static PlayerController instance;
 
-
-
 	private Animator anim;
 
 	[HideInInspector] public bool isGrounded = false;
@@ -99,10 +97,16 @@ public class PlayerController : MonoBehaviour {
 
 		if (Input.GetKey (KeyCode.LeftArrow) || Input.GetKey (KeyCode.A)) {
 			ChangeDirection (true);
-		} 
-
-		else if (Input.GetKey (KeyCode.RightArrow) || Input.GetKey (KeyCode.D)) {
+			Move (true);
+		} else if (Input.GetKey (KeyCode.RightArrow) || Input.GetKey (KeyCode.D)) {
 			ChangeDirection (false);
+			Move (true);
+		}
+
+		if (Input.GetKeyUp (KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.A)) {
+			Move (false);
+		} else if (Input.GetKeyUp (KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.D)) {
+			Move (false);
 		}
 
 		//Vertical Movement
@@ -162,10 +166,14 @@ public class PlayerController : MonoBehaviour {
 		rb2d.gravityScale = (climb) ? 0 : initialGravity;
 	}
 
-	void ChangeDirection(bool left) {
+	private void ChangeDirection(bool left) {
 		isLeft = left;
 		direction = left ? -1 : 1;
 		anim.SetBool ("isLeft", left);
+	}
+
+	private void Move(bool isRunning) {
+		anim.SetBool ("isRunning", isRunning);
 	}
 
 	//#################################### Triggers #########################
