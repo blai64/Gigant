@@ -57,6 +57,7 @@ public class PlayerController : MonoBehaviour {
 	public Transform groundCheck;
 	private Rigidbody2D rb2d;
 
+
 	void Awake() {
 		if (instance == null)
 			instance = this;
@@ -134,6 +135,9 @@ public class PlayerController : MonoBehaviour {
 		if (Input.GetKeyDown(KeyCode.Space)) {
 			isAttacking = true;
 		}
+		if (Input.GetKeyUp (KeyCode.Space)) {
+			isAttacking = false;
+		}
 
 		//###############Testing area##################
 		//delete when done
@@ -193,7 +197,7 @@ public class PlayerController : MonoBehaviour {
 	void OnTriggerStay2D(Collider2D col) {
 		// trigger for climbing the beanstalk
 		if (col.CompareTag ("Beanstalk") &&
-		    Input.GetKeyDown (KeyCode.UpArrow) &&
+		    Input.GetKey (KeyCode.UpArrow) &&
 		    !isClimbing) {
 			transform.position = new Vector3 (col.transform.position.x, 
 				transform.position.y, 
