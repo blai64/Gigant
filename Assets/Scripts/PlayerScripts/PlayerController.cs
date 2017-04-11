@@ -6,6 +6,8 @@ public class PlayerController : MonoBehaviour {
 	
 	public static PlayerController instance;
 
+
+
 	private Animator anim;
 
 	[HideInInspector] public bool isGrounded = false;
@@ -194,6 +196,13 @@ public class PlayerController : MonoBehaviour {
 	void OnTriggerExit2D(Collider2D col) {
 		if (col.CompareTag ("Beanstalk") && isClimbing) {
 			Climb (false);
+		}
+	}
+
+	void OnCollisionEnter2D(Collision2D col){
+		if (col.gameObject.CompareTag ("Enemy")) {
+			Debug.Log ("Collide with enemy");
+			Health.instance.hp--;
 		}
 	}
 	
