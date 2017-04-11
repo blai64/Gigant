@@ -12,9 +12,11 @@ public class MosaicCameraScript : MonoBehaviour
 	SpriteRenderer renderer;
 	private Color rendererAlpha;
 	public GameObject health;
+	public GameObject bean;
 
 
 	private Vector3 targetPosition;
+	private BoxCollider2D targetBounds;
 
     // The material containing the mosaic shader
     private Material material;
@@ -100,13 +102,15 @@ public class MosaicCameraScript : MonoBehaviour
 
 
 		// Move camera
-		if (rendererAlpha.a >= 0.9f) {
+
+		if (rendererAlpha.a >= 1.1f) {
 			depixelizing = true;
 			pixelizing = false;
 			PlayerController.instance.transform.position = targetPosition;
+			MainCamera.instance.UpdateBounds(targetBounds);
 		}
 
-		if (depixelizing && MosaicOpacity > 0f) {
+		if (depixelizing && !pixelizing) {
 			MosaicOpacity -= 0.1f;
 			rendererAlpha.a -= 0.05f;
 			white.GetComponent<SpriteRenderer> ().color = rendererAlpha;
@@ -114,10 +118,12 @@ public class MosaicCameraScript : MonoBehaviour
 
 		if (MosaicOpacity <= 0.0f) {
 			health.SetActive (true);
+			bean.SetActive (true);
 			isMosaic = false;
 			depixelizing = false;
 		} else {
 			health.SetActive (false);
+			bean.SetActive (false);
 		}
 			
 
@@ -132,8 +138,9 @@ public class MosaicCameraScript : MonoBehaviour
         material.SetFloat("_SceneOpacity", SceneOpacity);
     }
 
-	public void SetTargetPosition(Vector3 newTarget){
+	public void SetTargetPosition(Vector3 newTarget, BoxCollider2D newBounds){
 		targetPosition = newTarget;
+		targetBounds = newBounds;
 		pixelizing = true;
 	}
 }
