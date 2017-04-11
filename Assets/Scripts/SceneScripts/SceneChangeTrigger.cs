@@ -15,8 +15,8 @@ public class SceneChangeTrigger : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D col){
 		if (col.CompareTag("Player")) {
-			MosaicCameraScript.instance.SetTargetPosition (targetPosition);
-			MainCamera.instance.UpdateBounds (newBounds);
+			MosaicCameraScript.instance.SetTargetPosition (targetPosition, newBounds);
+			//MainCamera.instance.UpdateBounds (newBounds);
 		}
 	}
 		
