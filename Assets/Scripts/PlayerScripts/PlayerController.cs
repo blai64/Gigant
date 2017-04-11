@@ -137,7 +137,7 @@ public class PlayerController : MonoBehaviour {
 	void ClimbingInputManager() {
 		direction = 0;
 
-		if (BeanstalkScript.instance.ReadyToClimb ()) 
+		if (BeanstalkScript.instance.FullyGrown ()) 
 		{
 			if (Input.GetKey (KeyCode.UpArrow) || Input.GetKey (KeyCode.W)) {
 				direction = 1;
@@ -155,7 +155,6 @@ public class PlayerController : MonoBehaviour {
 	//#################################### State Changing Helper Functions #########################
 
 	public void Climb(bool climb){
-		Debug.Log (climb);
 		isClimbing = climb;
 		rb2d.gravityScale = (climb) ? 0 : initialGravity;
 	}
@@ -185,9 +184,9 @@ public class PlayerController : MonoBehaviour {
 			Climb (true);
 		}
 		// trigger for being in range to cut the beanstalk
-		if (col == BeanstalkScript.instance.swordCollider && isAttacking && 
-			BeanstalkScript.instance.ReadyToClimb()) {
-			BeanstalkScript.instance.cutBeanstalk ();
+		else if (col.CompareTag ("Beanstalk") && isAttacking && 
+			BeanstalkScript.instance.FullyGrown()) {
+			BeanstalkScript.instance.CutBeanstalk ();
 		}
 	}
 
