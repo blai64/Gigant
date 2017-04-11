@@ -9,6 +9,8 @@ public class BaseEnemyBehavior : MonoBehaviour {
 
 	private float moveSpeed = 1.0f;
 
+	private int health;
+
 	private Rigidbody2D rb2d; 
 
 	// Use this for initialization
@@ -18,6 +20,7 @@ public class BaseEnemyBehavior : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		//only move when not dead or attacking
 		if (isActive && !isDead && !isAttacking) {
 			float direction = Mathf.Sign (PlayerController.instance.transform.position.x - transform.position.x);
 			rb2d.velocity = new Vector2 (direction * moveSpeed, rb2d.velocity.y);
@@ -31,10 +34,32 @@ public class BaseEnemyBehavior : MonoBehaviour {
 		}
 	}
 
+
+	//TODO: deprecated, since animation events should be able to handle all of this
+	//without coroutines, just have an activate function that starts animation, setting 
+	//active once animation is over.
 	virtual protected IEnumerator Activate(){
 		Debug.Log ("Starting base enemy activation");
 		yield return new WaitForSeconds (1.0f);
 		Debug.Log ("Base enemy activated - movement starts");
 		isActive = true;
+	}
+
+	virtual protected void StartAttack(){
+	}
+
+	virtual protected void EndAttack(){
+	}
+
+
+	public void GetDamaged (int damage){
+		health -= damage;
+
+		if (health < 0)
+			Die ();
+	}
+
+	void Die(){
+		//start Death animation
 	}
 }
