@@ -22,7 +22,7 @@ public class Health : MonoBehaviour {
 		//	hp = 3;
 		//} 
 		//else{
-			hp = PlayerPrefs.GetInt ("health");
+			//hp = PlayerPrefs.GetInt ("health");
 		//}
 	}
 
@@ -55,6 +55,6 @@ public class Health : MonoBehaviour {
 
 
 		//here can add certain condition.
-		PlayerPrefs.SetInt ("health", hp);
+		//PlayerPrefs.SetInt ("health", hp);
 	}
 }
