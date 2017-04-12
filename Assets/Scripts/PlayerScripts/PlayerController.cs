@@ -272,6 +272,15 @@ public class PlayerController : MonoBehaviour {
 		yield return new WaitForSeconds (1.5f);
 		disabled = false;
 	}
+
+
+	//#####################################33
+	public void Disable(bool loseVelocity){
+		disabled = true;
+		anim.SetBool ("isRunning", false);
+		if (loseVelocity)
+			rb2d.velocity = new Vector2 (0f, rb2d.velocity.y);
+	}
 }
 
 

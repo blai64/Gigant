@@ -23,8 +23,7 @@ public class CutsceneManager : MonoBehaviour {
 	}
 
 	IEnumerator StartCutscene(){
-		PlayerController.instance.disabled = true;
-		anim.SetBool ("isRunning", false);
+		PlayerController.instance.Disable (true);
 
 		yield return 0;
 
