@@ -21,6 +21,10 @@ public class MosaicCameraScript : MonoBehaviour
     // The material containing the mosaic shader
     private Material material;
 
+	// idle when enters a new scene.
+	public GameObject player;
+	private Animator anim;
+
     public Shader mosaicShader;
 
     /**
@@ -50,6 +54,7 @@ public class MosaicCameraScript : MonoBehaviour
 
     void Start()
     {
+		anim = player.GetComponentInChildren<Animator> ();
 		isMosaic = false;
 		depixelizing = false;
 		pixelizing = false;
@@ -114,6 +119,7 @@ public class MosaicCameraScript : MonoBehaviour
 			MosaicOpacity -= 0.1f;
 			rendererAlpha.a -= 0.05f;
 			white.GetComponent<SpriteRenderer> ().color = rendererAlpha;
+			anim.SetBool ("isRunning", false);
 		}
 
 		if (MosaicOpacity <= 0.0f && depixelizing) {
@@ -121,7 +127,8 @@ public class MosaicCameraScript : MonoBehaviour
 			bean.SetActive (true);
 			isMosaic = false;
 			depixelizing = false;
-			PlayerController.instance.Disabled = false;
+			PlayerController.instance.disabled = false;
+
 		} else {
 			health.SetActive (false);
 			bean.SetActive (false);
@@ -140,7 +147,7 @@ public class MosaicCameraScript : MonoBehaviour
     }
 
 	public void SetTargetPosition(Vector3 newTarget, BoxCollider2D newBounds){
-		PlayerController.instance.Disabled = true;
+		PlayerController.instance.disabled = true;
 		targetPosition = newTarget;
 		targetBounds = newBounds;
 		pixelizing = true;

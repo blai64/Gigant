@@ -11,11 +11,8 @@ public class PlayerController : MonoBehaviour {
 	[HideInInspector] public bool isGrounded = false;
 	[HideInInspector] public bool isLeft = false;
 
-	private bool disabled;
-	[HideInInspector] public bool Disabled{
-		get{return disabled;}
-		set{disabled = value;}
-	}
+
+	[HideInInspector] public bool disabled;
 
 	// Beanstalk object
 	public GameObject beanstalkPrefab;
