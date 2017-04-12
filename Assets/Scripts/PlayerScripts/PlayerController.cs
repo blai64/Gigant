@@ -11,7 +11,8 @@ public class PlayerController : MonoBehaviour {
 	[HideInInspector] public bool isGrounded = false;
 	[HideInInspector] public bool isLeft = false;
 
-	private bool disabled;
+
+	[HideInInspector] public bool disabled;
 
 	// Beanstalk object
 	public GameObject beanstalkPrefab;
@@ -74,6 +75,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void Update () {
+		
 		if (!disabled) {
 			isGrounded = Physics2D.Linecast (transform.position, groundCheck.position, 1 << LayerMask.NameToLayer ("Ground"));
 			remainingJumps = (isGrounded) ? maxJumps : remainingJumps;
@@ -140,6 +142,10 @@ public class PlayerController : MonoBehaviour {
 		}
 			
 		Fall ();
+
+		if (Input.GetKeyUp (KeyCode.Space)) {
+			isAttacking = false;
+		}
 
 		//############### Testing area ##################
 		//delete when done
@@ -276,12 +282,26 @@ public class PlayerController : MonoBehaviour {
 	void Knocked() {
 		disabled = true;
 		rb2d.velocity = new Vector2(maxSpeed, 5.0f);
+		if (direction == 1) {
+			rb2d.velocity = new Vector2 (-maxSpeed * 3.0f, 10.0f);
+		} else if (direction == -1) {
+			rb2d.velocity = new Vector2 (maxSpeed * 3.0f, 10.0f);
+		}
 		StartCoroutine (Wait ());
 	}
 
 	IEnumerator Wait() {
 		yield return new WaitForSeconds (1.5f);
 		disabled = false;
+	}
+
+
+	//#####################################33
+	public void Disable(bool loseVelocity){
+		disabled = true;
+		anim.SetBool ("isRunning", false);
+		if (loseVelocity)
+			rb2d.velocity = new Vector2 (0f, rb2d.velocity.y);
 	}
 }
 

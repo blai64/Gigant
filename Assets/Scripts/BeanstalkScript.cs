@@ -16,11 +16,10 @@ public class BeanstalkScript : MonoBehaviour {
 	public float decayCountdown = 10;
 	private float colorChangeRate;
 
-	// Color variables
-	float scale;
-
+	// Bean state variables
 	private bool grown;
 	private bool cut = false;
+	private bool leftOfPlayer;
 
 	void Start () {
 		renderer = this.GetComponent<SpriteRenderer> ();
@@ -42,6 +41,10 @@ public class BeanstalkScript : MonoBehaviour {
 
 	// Begins to tilt over the beanstalk if the player cuts it down
 	public void CutBeanstalk(){
+		if (transform.position.x < PlayerController.instance.transform.position.x)
+			leftOfPlayer = true;
+		else
+			leftOfPlayer = false;
 		cut = true;
 	}
 
@@ -69,7 +72,10 @@ public class BeanstalkScript : MonoBehaviour {
 		if (cut) {
 			this.transform.GetComponent<Rigidbody2D>().gravityScale = 1f;
 			//this.transform.GetComponent<CapsuleCollider2D> ().isTrigger = false;
-			if(transform.eulerAngles.z < 10)
+			//if(transform.eulerAngles.z < 10)
+			if(leftOfPlayer && transform.eulerAngles.z < -10)
+				transform.Rotate(0,0,.1f);
+			else if(!leftOfPlayer && transform.eulerAngles.z > 10)
 				transform.Rotate(0,0,-.1f);
 		}
 	}
