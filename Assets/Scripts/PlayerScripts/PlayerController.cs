@@ -11,7 +11,11 @@ public class PlayerController : MonoBehaviour {
 	[HideInInspector] public bool isGrounded = false;
 	[HideInInspector] public bool isLeft = false;
 
-	[HideInInspector] public bool disabled;
+	private bool disabled;
+	[HideInInspector] public bool Disabled{
+		get{return disabled;}
+		set{disabled = value;}
+	}
 
 	// Beanstalk object
 	public GameObject beanstalkPrefab;
@@ -71,6 +75,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void Update () {
+		
 		if (!disabled) {
 			isGrounded = Physics2D.Linecast (transform.position, groundCheck.position, 1 << LayerMask.NameToLayer ("Ground"));
 			remainingJumps = (isGrounded) ? maxJumps : remainingJumps;

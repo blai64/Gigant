@@ -17,6 +17,10 @@ public class CutsceneManager : MonoBehaviour {
 	}
 
 	IEnumerator StartCutscene(){
+		PlayerController.instance.Disabled = true;
+		Debug.Log (PlayerController.instance.Disabled);
+		yield return 0;
+
 		StartCoroutine (CameraManager.instance.Zoom (true));
 		yield return StartCoroutine (CameraManager.instance.MoveCinematic (true));
 
@@ -35,5 +39,8 @@ public class CutsceneManager : MonoBehaviour {
 		StartCoroutine (CameraManager.instance.Zoom (false));
 		yield return StartCoroutine (CameraManager.instance.MoveCinematic (false));
 
+		//PlayerController.instance.disabled = false;
+
+		initialized = false;
 	}
 }
