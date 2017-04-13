@@ -122,7 +122,7 @@ public class MosaicCameraScript : MonoBehaviour
 			anim.SetBool ("isRunning", false);
 		}
 
-		if (MosaicOpacity <= 0.0f) {
+		if (MosaicOpacity <= 0.0f && depixelizing) {
 			health.SetActive (true);
 			bean.SetActive (true);
 			isMosaic = false;

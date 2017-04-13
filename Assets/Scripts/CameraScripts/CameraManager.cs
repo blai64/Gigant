@@ -8,12 +8,11 @@ public class CameraManager : MonoBehaviour {
 
 	private Camera cam;
 
-	private float cinematicStartDuration = 1.25f;
+	private float cinematicStartDuration = 0.75f;
 
 	private float blackBarInactiveOffset;
 	private float blackBarActiveOffset = 7.0f;
 
-	private bool myLock;
 	private bool isActive;
 
 
@@ -32,23 +31,8 @@ public class CameraManager : MonoBehaviour {
 		cam = GetComponent<Camera> ();
 		Debug.Log (cam.orthographicSize); 
 		blackBarInactiveOffset = TopBlack.transform.localPosition.y;
-		myLock = true;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		/*
-		if (Input.GetKeyDown (KeyCode.Z) && myLock && !isActive) {
-			myLock = false;
-			StartCoroutine (Zoom (true));
-			StartCoroutine (MoveCinematic (true));
-		} else if (Input.GetKeyDown (KeyCode.X) && myLock && isActive) {
-			myLock = false;
-			StartCoroutine (Zoom (false));
-			StartCoroutine (MoveCinematic (false));
-		}
-*/
-	}
+
 
 	public IEnumerator Zoom(bool zoomIn){
 		float t = 0f;
@@ -87,7 +71,6 @@ public class CameraManager : MonoBehaviour {
 		}
 
 		isActive = starting;
-		myLock = true;
 	}
 
 
