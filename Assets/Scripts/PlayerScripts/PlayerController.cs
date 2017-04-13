@@ -182,7 +182,9 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		// Planting a beanstalk seed
-		if (Input.GetKeyDown (KeyCode.P) && isGrounded) {
+		if ((Input.GetKeyDown (KeyCode.P) ||
+			 Input.GetKeyDown (KeyCode.LeftShift) ||
+		     Input.GetKeyDown (KeyCode.RightShift)) && isGrounded) {
 			PlantBeanstalk ();
 		}
 	}
@@ -193,14 +195,25 @@ public class PlayerController : MonoBehaviour {
 		if (BeanstalkScript.instance.FullyGrown ()) {
 			
 			if (Input.GetKey (KeyCode.UpArrow) || Input.GetKey (KeyCode.W)) {
+				anim.enabled = true;
 				direction = 1;
 			} else if (Input.GetKey (KeyCode.DownArrow) || Input.GetKey (KeyCode.S)) {
+				anim.enabled = true;
 				direction = -1; 
-			} else if (Input.GetKeyDown (KeyCode.LeftArrow) || Input.GetKeyDown (KeyCode.RightArrow)) {
-				isLeft = Input.GetKeyDown (KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A);
+			}
 
+			if (Input.GetKeyDown (KeyCode.LeftArrow) || Input.GetKeyDown (KeyCode.RightArrow) ||
+			    Input.GetKeyDown (KeyCode.A) || Input.GetKeyDown (KeyCode.D)) {
+				isLeft = Input.GetKeyDown (KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A);
+				anim.enabled = true;
 				Climb (false);
 			}
+		}
+
+		if (anim.GetBool("isClimbing") && (Input.GetKeyUp (KeyCode.UpArrow) ||
+			Input.GetKeyUp (KeyCode.W) || Input.GetKeyUp (KeyCode.DownArrow) ||
+			Input.GetKeyUp (KeyCode.S))) {
+			anim.enabled = false;
 		}
 	}
 		
@@ -210,6 +223,7 @@ public class PlayerController : MonoBehaviour {
 		isClimbing = climb;
 		rb2d.gravityScale = (climb) ? 0 : initialGravity;
 		anim.SetBool ("isClimbing", climb);
+		anim.enabled = true;
 	}
 
 	private void ChangeDirection(bool left) {
@@ -229,14 +243,16 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private void Fall() {
-		if (!isGrounded && !isClimbing) {
-			float currHeight = rb2d.position.y;
-			if (currHeight - prevHeight < 0f && !hurting) {
-				anim.SetBool ("isJumping", false);
-				anim.SetBool ("isClimbing", false);
-				anim.SetBool ("isFalling", true);
+		if (!isGrounded) {
+			if (!isClimbing) {
+				float currHeight = rb2d.position.y;
+				if (currHeight - prevHeight < 0f && !hurting) {
+					anim.SetBool ("isJumping", false);
+					anim.SetBool ("isClimbing", false);
+					anim.SetBool ("isFalling", true);
+				}
+				prevHeight = currHeight;
 			}
-			prevHeight = currHeight;
 		} else if (anim.GetBool ("isFalling")) {
 			anim.SetBool ("isFalling", false);
 		}
@@ -292,7 +308,6 @@ public class PlayerController : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D col) {
 		if (col.gameObject.CompareTag ("Enemy")) {
-			Debug.Log ("Collides with Enemy");
 			Health.instance.hp--;
 			//isKnocking = true;
 			Knocked ();
