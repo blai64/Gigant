@@ -18,9 +18,9 @@ public class Health : MonoBehaviour {
 	void Start () {
 		if (SceneManager.GetActiveScene ().name == "Zao_tutorial")
 			reset = true;
-		//if (reset) {
-		//	hp = 3;
-		//} 
+		if (reset) {
+			hp = 3;
+		} 
 		//else{
 			//hp = PlayerPrefs.GetInt ("health");
 		//}
