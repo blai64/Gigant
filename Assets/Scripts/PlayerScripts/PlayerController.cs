@@ -75,11 +75,10 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void Update () {
-		
-		if (!disabled) {
-			isGrounded = Physics2D.Linecast (transform.position, groundCheck.position, 1 << LayerMask.NameToLayer ("Ground"));
-			remainingJumps = (isGrounded) ? maxJumps : remainingJumps;
+		isGrounded = Physics2D.Linecast (transform.position, groundCheck.position, 1 << LayerMask.NameToLayer ("Ground"));
+		remainingJumps = (isGrounded) ? maxJumps : remainingJumps;
 
+		if (!disabled) {
 			//case on whether or not currently latched onto beanstalk
 			if (isClimbing) {
 				ClimbingInputManager ();
@@ -98,6 +97,8 @@ public class PlayerController : MonoBehaviour {
 				}
 			}
 		}
+
+		Fall ();
 		//Do Combat thing
 	}
 
@@ -111,20 +112,36 @@ public class PlayerController : MonoBehaviour {
 
 	void InputManager() {
 		//Lateral Movement
-		direction = 0;
 
-		if (Input.GetKey (KeyCode.LeftArrow) || Input.GetKey (KeyCode.A)) {
+		if (Input.GetKeyDown (KeyCode.LeftArrow) || Input.GetKeyDown (KeyCode.A)) {
 			ChangeDirection (true);
-			Move (true);
-		} else if (Input.GetKey (KeyCode.RightArrow) || Input.GetKey (KeyCode.D)) {
+		} else if (Input.GetKeyDown (KeyCode.RightArrow) || Input.GetKeyDown (KeyCode.D)) {
 			ChangeDirection (false);
+		}
+
+		//move if key held down
+		if (Input.GetKey (KeyCode.LeftArrow) || Input.GetKey (KeyCode.A)) {
+			Move (true);
+		} else if (Input.GetKey (KeyCode.RightArrow) || Input.GetKey (KeyCode.D)) {			
 			Move (true);
 		}
 
+		//only stop moving if key in other direction is not held
 		if (Input.GetKeyUp (KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.A)) {
-			Move (false);
+			if (Input.GetKey (KeyCode.RightArrow) || Input.GetKey (KeyCode.D)) {
+				ChangeDirection (false);
+			} else {
+				Move (false);
+				direction = 0;
+			}
+
 		} else if (Input.GetKeyUp (KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.D)) {
-			Move (false);
+			if (Input.GetKey (KeyCode.LeftArrow) || Input.GetKey (KeyCode.A)) {
+				ChangeDirection (true);
+			} else {
+				Move (false);
+				direction = 0;
+			}
 		}
 
 		//Vertical Movement
@@ -141,7 +158,6 @@ public class PlayerController : MonoBehaviour {
 			Attack ();
 		}
 			
-		Fall ();
 
 		if (Input.GetKeyUp (KeyCode.Space)) {
 			isAttacking = false;
