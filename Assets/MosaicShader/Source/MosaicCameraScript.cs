@@ -108,11 +108,12 @@ public class MosaicCameraScript : MonoBehaviour
 
 		// Move camera
 
-		if (rendererAlpha.a >= 1.1f) {
+		if (rendererAlpha.a >= 1.0f) {
 			depixelizing = true;
 			pixelizing = false;
 			PlayerController.instance.transform.position = targetPosition;
 			MainCamera.instance.UpdateBounds(targetBounds);
+			PlayerController.instance.Disable (true);
 		}
 
 		if (depixelizing && !pixelizing) {
@@ -123,6 +124,7 @@ public class MosaicCameraScript : MonoBehaviour
 		}
 
 		if (MosaicOpacity <= 0.0f && depixelizing) {
+			Debug.Log (depixelizing);
 			//health.SetActive (true);
 			//bean.SetActive (true);
 			isMosaic = false;
@@ -147,6 +149,8 @@ public class MosaicCameraScript : MonoBehaviour
     }
 
 	public void SetTargetPosition(Vector3 newTarget, BoxCollider2D newBounds){
+
+		Debug.Log ("here");
 		PlayerController.instance.Disable(true);
 		targetPosition = newTarget;
 		targetBounds = newBounds;

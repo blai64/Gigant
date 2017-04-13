@@ -11,6 +11,8 @@ public class PlayerController : MonoBehaviour {
 	[HideInInspector] public bool isGrounded = false;
 	[HideInInspector] public bool isLeft = false;
 
+	[HideInInspector] public bool isDead;
+
 
 	[HideInInspector] public bool disabled;
 
@@ -74,14 +76,16 @@ public class PlayerController : MonoBehaviour {
 		initialGravity = rb2d.gravityScale;
 
 		prevHeight = rb2d.position.y;
+
+		checkpointLocation = transform.position;
+		checkpointCameraBound = MainCamera.instance.cameraBounds;
 	}
 
 	void Update () {
 		isGrounded = Physics2D.Linecast (transform.position, groundCheck.position,
 										 1 << LayerMask.NameToLayer ("Ground"));
 		remainingJumps = (isGrounded) ? maxJumps : remainingJumps;
-
-		if (Health.instance.hp <= 0) {
+		if (Health.instance.hp <= 0 && !isDead) {
 			Die ();
 		}
 
@@ -170,6 +174,8 @@ public class PlayerController : MonoBehaviour {
 			SoundManager.instance.PlaySound ("sword slash");
 			Attack ();
 		}
+		if (Input.GetKeyUp (KeyCode.Space))
+			isAttacking = false;
 
 		//############### Testing area ##################
 		//delete when done
@@ -247,6 +253,8 @@ public class PlayerController : MonoBehaviour {
 	private void Die() {
 		anim.SetBool ("isClimbing", false);
 		anim.SetTrigger ("isDead");
+		Disable (false);
+		isDead = true;
 		StartCoroutine (Respawn ());
 	}
 
@@ -293,6 +301,9 @@ public class PlayerController : MonoBehaviour {
 			hurting = true;
 			anim.SetTrigger ("isHurt");
 		}
+		if(col.gameObject.CompareTag("Pit")){
+			Die();
+		}
 	}
 
 	void OnCollisionExit2D(Collision2D col) {
@@ -305,9 +316,10 @@ public class PlayerController : MonoBehaviour {
 	//############################### Coroutines ################################
 
 	IEnumerator Respawn() {
-		yield return new WaitForSeconds (2.0f);
+		yield return new WaitForSeconds (1.0f);
 		MosaicCameraScript.instance.SetTargetPosition (checkpointLocation, checkpointCameraBound);
 		Health.instance.hp = 3;
+		isDead = false; 
 	}
 		
 

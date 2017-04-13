@@ -20,7 +20,7 @@ public class BeanstalkScript : MonoBehaviour {
 	private bool grown;
 	private bool cut = false;
 	private int direction;
-	private float fullyRotated = 2;
+	public float fullyRotated = 2;
 
 	void Start () {
 		renderer = this.GetComponent<SpriteRenderer> ();
@@ -71,7 +71,7 @@ public class BeanstalkScript : MonoBehaviour {
 
 		// Makes beanstalk fall when it's cut
 		if (cut) {
-			transform.gameObject.tag = "Untagged";
+			//transform.gameObject.tag = "Untagged";
 			if (fullyRotated > 0) {
 				transform.Rotate (0, 0, .1f * direction);
 				fullyRotated -= .1f;
