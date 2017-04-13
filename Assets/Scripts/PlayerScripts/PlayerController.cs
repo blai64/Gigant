@@ -194,7 +194,8 @@ public class PlayerController : MonoBehaviour {
 	void ClimbingInputManager() {
 		direction = 0;
 
-		if (BeanstalkScript.instance.FullyGrown ()) {
+		//if (BeanstalkScript.instance.FullyGrown ())
+		{
 			
 			if (Input.GetKey (KeyCode.UpArrow) || Input.GetKey (KeyCode.W)) {
 				anim.enabled = true;
@@ -287,7 +288,7 @@ public class PlayerController : MonoBehaviour {
 		// trigger for climbing the beanstalk
 		if (col.CompareTag ("Beanstalk") && 
 			(Input.GetKeyDown (KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) 
-			&& !isClimbing) {
+			&& !isClimbing && col.gameObject.GetComponent<BeanstalkScript>().FullyGrown()) {
 			transform.position = new Vector3 (col.transform.position.x, 
 				transform.position.y, 
 				transform.position.z);
@@ -295,8 +296,8 @@ public class PlayerController : MonoBehaviour {
 		}
 		// trigger for being in range to cut the beanstalk
 		else if (col.CompareTag ("Beanstalk") && isAttacking && 
-			BeanstalkScript.instance.FullyGrown()) {
-			BeanstalkScript.instance.CutBeanstalk ();
+			col.gameObject.GetComponent<BeanstalkScript>().FullyGrown()){
+			col.gameObject.GetComponent<BeanstalkScript> ().CutBeanstalk();
 		}
 	}
 
