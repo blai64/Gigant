@@ -76,10 +76,14 @@ public class PlayerController : MonoBehaviour {
 		initialGravity = rb2d.gravityScale;
 
 		prevHeight = rb2d.position.y;
+
+		checkpointLocation = transform.position;
+		checkpointCameraBound = MainCamera.instance.cameraBounds;
 	}
 
 	void Update () {
-		isGrounded = Physics2D.Linecast (transform.position, groundCheck.position, 1 << LayerMask.NameToLayer ("Ground"));
+		isGrounded = Physics2D.Linecast (transform.position, groundCheck.position,
+										 1 << LayerMask.NameToLayer ("Ground"));
 		remainingJumps = (isGrounded) ? maxJumps : remainingJumps;
 		if (Health.instance.hp <= 0 && !isDead) {
 			Die ();
@@ -204,6 +208,7 @@ public class PlayerController : MonoBehaviour {
 	public void Climb(bool climb) {
 		isClimbing = climb;
 		rb2d.gravityScale = (climb) ? 0 : initialGravity;
+		anim.SetBool ("isClimbing", climb);
 	}
 
 	private void ChangeDirection(bool left) {
@@ -217,14 +222,17 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private void Jump() {
-		anim.SetTrigger ("isJumping");
+		anim.SetBool ("isJumping", true);
+		anim.SetBool ("isClimbing", false);
 		doJump = true;
 	}
 
 	private void Fall() {
-		if (!isGrounded) {
+		if (!isGrounded && !isClimbing) {
 			float currHeight = rb2d.position.y;
 			if (currHeight - prevHeight < 0f && !hurting) {
+				anim.SetBool ("isJumping", false);
+				anim.SetBool ("isClimbing", false);
 				anim.SetBool ("isFalling", true);
 			}
 			prevHeight = currHeight;
@@ -236,10 +244,13 @@ public class PlayerController : MonoBehaviour {
 	private void Attack() {
 		isAttacking = true;
 		anim.SetTrigger ("isAttacking");
+		anim.SetBool ("isClimbing", false);
 	}
 
-	private void Die(){
+	private void Die() {
+		anim.SetBool ("isClimbing", false);
 		anim.SetTrigger ("isDead");
+		Disable (false);
 		isDead = true;
 		StartCoroutine (Respawn ());
 	}
@@ -287,6 +298,9 @@ public class PlayerController : MonoBehaviour {
 			hurting = true;
 			anim.SetTrigger ("isHurt");
 		}
+		if(col.gameObject.CompareTag("Pit")){
+			Die();
+		}
 	}
 
 	void OnCollisionExit2D(Collision2D col) {
@@ -299,7 +313,7 @@ public class PlayerController : MonoBehaviour {
 	//############################### Coroutines ################################
 
 	IEnumerator Respawn() {
-		yield return new WaitForSeconds (2.0f);
+		yield return new WaitForSeconds (1.0f);
 		MosaicCameraScript.instance.SetTargetPosition (checkpointLocation, checkpointCameraBound);
 		Health.instance.hp = 3;
 		isDead = false; 

@@ -113,6 +113,7 @@ public class MosaicCameraScript : MonoBehaviour
 			pixelizing = false;
 			PlayerController.instance.transform.position = targetPosition;
 			MainCamera.instance.UpdateBounds(targetBounds);
+			PlayerController.instance.Disable (true);
 		}
 
 		if (depixelizing && !pixelizing) {
