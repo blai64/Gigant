@@ -6,6 +6,7 @@ public class BaseEnemyBehavior : MonoBehaviour {
 	[HideInInspector] public bool isActive; //flag for detecting player
 	[HideInInspector] public bool isDead; //flag for defeated/dead state
 	[HideInInspector] public bool isAttacking; //flag for attacking state
+	[HideInInspector] public float direction;
 
 	private float moveSpeed = 1.0f;
 
@@ -19,10 +20,11 @@ public class BaseEnemyBehavior : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	virtual protected void Update () {
+		
 		//only move when not dead or attacking
 		if (isActive && !isDead && !isAttacking) {
-			float direction = Mathf.Sign (PlayerController.instance.transform.position.x - transform.position.x);
+			direction = Mathf.Sign (PlayerController.instance.transform.position.x - transform.position.x);
 			rb2d.velocity = new Vector2 (direction * moveSpeed, rb2d.velocity.y);
 		}
 

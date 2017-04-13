@@ -45,6 +45,7 @@ public class PlayerController : MonoBehaviour {
 	//Checkpoint
 
 	Vector3 checkpointLocation; 
+	BoxCollider2D checkpointCameraBound;
 
 	//####################################################################
 	//Bean Logic
@@ -76,9 +77,13 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void Update () {
-		isGrounded = Physics2D.Linecast (transform.position, groundCheck.position, 1 << LayerMask.NameToLayer ("Ground"));
+		isGrounded = Physics2D.Linecast (transform.position, groundCheck.position,
+										 1 << LayerMask.NameToLayer ("Ground"));
 		remainingJumps = (isGrounded) ? maxJumps : remainingJumps;
 
+		if (Health.instance.hp <= 0) {
+			Die ();
+		}
 
 		if (!disabled) {
 			//case on whether or not currently latched onto beanstalk
@@ -200,6 +205,7 @@ public class PlayerController : MonoBehaviour {
 	public void Climb(bool climb) {
 		isClimbing = climb;
 		rb2d.gravityScale = (climb) ? 0 : initialGravity;
+		anim.SetBool ("isClimbing", climb);
 	}
 
 	private void ChangeDirection(bool left) {
@@ -213,14 +219,17 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private void Jump() {
-		anim.SetTrigger ("isJumping");
+		anim.SetBool ("isJumping", true);
+		anim.SetBool ("isClimbing", false);
 		doJump = true;
 	}
 
 	private void Fall() {
-		if (!isGrounded) {
+		if (!isGrounded && !isClimbing) {
 			float currHeight = rb2d.position.y;
 			if (currHeight - prevHeight < 0f && !hurting) {
+				anim.SetBool ("isJumping", false);
+				anim.SetBool ("isClimbing", false);
 				anim.SetBool ("isFalling", true);
 			}
 			prevHeight = currHeight;
@@ -232,6 +241,13 @@ public class PlayerController : MonoBehaviour {
 	private void Attack() {
 		isAttacking = true;
 		anim.SetTrigger ("isAttacking");
+		anim.SetBool ("isClimbing", false);
+	}
+
+	private void Die() {
+		anim.SetBool ("isClimbing", false);
+		anim.SetTrigger ("isDead");
+		StartCoroutine (Respawn ());
 	}
 
 	//############################### Triggers ################################
@@ -239,6 +255,7 @@ public class PlayerController : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D col) {
 		if (col.CompareTag ("Checkpoint")) {
 			checkpointLocation = col.transform.position;
+			checkpointCameraBound = MainCamera.instance.cameraBounds;
 		}
 	}
 
@@ -289,8 +306,8 @@ public class PlayerController : MonoBehaviour {
 
 	IEnumerator Respawn() {
 		yield return new WaitForSeconds (2.0f);
-		transform.position = checkpointLocation;
-		rb2d.velocity = Vector3.zero;
+		MosaicCameraScript.instance.SetTargetPosition (checkpointLocation, checkpointCameraBound);
+		Health.instance.hp = 3;
 	}
 		
 
