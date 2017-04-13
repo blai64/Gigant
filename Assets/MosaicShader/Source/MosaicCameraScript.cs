@@ -4,8 +4,8 @@
 public class MosaicCameraScript : MonoBehaviour
 {
 	public static MosaicCameraScript instance;
-	private bool depixelizing;
-	private bool pixelizing;
+	public bool depixelizing;
+	public bool pixelizing;
 
 	public bool isMosaic;
 	public GameObject white;
@@ -123,15 +123,15 @@ public class MosaicCameraScript : MonoBehaviour
 		}
 
 		if (MosaicOpacity <= 0.0f && depixelizing) {
-			health.SetActive (true);
-			bean.SetActive (true);
+			//health.SetActive (true);
+			//bean.SetActive (true);
 			isMosaic = false;
 			depixelizing = false;
 			PlayerController.instance.Enable(true);
 
 		} else if(MosaicOpacity > 0.0f) {
-			health.SetActive (false);
-			bean.SetActive (false);
+			//health.SetActive (false);
+			//bean.SetActive (false);
 		}
 			
 
