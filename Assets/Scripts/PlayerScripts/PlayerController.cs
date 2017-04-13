@@ -174,6 +174,8 @@ public class PlayerController : MonoBehaviour {
 			SoundManager.instance.PlaySound ("sword slash");
 			Attack ();
 		}
+		if (Input.GetKeyUp (KeyCode.Space))
+			isAttacking = false;
 
 		//############### Testing area ##################
 		//delete when done
@@ -205,7 +207,6 @@ public class PlayerController : MonoBehaviour {
 			if (Input.GetKeyDown (KeyCode.LeftArrow) || Input.GetKeyDown (KeyCode.RightArrow) ||
 			    Input.GetKeyDown (KeyCode.A) || Input.GetKeyDown (KeyCode.D)) {
 				isLeft = Input.GetKeyDown (KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A);
-				anim.enabled = true;
 				Climb (false);
 			}
 		}
@@ -284,9 +285,9 @@ public class PlayerController : MonoBehaviour {
 
 	void OnTriggerStay2D(Collider2D col) {
 		// trigger for climbing the beanstalk
-		if (col.CompareTag ("Beanstalk") &&
-			(Input.GetKeyDown (KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) &&
-		    !isClimbing) {
+		if (col.CompareTag ("Beanstalk") && 
+			(Input.GetKeyDown (KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) 
+			&& !isClimbing) {
 			transform.position = new Vector3 (col.transform.position.x, 
 				transform.position.y, 
 				transform.position.z);
