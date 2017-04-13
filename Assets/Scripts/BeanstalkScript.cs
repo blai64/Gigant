@@ -20,7 +20,7 @@ public class BeanstalkScript : MonoBehaviour {
 	private bool grown;
 	private bool cut = false;
 	private int direction;
-	public float fullyRotated = 2;
+	private float fullyRotated = 2;
 
 	void Start () {
 		renderer = this.GetComponent<SpriteRenderer> ();
