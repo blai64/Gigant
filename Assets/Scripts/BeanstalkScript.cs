@@ -71,7 +71,7 @@ public class BeanstalkScript : MonoBehaviour {
 
 		// Makes beanstalk fall when it's cut
 		if (cut) {
-			transform.gameObject.tag = "Untagged";
+			//transform.gameObject.tag = "Untagged";
 			if (fullyRotated > 0) {
 				transform.Rotate (0, 0, .1f * direction);
 				fullyRotated -= .1f;
