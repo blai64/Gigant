@@ -79,6 +79,7 @@ public class PlayerController : MonoBehaviour {
 		isGrounded = Physics2D.Linecast (transform.position, groundCheck.position, 1 << LayerMask.NameToLayer ("Ground"));
 		remainingJumps = (isGrounded) ? maxJumps : remainingJumps;
 
+
 		if (!disabled) {
 			//case on whether or not currently latched onto beanstalk
 			if (isClimbing) {
@@ -153,11 +154,15 @@ public class PlayerController : MonoBehaviour {
 		if (remainingJumps > 0 && 
 			rb2d.velocity.y <= 1.0f &&
 			(Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown (KeyCode.W))) {
+			doJump = true;
+			SoundManager.instance.PlaySound ("jump");
 			Jump ();
 		}
 			
 		//Combat
-		if (Input.GetKeyDown(KeyCode.Space)) {
+		if (Input.GetKeyDown(KeyCode.Space) && isGrounded) {
+			isAttacking = true;
+			SoundManager.instance.PlaySound ("sword slash");
 			Attack ();
 		}
 			
@@ -302,7 +307,7 @@ public class PlayerController : MonoBehaviour {
 											   transform.position.y - 1.22f,
 											   transform.position.z);
 	}
-
+		
 	//############################ Knocked by Enemy #############################
 
 	void Knocked() {
@@ -316,7 +321,7 @@ public class PlayerController : MonoBehaviour {
 
 		//rb2d.AddForce (new Vector2 (30.0f, 10.0f), ForceMode2D.Impulse);
 		//anim.SetBool ("isRunning", false);
-
+	
 		StartCoroutine (Wait ());
 	}
 
