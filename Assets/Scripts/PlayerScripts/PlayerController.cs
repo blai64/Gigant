@@ -11,12 +11,14 @@ public class PlayerController : MonoBehaviour {
 	[HideInInspector] public bool isGrounded = false;
 	[HideInInspector] public bool isLeft = false;
 
-	private bool disabled;
+
+	[HideInInspector] public bool disabled;
 
 	// Beanstalk object
 	public GameObject beanstalkPrefab;
 
-	public float initialGravity; 
+	public float initialGravity;
+
 	//####################################################################
 	//Movement Logic 
 
@@ -30,17 +32,17 @@ public class PlayerController : MonoBehaviour {
 	private int remainingJumps; // Remaining number of jumps
 	private bool doJump; // try to start jump on current frame
 
-
 	//Vertical beanstalk 
 	private bool isClimbing;
 
 	private bool isKnocking;
+
 	//####################################################################
 	//Combat logic
 
-
 	//####################################################################
 	//Checkpoint
+
 	Vector3 checkpointLocation; 
 
 	//####################################################################
@@ -55,6 +57,7 @@ public class PlayerController : MonoBehaviour {
 	public Transform groundCheck;
 	private Rigidbody2D rb2d;
 
+	private float prevHeight;
 
 	void Awake() {
 		if (instance == null)
@@ -63,18 +66,19 @@ public class PlayerController : MonoBehaviour {
 			Destroy (gameObject);
 	}
 
-
 	void Start () {
 		rb2d = GetComponent<Rigidbody2D>();
 		anim = GetComponentInChildren<Animator> ();
 		initialGravity = rb2d.gravityScale;
+
+		prevHeight = rb2d.position.y;
 	}
 
 	void Update () {
-		if (!disabled) {
-			isGrounded = Physics2D.Linecast (transform.position, groundCheck.position, 1 << LayerMask.NameToLayer ("Ground"));
-			remainingJumps = (isGrounded) ? maxJumps : remainingJumps;
+		isGrounded = Physics2D.Linecast (transform.position, groundCheck.position, 1 << LayerMask.NameToLayer ("Ground"));
+		remainingJumps = (isGrounded) ? maxJumps : remainingJumps;
 
+		if (!disabled) {
 			//case on whether or not currently latched onto beanstalk
 			if (isClimbing) {
 				ClimbingInputManager ();
@@ -94,8 +98,7 @@ public class PlayerController : MonoBehaviour {
 			}
 		}
 
-
-			
+		Fall ();
 		//Do Combat thing
 	}
 
@@ -105,24 +108,42 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
+	//########################### Input Managers ##############################
 
-	//############################################ Input Managers ###################################
 	void InputManager() {
 		//Lateral Movement
-		direction = 0;
 
-		if (Input.GetKey (KeyCode.LeftArrow) || Input.GetKey (KeyCode.A)) {
+		if (Input.GetKeyDown (KeyCode.LeftArrow) || Input.GetKeyDown (KeyCode.A) ||
+			((Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A)) && (direction == 0))) {
 			ChangeDirection (true);
-			Move (true);
-		} else if (Input.GetKey (KeyCode.RightArrow) || Input.GetKey (KeyCode.D)) {
+		} else if (Input.GetKeyDown (KeyCode.RightArrow) || Input.GetKeyDown (KeyCode.D) ||
+			((Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D)) && (direction == 0))) {
 			ChangeDirection (false);
+		}
+
+		//move if key held down
+		if (Input.GetKey (KeyCode.LeftArrow) || Input.GetKey (KeyCode.A)) {
+			Move (true);
+		} else if (Input.GetKey (KeyCode.RightArrow) || Input.GetKey (KeyCode.D)) {			
 			Move (true);
 		}
 
+		//only stop moving if key in other direction is not held
 		if (Input.GetKeyUp (KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.A)) {
-			Move (false);
+			if (Input.GetKey (KeyCode.RightArrow) || Input.GetKey (KeyCode.D)) {
+				ChangeDirection (false);
+			} else {
+				Move (false);
+				direction = 0;
+			}
+
 		} else if (Input.GetKeyUp (KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.D)) {
-			Move (false);
+			if (Input.GetKey (KeyCode.LeftArrow) || Input.GetKey (KeyCode.A)) {
+				ChangeDirection (true);
+			} else {
+				Move (false);
+				direction = 0;
+			}
 		}
 
 		//Vertical Movement
@@ -131,21 +152,31 @@ public class PlayerController : MonoBehaviour {
 		if (remainingJumps > 0 && 
 			rb2d.velocity.y <= 1.0f &&
 			(Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown (KeyCode.W))) {
+<<<<<<< HEAD
 			doJump = true;
 			SoundManager.instance.PlaySound ("jump");
+=======
+			Jump ();
+>>>>>>> 620315a481d13c7167e9f8fc26811b115d2c4484
 		}
-
-
+			
 		//Combat
+<<<<<<< HEAD
 		if (Input.GetKeyDown(KeyCode.Space) && isGrounded) {
 			isAttacking = true;
 			SoundManager.instance.PlaySound ("sword slash");
+=======
+		if (Input.GetKeyDown(KeyCode.Space)) {
+			Attack ();
+>>>>>>> 620315a481d13c7167e9f8fc26811b115d2c4484
 		}
+			
+
 		if (Input.GetKeyUp (KeyCode.Space)) {
 			isAttacking = false;
 		}
 
-		//###############Testing area##################
+		//############### Testing area ##################
 		//delete when done
 		if (Input.GetKeyDown(KeyCode.R)) {
 			StartCoroutine (Respawn ());
@@ -155,33 +186,28 @@ public class PlayerController : MonoBehaviour {
 		if (Input.GetKeyDown (KeyCode.P) && isGrounded) {
 			PlantBeanstalk ();
 		}
-
-
-
-
 	}
 
 	void ClimbingInputManager() {
 		direction = 0;
 
-		if (BeanstalkScript.instance.FullyGrown ()) 
-		{
+		if (BeanstalkScript.instance.FullyGrown ()) {
+			
 			if (Input.GetKey (KeyCode.UpArrow) || Input.GetKey (KeyCode.W)) {
 				direction = 1;
 			} else if (Input.GetKey (KeyCode.DownArrow) || Input.GetKey (KeyCode.S)) {
 				direction = -1; 
 			} else if (Input.GetKeyDown (KeyCode.LeftArrow) || Input.GetKeyDown (KeyCode.RightArrow)) {
-				isLeft = Input.GetKeyDown (KeyCode.LeftArrow); 
-				Climb (false);
+				isLeft = Input.GetKeyDown (KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A);
 
+				Climb (false);
 			}
 		}
 	}
+		
+	//################## State Changing Helper Functions ######################
 
-
-	//#################################### State Changing Helper Functions #########################
-
-	public void Climb(bool climb){
+	public void Climb(bool climb) {
 		isClimbing = climb;
 		rb2d.gravityScale = (climb) ? 0 : initialGravity;
 	}
@@ -196,7 +222,29 @@ public class PlayerController : MonoBehaviour {
 		anim.SetBool ("isRunning", isRunning);
 	}
 
-	//#################################### Triggers #########################
+	private void Jump() {
+		anim.SetTrigger ("isJumping");
+		doJump = true;
+	}
+
+	private void Fall() {
+		if (!isGrounded) {
+			float currHeight = rb2d.position.y;
+			if (currHeight - prevHeight < 0f) {
+				anim.SetBool ("isFalling", true);
+			}
+			prevHeight = currHeight;
+		} else if (anim.GetBool ("isFalling")) {
+			anim.SetBool ("isFalling", false);
+		}
+	}
+
+	private void Attack() {
+		isAttacking = true;
+		anim.SetTrigger ("isAttacking");
+	}
+
+	//############################### Triggers ################################
 
 	void OnTriggerEnter2D(Collider2D col) {
 		if (col.CompareTag ("Checkpoint")) {
@@ -207,7 +255,7 @@ public class PlayerController : MonoBehaviour {
 	void OnTriggerStay2D(Collider2D col) {
 		// trigger for climbing the beanstalk
 		if (col.CompareTag ("Beanstalk") &&
-		    Input.GetKey (KeyCode.UpArrow) &&
+			(Input.GetKeyDown (KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) &&
 		    !isClimbing) {
 			transform.position = new Vector3 (col.transform.position.x, 
 				transform.position.y, 
@@ -223,11 +271,13 @@ public class PlayerController : MonoBehaviour {
 
 	void OnTriggerExit2D(Collider2D col) {
 		if (col.CompareTag ("Beanstalk") && isClimbing) {
+			//we know that player is exiting off the top
 			Climb (false);
+			direction = 0;
 		}
 	}
 
-	void OnCollisionEnter2D(Collision2D col){
+	void OnCollisionEnter2D(Collision2D col) {
 		if (col.gameObject.CompareTag ("Enemy")) {
 			Debug.Log ("Collides with Enemy");
 			Health.instance.hp--;
@@ -236,37 +286,78 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
-	void OnCollisionExit2D(Collision2D col){
-		if(col.gameObject.CompareTag("Enemy")){
+	void OnCollisionExit2D(Collision2D col) {
+		if(col.gameObject.CompareTag("Enemy")) {
 			isKnocking = false;
-
+			anim.SetBool ("isRunning", false);
 		}
 	}
-		
 	
-	//#################################### Coroutines #########################
-	IEnumerator Respawn(){
+	//############################### Coroutines ################################
+
+	IEnumerator Respawn() {
 		yield return new WaitForSeconds (2.0f);
 		transform.position = checkpointLocation;
 		rb2d.velocity = Vector3.zero;
 	}
+		
 
-	//#################################### Beanstalk #########################
-	void PlantBeanstalk(){
+	//################################ Beanstalk ################################
+
+	void PlantBeanstalk() {
 		GameObject bean = Instantiate (beanstalkPrefab);
-		bean.transform.position = new Vector3 (transform.position.x, transform.position.y - 1.22f,transform.position.z);
+		bean.transform.position = new Vector3 (transform.position.x,
+											   transform.position.y - 1.22f,
+											   transform.position.z);
 	}
 
+<<<<<<< HEAD
 	//#################################### Knocked by Enemy #########################
 	void Knocked(){
 		disabled = true;
 		rb2d.velocity = new Vector2(maxSpeed, 5.0f);
+=======
+	//############################ Knocked by Enemy #############################
+
+	void Knocked() {
+		Disable (false); 
+		//rb2d.velocity = new Vector2(maxSpeed, 5.0f);
+		if (direction == 1) {
+			rb2d.velocity = new Vector2 (-maxSpeed, 10.0f);
+		} else if (direction == -1) {
+			rb2d.velocity = new Vector2 (maxSpeed, 10.0f);
+		}
+
+		//rb2d.AddForce (new Vector2 (30.0f, 10.0f), ForceMode2D.Impulse);
+		//anim.SetBool ("isRunning", false);
+
+>>>>>>> 620315a481d13c7167e9f8fc26811b115d2c4484
 		StartCoroutine (Wait ());
 	}
 
-	IEnumerator Wait(){
+
+	IEnumerator Wait() {
 		yield return new WaitForSeconds (1.5f);
+		Enable (true);
+	}
+
+
+	//#####################################33
+	public void Disable(bool loseVelocity){
+		disabled = true;
+		anim.SetBool ("isRunning", false);
+		if (loseVelocity) {
+			rb2d.velocity = new Vector2 (0f, rb2d.velocity.y);
+			direction = 0;
+		}
+	}
+		
+	public void Enable(bool loseVelocity){
 		disabled = false;
+		if (loseVelocity) {
+			rb2d.velocity = new Vector2 (0f, rb2d.velocity.y);
+			direction = 0;
+		}
 	}
 }
 
