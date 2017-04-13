@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 3afed2a1445a9434fa13ce06a875221b
+timeCreated: 1491951140
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - EnemyCrumble: {fileID: 8300000, guid: c294e5487f04f4244b05517cba0216f7, type: 3}
+  - BackgroundMusic: {fileID: 8300000, guid: d890e32bef3e247ba8bc220fc373117f, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
