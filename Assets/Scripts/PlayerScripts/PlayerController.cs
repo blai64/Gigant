@@ -45,6 +45,7 @@ public class PlayerController : MonoBehaviour {
 	//Checkpoint
 
 	Vector3 checkpointLocation; 
+	BoxCollider2D checkpointCameraBound;
 
 	//####################################################################
 	//Bean Logic
@@ -78,7 +79,9 @@ public class PlayerController : MonoBehaviour {
 	void Update () {
 		isGrounded = Physics2D.Linecast (transform.position, groundCheck.position, 1 << LayerMask.NameToLayer ("Ground"));
 		remainingJumps = (isGrounded) ? maxJumps : remainingJumps;
-
+		if (Health.instance.hp <= 0) {
+			Die ();
+		}
 
 		if (!disabled) {
 			//case on whether or not currently latched onto beanstalk
@@ -103,12 +106,6 @@ public class PlayerController : MonoBehaviour {
 		Fall ();
 		//Do Combat thing
 	}
-	/*
-	void FixedUpdate(){
-		if (isKnocking) {
-			Knocked ();
-		}
-	}*/
 
 	//########################### Input Managers ##############################
 
@@ -239,11 +236,17 @@ public class PlayerController : MonoBehaviour {
 		anim.SetTrigger ("isAttacking");
 	}
 
+	private void Die(){
+		anim.SetTrigger ("isDead");
+		StartCoroutine (Respawn ());
+	}
+
 	//############################### Triggers ################################
 
 	void OnTriggerEnter2D(Collider2D col) {
 		if (col.CompareTag ("Checkpoint")) {
 			checkpointLocation = col.transform.position;
+			checkpointCameraBound = MainCamera.instance.cameraBounds;
 		}
 	}
 
@@ -294,8 +297,8 @@ public class PlayerController : MonoBehaviour {
 
 	IEnumerator Respawn() {
 		yield return new WaitForSeconds (2.0f);
-		transform.position = checkpointLocation;
-		rb2d.velocity = Vector3.zero;
+		MosaicCameraScript.instance.SetTargetPosition (checkpointLocation, checkpointCameraBound);
+		Health.instance.hp = 3;
 	}
 		
 
