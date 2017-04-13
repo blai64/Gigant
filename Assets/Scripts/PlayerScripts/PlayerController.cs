@@ -78,6 +78,9 @@ public class PlayerController : MonoBehaviour {
 		isGrounded = Physics2D.Linecast (transform.position, groundCheck.position, 1 << LayerMask.NameToLayer ("Ground"));
 		remainingJumps = (isGrounded) ? maxJumps : remainingJumps;
 
+		Debug.Log (anim.GetBool ("isLeft"));
+
+
 		if (!disabled) {
 			//case on whether or not currently latched onto beanstalk
 			if (isClimbing) {
