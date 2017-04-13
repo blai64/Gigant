@@ -19,7 +19,8 @@ public class BeanstalkScript : MonoBehaviour {
 	// Bean state variables
 	private bool grown;
 	private bool cut = false;
-	private bool leftOfPlayer;
+	private int direction;
+	public float fullyRotated = 2;
 
 	void Start () {
 		renderer = this.GetComponent<SpriteRenderer> ();
@@ -42,9 +43,9 @@ public class BeanstalkScript : MonoBehaviour {
 	// Begins to tilt over the beanstalk if the player cuts it down
 	public void CutBeanstalk(){
 		if (transform.position.x < PlayerController.instance.transform.position.x)
-			leftOfPlayer = true;
+			direction = 1;
 		else
-			leftOfPlayer = false;
+			direction = -1;
 		cut = true;
 	}
 
@@ -70,11 +71,14 @@ public class BeanstalkScript : MonoBehaviour {
 
 		// Makes beanstalk fall when it's cut
 		if (cut) {
-			this.transform.GetComponent<Rigidbody2D>().gravityScale = 1f;
-			if(leftOfPlayer)
-				transform.Rotate(0,0,.1f);
-			else if(!leftOfPlayer)
-				transform.Rotate(0,0,-.1f);
+			transform.gameObject.tag = "Untagged";
+			if (fullyRotated > 0) {
+				transform.Rotate (0, 0, .1f * direction);
+				fullyRotated -= .1f;
+			} else {
+				this.transform.GetComponent<Rigidbody2D>().gravityScale = 1f;
+				transform.gameObject.GetComponent<CapsuleCollider2D> ().isTrigger = false;
+			}
 		}
 	}
 

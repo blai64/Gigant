@@ -103,6 +103,7 @@ public class PlayerController : MonoBehaviour {
 		Fall ();
 		//Do Combat thing
 	}
+		
 	/*
 	void FixedUpdate(){
 		if (isKnocking) {
@@ -161,14 +162,8 @@ public class PlayerController : MonoBehaviour {
 			
 		//Combat
 		if (Input.GetKeyDown(KeyCode.Space) && isGrounded) {
-			isAttacking = true;
 			SoundManager.instance.PlaySound ("sword slash");
 			Attack ();
-		}
-			
-
-		if (Input.GetKeyUp (KeyCode.Space)) {
-			isAttacking = false;
 		}
 
 		//############### Testing area ##################
