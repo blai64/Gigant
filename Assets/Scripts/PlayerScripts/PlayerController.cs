@@ -11,6 +11,8 @@ public class PlayerController : MonoBehaviour {
 	[HideInInspector] public bool isGrounded = false;
 	[HideInInspector] public bool isLeft = false;
 
+	[HideInInspector] public bool isDead;
+
 
 	[HideInInspector] public bool disabled;
 
@@ -79,7 +81,7 @@ public class PlayerController : MonoBehaviour {
 	void Update () {
 		isGrounded = Physics2D.Linecast (transform.position, groundCheck.position, 1 << LayerMask.NameToLayer ("Ground"));
 		remainingJumps = (isGrounded) ? maxJumps : remainingJumps;
-		if (Health.instance.hp <= 0) {
+		if (Health.instance.hp <= 0 && !isDead) {
 			Die ();
 		}
 
@@ -238,6 +240,7 @@ public class PlayerController : MonoBehaviour {
 
 	private void Die(){
 		anim.SetTrigger ("isDead");
+		isDead = true;
 		StartCoroutine (Respawn ());
 	}
 
@@ -299,6 +302,7 @@ public class PlayerController : MonoBehaviour {
 		yield return new WaitForSeconds (2.0f);
 		MosaicCameraScript.instance.SetTargetPosition (checkpointLocation, checkpointCameraBound);
 		Health.instance.hp = 3;
+		isDead = false; 
 	}
 		
 
