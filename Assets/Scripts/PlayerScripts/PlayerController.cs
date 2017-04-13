@@ -113,13 +113,6 @@ public class PlayerController : MonoBehaviour {
 		Fall ();
 		//Do Combat thing
 	}
-		
-	/*
-	void FixedUpdate(){
-		if (isKnocking) {
-			Knocked ();
-		}
-	}*/
 
 	//########################### Input Managers ##############################
 
@@ -195,7 +188,8 @@ public class PlayerController : MonoBehaviour {
 	void ClimbingInputManager() {
 		verticalDirection = 0;
 
-		if (BeanstalkScript.instance.FullyGrown ()) {
+		//if (BeanstalkScript.instance.FullyGrown ())
+		{
 			
 			if (Input.GetKey (KeyCode.UpArrow) || Input.GetKey (KeyCode.W)) {
 				anim.enabled = true;
@@ -289,7 +283,7 @@ public class PlayerController : MonoBehaviour {
 		// trigger for climbing the beanstalk
 		if (col.CompareTag ("Beanstalk") && 
 			(Input.GetKeyDown (KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) 
-			&& !isClimbing) {
+			&& !isClimbing && col.gameObject.GetComponent<BeanstalkScript>().FullyGrown()) {
 			transform.position = new Vector3 (col.transform.position.x, 
 				transform.position.y, 
 				transform.position.z);
@@ -297,8 +291,8 @@ public class PlayerController : MonoBehaviour {
 		}
 		// trigger for being in range to cut the beanstalk
 		else if (col.CompareTag ("Beanstalk") && isAttacking && 
-			BeanstalkScript.instance.FullyGrown()) {
-			BeanstalkScript.instance.CutBeanstalk ();
+			col.gameObject.GetComponent<BeanstalkScript>().FullyGrown()){
+			col.gameObject.GetComponent<BeanstalkScript> ().CutBeanstalk();
 		}
 	}
 
@@ -313,7 +307,6 @@ public class PlayerController : MonoBehaviour {
 	void OnCollisionEnter2D(Collision2D col) {
 		if (col.gameObject.CompareTag ("Enemy")) {
 			Health.instance.hp--;
-			//isKnocking = true;
 			Knocked ();
 			hurting = true;
 			anim.SetTrigger ("isHurt");
@@ -325,7 +318,6 @@ public class PlayerController : MonoBehaviour {
 
 	void OnCollisionExit2D(Collision2D col) {
 		if(col.gameObject.CompareTag("Enemy")) {
-			//isKnocking = false;
 			anim.SetBool ("isRunning", false);
 		}
 	}
@@ -354,9 +346,10 @@ public class PlayerController : MonoBehaviour {
 	void Knocked() {
 		Disable (false); 
 		//rb2d.velocity = new Vector2(maxSpeed, 5.0f);
-		if (horizontalDirection == 1) {
+
+		if (!isLeft) {
 			rb2d.velocity = new Vector2 (-maxSpeed, 10.0f);
-		} else if (horizontalDirection == -1) {
+		} else {
 			rb2d.velocity = new Vector2 (maxSpeed, 10.0f);
 		}
 
