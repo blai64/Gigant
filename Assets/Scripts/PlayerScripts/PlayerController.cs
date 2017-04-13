@@ -112,13 +112,6 @@ public class PlayerController : MonoBehaviour {
 		Fall ();
 		//Do Combat thing
 	}
-		
-	/*
-	void FixedUpdate(){
-		if (isKnocking) {
-			Knocked ();
-		}
-	}*/
 
 	//########################### Input Managers ##############################
 
@@ -294,7 +287,6 @@ public class PlayerController : MonoBehaviour {
 		if (col.gameObject.CompareTag ("Enemy")) {
 			Debug.Log ("Collides with Enemy");
 			Health.instance.hp--;
-			//isKnocking = true;
 			Knocked ();
 			hurting = true;
 			anim.SetTrigger ("isHurt");
@@ -306,7 +298,6 @@ public class PlayerController : MonoBehaviour {
 
 	void OnCollisionExit2D(Collision2D col) {
 		if(col.gameObject.CompareTag("Enemy")) {
-			//isKnocking = false;
 			anim.SetBool ("isRunning", false);
 		}
 	}
@@ -335,9 +326,9 @@ public class PlayerController : MonoBehaviour {
 	void Knocked() {
 		Disable (false); 
 		//rb2d.velocity = new Vector2(maxSpeed, 5.0f);
-		if (direction == 1) {
+		if (!isLeft) {
 			rb2d.velocity = new Vector2 (-maxSpeed, 10.0f);
-		} else if (direction == -1) {
+		} else if (isLeft) {
 			rb2d.velocity = new Vector2 (maxSpeed, 10.0f);
 		}
 
