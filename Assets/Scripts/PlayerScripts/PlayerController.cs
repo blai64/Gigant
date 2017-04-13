@@ -237,7 +237,7 @@ public class PlayerController : MonoBehaviour {
 	void OnCollisionExit2D(Collision2D col){
 		if(col.gameObject.CompareTag("Enemy")){
 			isKnocking = false;
-
+			anim.SetBool ("isRunning", false);
 		}
 	}
 		
@@ -247,6 +247,11 @@ public class PlayerController : MonoBehaviour {
 		yield return new WaitForSeconds (2.0f);
 		transform.position = checkpointLocation;
 		rb2d.velocity = Vector3.zero;
+	}
+
+	IEnumerator Wait(){
+		yield return new WaitForSeconds (1.0f);
+		disabled = false;
 	}
 
 	//#################################### Beanstalk #########################
@@ -259,17 +264,18 @@ public class PlayerController : MonoBehaviour {
 	void Knocked(){
 		disabled = true;
 		if (direction == 1) {
-			rb2d.velocity = new Vector2 (-maxSpeed * 3.0f, 10.0f);
+			rb2d.velocity = new Vector2 (-maxSpeed * 5.0f, 10.0f);
 		} else if (direction == -1) {
-			rb2d.velocity = new Vector2 (maxSpeed * 3.0f, 10.0f);
+			rb2d.velocity = new Vector2 (maxSpeed * 5.0f, 10.0f);
 		}
+
+		//rb2d.AddForce (new Vector2 (30.0f, 10.0f), ForceMode2D.Impulse);
+		//anim.SetBool ("isRunning", false);
+
 		StartCoroutine (Wait ());
 	}
 
-	IEnumerator Wait(){
-		yield return new WaitForSeconds (1.5f);
-		disabled = false;
-	}
+
 }
 
 
