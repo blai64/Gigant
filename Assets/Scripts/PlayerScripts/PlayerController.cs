@@ -223,6 +223,7 @@ public class PlayerController : MonoBehaviour {
 		isClimbing = climb;
 		rb2d.gravityScale = (climb) ? 0 : initialGravity;
 		anim.SetBool ("isClimbing", climb);
+		anim.SetBool ("isJumping", false);
 		anim.enabled = true;
 	}
 
@@ -364,7 +365,7 @@ public class PlayerController : MonoBehaviour {
 
 
 	IEnumerator Wait() {
-		yield return new WaitForSeconds (1.5f);
+		yield return new WaitForSeconds (1.2f);
 		hurting = false;
 		Enable (true);
 	}
