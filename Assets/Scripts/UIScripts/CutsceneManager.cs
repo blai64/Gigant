@@ -45,7 +45,7 @@ public class CutsceneManager : MonoBehaviour {
 		StartCoroutine (CameraManager.instance.Zoom (false));
 		yield return StartCoroutine (CameraManager.instance.MoveCinematic (false));
 
-		PlayerController.instance.disabled = false;
+		PlayerController.instance.Enable (true);
 
 		initialized = false;
 	}

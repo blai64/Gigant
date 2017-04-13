@@ -127,9 +127,9 @@ public class MosaicCameraScript : MonoBehaviour
 			bean.SetActive (true);
 			isMosaic = false;
 			depixelizing = false;
-			PlayerController.instance.disabled = false;
+			PlayerController.instance.Enable(true);
 
-		} else {
+		} else if(MosaicOpacity > 0.0f) {
 			health.SetActive (false);
 			bean.SetActive (false);
 		}
@@ -147,7 +147,7 @@ public class MosaicCameraScript : MonoBehaviour
     }
 
 	public void SetTargetPosition(Vector3 newTarget, BoxCollider2D newBounds){
-		PlayerController.instance.disabled = true;
+		PlayerController.instance.Disable(true);
 		targetPosition = newTarget;
 		targetBounds = newBounds;
 		pixelizing = true;
