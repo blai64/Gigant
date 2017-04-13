@@ -71,11 +71,9 @@ public class BeanstalkScript : MonoBehaviour {
 		// Makes beanstalk fall when it's cut
 		if (cut) {
 			this.transform.GetComponent<Rigidbody2D>().gravityScale = 1f;
-			//this.transform.GetComponent<CapsuleCollider2D> ().isTrigger = false;
-			//if(transform.eulerAngles.z < 10)
-			if(leftOfPlayer && transform.eulerAngles.z < -10)
+			if(leftOfPlayer)
 				transform.Rotate(0,0,.1f);
-			else if(!leftOfPlayer && transform.eulerAngles.z > 10)
+			else if(!leftOfPlayer)
 				transform.Rotate(0,0,-.1f);
 		}
 	}

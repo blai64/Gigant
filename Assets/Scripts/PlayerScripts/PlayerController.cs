@@ -132,12 +132,14 @@ public class PlayerController : MonoBehaviour {
 			rb2d.velocity.y <= 1.0f &&
 			(Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown (KeyCode.W))) {
 			doJump = true;
+			SoundManager.instance.PlaySound ("jump");
 		}
 
 
 		//Combat
-		if (Input.GetKeyDown(KeyCode.Space)) {
+		if (Input.GetKeyDown(KeyCode.Space) && isGrounded) {
 			isAttacking = true;
+			SoundManager.instance.PlaySound ("sword slash");
 		}
 		if (Input.GetKeyUp (KeyCode.Space)) {
 			isAttacking = false;
@@ -258,7 +260,7 @@ public class PlayerController : MonoBehaviour {
 	//#################################### Knocked by Enemy #########################
 	void Knocked(){
 		disabled = true;
-		rb2d.velocity = new Vector2(maxSpeed	, 5.0f);
+		rb2d.velocity = new Vector2(maxSpeed, 5.0f);
 		StartCoroutine (Wait ());
 	}
 
