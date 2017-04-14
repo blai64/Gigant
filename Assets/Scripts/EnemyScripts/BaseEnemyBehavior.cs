@@ -3,25 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BaseEnemyBehavior : MonoBehaviour {
+
 	[HideInInspector] public bool isActive; //flag for detecting player
 	[HideInInspector] public bool isDead; //flag for defeated/dead state
 	[HideInInspector] public bool isAttacking; //flag for attacking state
 	[HideInInspector] public float direction;
+	[HideInInspector] public bool isAttacked; //flag for attacked by Jack
+
+
 
 	private float moveSpeed = 1.0f;
 
-	private int health;
+	public int health;
 
 	private Rigidbody2D rb2d; 
 
 	// Use this for initialization
 	void Start () {
 		rb2d = GetComponent<Rigidbody2D> ();
+		health = 3;
 	}
 	
 	// Update is called once per frame
 	virtual protected void Update () {
-		
 		//only move when not dead or attacking
 		if (isActive && !isDead && !isAttacking) {
 			direction = Mathf.Sign (PlayerController.instance.transform.position.x - transform.position.x);
@@ -34,7 +38,20 @@ public class BaseEnemyBehavior : MonoBehaviour {
 		if (col.CompareTag("Player") && !isActive){
 			StartCoroutine (Activate ());
 		}
+		if (col.CompareTag ("Weapon") && PlayerController.instance.isAttacking) {
+			Debug.Log ("Attacked!");
+			GetDamaged (1);
+		}
+
 	}
+
+	/*
+	void OnCollisionEnter2D(Collision2D col){
+		if (col.gameObject.CompareTag ("Weapon") && isAttacked) {
+			Debug.Log ("Attacked!");
+			GetDamaged (1);
+		}
+	}*/
 
 
 	//TODO: deprecated, since animation events should be able to handle all of this
@@ -57,11 +74,12 @@ public class BaseEnemyBehavior : MonoBehaviour {
 	public void GetDamaged (int damage){
 		health -= damage;
 
-		if (health < 0)
+		if (health <= 0)
 			Die ();
 	}
 
 	void Die(){
+		Destroy (gameObject);//temporary...
 		//start Death animation
 	}
 }

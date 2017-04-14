@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BeanstalkScript : MonoBehaviour {
-	public static BeanstalkScript instance;
+	//public static BeanstalkScript instance;
 
 	public GameObject pivotPointPrefab;
 	private Rigidbody2D pivotBody;
@@ -21,7 +21,7 @@ public class BeanstalkScript : MonoBehaviour {
 	private bool grown;
 	private bool cut = false;
 	private int direction;
-	public float fullyRotated = 2;
+	private float fullyRotated = 2;
 
 	void Start () {
 		renderer = this.GetComponent<SpriteRenderer> ();
@@ -32,8 +32,6 @@ public class BeanstalkScript : MonoBehaviour {
 		pivotPoint.transform.parent = this.transform;
 		pivotBody = pivotPoint.GetComponent<Rigidbody2D> ();
 		grown = false;
-		if (instance == null)
-			instance = this;
 		decayTimer = decayCountdown;
 	}
 
@@ -73,7 +71,7 @@ public class BeanstalkScript : MonoBehaviour {
 
 		// Makes beanstalk fall when it's cut
 		if (cut) {
-			//transform.gameObject.tag = "Untagged";
+			transform.gameObject.tag = "Untagged";
 			if (fullyRotated > 0) {
 				transform.Rotate (0, 0, .1f * direction);
 				fullyRotated -= .1f;

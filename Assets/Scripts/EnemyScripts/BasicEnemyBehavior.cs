@@ -13,7 +13,7 @@ public class BasicEnemyBehavior : BaseEnemyBehavior {
 		base.Update ();
 		if (base.isActive && !base.isDead && !base.isAttacking) {
 			attackCounter += 1;
-			Debug.Log (attackCounter);
+
 
 			if (attackCounter > attackThreshold) {
 				StartAttack ();
