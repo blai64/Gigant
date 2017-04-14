@@ -288,6 +288,9 @@ public class PlayerController : MonoBehaviour {
 			checkpointLocation = col.transform.position;
 			checkpointCameraBound = MainCamera.instance.cameraBounds;
 		}
+		if(col.gameObject.CompareTag("Pit")){
+			Die();
+		}
 	}
 
 	void OnTriggerStay2D(Collider2D col) {
@@ -321,9 +324,6 @@ public class PlayerController : MonoBehaviour {
 			Knocked ();
 			hurting = true;
 			anim.SetTrigger ("isHurt");
-		}
-		if(col.gameObject.CompareTag("Pit")){
-			Die();
 		}
 	}
 

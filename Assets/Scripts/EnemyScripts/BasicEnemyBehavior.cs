@@ -12,7 +12,7 @@ public class BasicEnemyBehavior : BaseEnemyBehavior {
 	override protected void Update(){
 		base.Update ();
 		if (base.isActive && !base.isDead && !base.isAttacking) {
-			//attackCounter += 1;
+			attackCounter += 1;
 
 
 			if (attackCounter > attackThreshold) {
