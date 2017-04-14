@@ -86,6 +86,7 @@ public class PlayerController : MonoBehaviour {
 		isGrounded = Physics2D.Linecast (transform.position, groundCheck.position,
 										 1 << LayerMask.NameToLayer ("Ground"));
 		remainingJumps = (isGrounded) ? maxJumps : remainingJumps;
+
 		if (Health.instance.hp <= 0 && !isDead) {
 			Die ();
 		}
@@ -95,8 +96,7 @@ public class PlayerController : MonoBehaviour {
 			if (isClimbing) {
 				ClimbingInputManager ();
 				rb2d.velocity = new Vector2 (0f, verticalDirection * maxSpeed);
-			}
-			else {
+			} else {
 				InputManager ();
 				//update lateral movement
 				rb2d.velocity = new Vector2 (horizontalDirection * maxSpeed, rb2d.velocity.y);
@@ -104,7 +104,7 @@ public class PlayerController : MonoBehaviour {
 				//update vertical movememnt
 				if (doJump) {
 					remainingJumps--;
-					rb2d.velocity =  new Vector2 (rb2d.velocity.x, jumpForce);
+					rb2d.velocity = new Vector2 (rb2d.velocity.x, jumpForce);
 					doJump = false; 
 				}
 			}
@@ -118,7 +118,6 @@ public class PlayerController : MonoBehaviour {
 
 	void InputManager() {
 		//Lateral Movement
-
 		if (Input.GetKeyDown (KeyCode.LeftArrow) || Input.GetKeyDown (KeyCode.A) ||
 			((Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A)) && (horizontalDirection == 0))) {
 			ChangeDirection (true);
