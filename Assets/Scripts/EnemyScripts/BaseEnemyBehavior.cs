@@ -93,7 +93,7 @@ public class BaseEnemyBehavior : MonoBehaviour {
 	}
 
 	void Die(){
-		Destroy (gameObject);//temporary...
+		//Destroy (gameObject);//temporary...
 		//start Death animation
 		isActive = false;
 		canBeActivated = false;
