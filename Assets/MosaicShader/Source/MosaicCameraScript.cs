@@ -112,6 +112,7 @@ public class MosaicCameraScript : MonoBehaviour
 			depixelizing = true;
 			pixelizing = false;
 			PlayerController.instance.transform.position = targetPosition;
+			PlayerController.instance.GetComponent<Rigidbody2D> ().velocity = new Vector2(0,0);
 			MainCamera.instance.UpdateBounds(targetBounds);
 			PlayerController.instance.Disable (true);
 		}
@@ -124,7 +125,7 @@ public class MosaicCameraScript : MonoBehaviour
 		}
 
 		if (MosaicOpacity <= 0.0f && depixelizing) {
-			Debug.Log (depixelizing);
+			
 			//health.SetActive (true);
 			//bean.SetActive (true);
 			isMosaic = false;

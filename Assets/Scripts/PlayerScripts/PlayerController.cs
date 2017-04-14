@@ -59,7 +59,7 @@ public class PlayerController : MonoBehaviour {
 	public GameObject weapon; //Sword gameObject
 	[HideInInspector] public bool isAttacking;
 
-	public Transform groundCheck;
+	public Transform[] groundChecks;
 	private Rigidbody2D rb2d;
 
 	private float prevHeight;
@@ -82,9 +82,20 @@ public class PlayerController : MonoBehaviour {
 		checkpointCameraBound = MainCamera.instance.cameraBounds;
 	}
 
+	bool DoGroundCheck(){
+		foreach (Transform groundCheck in groundChecks) {
+			isGrounded = Physics2D.Linecast (transform.position, groundCheck.position,
+				1 << LayerMask.NameToLayer ("Ground"));
+			if (isGrounded) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	void Update () {
-		isGrounded = Physics2D.Linecast (transform.position, groundCheck.position,
-										 1 << LayerMask.NameToLayer ("Ground"));
+		isGrounded = DoGroundCheck ();
+	
 		remainingJumps = (isGrounded) ? maxJumps : remainingJumps;
 
 		if (Health.instance.hp <= 0 && !isDead) {
@@ -277,6 +288,9 @@ public class PlayerController : MonoBehaviour {
 			checkpointLocation = col.transform.position;
 			checkpointCameraBound = MainCamera.instance.cameraBounds;
 		}
+		if(col.gameObject.CompareTag("Pit")){
+			Die();
+		}
 	}
 
 	void OnTriggerStay2D(Collider2D col) {
@@ -310,9 +324,6 @@ public class PlayerController : MonoBehaviour {
 			Knocked ();
 			hurting = true;
 			anim.SetTrigger ("isHurt");
-		}
-		if(col.gameObject.CompareTag("Pit")){
-			Die();
 		}
 	}
 
