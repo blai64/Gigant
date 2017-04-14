@@ -10,6 +10,8 @@ public class BaseEnemyBehavior : MonoBehaviour {
 	[HideInInspector] public float direction;
 	[HideInInspector] public bool isAttacked; //flag for attacked by Jack
 
+	private bool canBeActivated;
+
 
 
 	private float moveSpeed = 1.0f;
@@ -21,6 +23,7 @@ public class BaseEnemyBehavior : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		rb2d = GetComponent<Rigidbody2D> ();
+		canBeActivated = true;
 		health = 3;
 	}
 	
@@ -81,5 +84,14 @@ public class BaseEnemyBehavior : MonoBehaviour {
 	void Die(){
 		Destroy (gameObject);//temporary...
 		//start Death animation
+		isActive = false;
+		canBeActivated = false;
+		StartCoroutine (DisableForTime (3.0f));
+	}
+
+
+	IEnumerator DisableForTime(float seconds){
+		yield return new WaitForSeconds (seconds);
+		canBeActivated = true;
 	}
 }
