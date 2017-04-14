@@ -180,7 +180,8 @@ public class PlayerController : MonoBehaviour {
 		if ((Input.GetKeyDown (KeyCode.P) ||
 			 Input.GetKeyDown (KeyCode.LeftShift) ||
 		     Input.GetKeyDown (KeyCode.RightShift)) && isGrounded) {
-			PlantBeanstalk ();
+			if (beanCount > 0)
+				PlantBeanstalk ();
 		}
 	}
 
@@ -338,6 +339,7 @@ public class PlayerController : MonoBehaviour {
 		bean.transform.position = new Vector3 (transform.position.x,
 											   transform.position.y - 1.22f,
 											   transform.position.z);
+		beanCount--;
 	}
 		
 	//############################ Knocked by Enemy #############################
