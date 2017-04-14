@@ -7,7 +7,7 @@ public class SpeechBubble : MonoBehaviour {
 
 	Text textBox;
 
-	private string text = ".........................";
+	private string text = "FUCK!!!!!!!!!!";
 
 	void Start(){
 		textBox = transform.Find ("Panel/Text").GetComponent<Text> ();

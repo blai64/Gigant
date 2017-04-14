@@ -46,7 +46,5 @@ public class CutsceneManager : MonoBehaviour {
 		yield return StartCoroutine (CameraManager.instance.MoveCinematic (false));
 
 		PlayerController.instance.Enable (true);
-
-		initialized = false;
 	}
 }

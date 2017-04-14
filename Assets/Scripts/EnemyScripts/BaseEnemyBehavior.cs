@@ -88,7 +88,7 @@ public class BaseEnemyBehavior : MonoBehaviour {
 	public void GetDamaged (int damage){
 		health -= damage;
 
-		if (health <= 0)
+		if (health <= 0 && isActive)
 			Die ();
 	}
 
@@ -105,6 +105,7 @@ public class BaseEnemyBehavior : MonoBehaviour {
 	IEnumerator DisableForTime(float seconds){
 		yield return new WaitForSeconds (seconds);
 		canBeActivated = true;
+		health = 3;
 	}
 
 	public void Activate(){
