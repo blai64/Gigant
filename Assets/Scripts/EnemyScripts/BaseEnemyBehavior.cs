@@ -12,26 +12,31 @@ public class BaseEnemyBehavior : MonoBehaviour {
 
 	private bool canBeActivated;
 
-
-
 	private float moveSpeed = 1.0f;
 
 	public int health;
 
 	private Rigidbody2D rb2d; 
 
+	protected Animator anim;
+
 	// Use this for initialization
 	void Start () {
 		rb2d = GetComponent<Rigidbody2D> ();
+		anim = GetComponentInChildren<Animator> ();
 		canBeActivated = true;
 		health = 3;
+		anim.SetBool ("isLeft", true);
+
 	}
+
 	
 	// Update is called once per frame
 	virtual protected void Update () {
 		//only move when not dead or attacking
 		if (isActive && !isDead && !isAttacking) {
 			direction = Mathf.Sign (PlayerController.instance.transform.position.x - transform.position.x);
+			anim.SetBool ("isLeft", (direction < 0));
 			rb2d.velocity = new Vector2 (direction * moveSpeed, rb2d.velocity.y);
 		}
 
@@ -39,7 +44,9 @@ public class BaseEnemyBehavior : MonoBehaviour {
 
 	void OnTriggerEnter2D (Collider2D col){
 		if (col.CompareTag("Player") && !isActive){
-			StartCoroutine (Activate ());
+			//StartCoroutine (Activate ());
+			Debug.Log("starting to activate");
+			anim.SetTrigger("isActivated");
 		}
 		if (col.CompareTag ("Weapon") && PlayerController.instance.isAttacking) {
 			Debug.Log ("Attacked!");
@@ -60,17 +67,21 @@ public class BaseEnemyBehavior : MonoBehaviour {
 	//TODO: deprecated, since animation events should be able to handle all of this
 	//without coroutines, just have an activate function that starts animation, setting 
 	//active once animation is over.
+	/*
 	virtual protected IEnumerator Activate(){
 		Debug.Log ("Starting base enemy activation");
 		yield return new WaitForSeconds (1.0f);
 		Debug.Log ("Base enemy activated - movement starts");
 		isActive = true;
+	}*/
+
+
+	public void EndAttack(){
+		isAttacking = false;
+		anim.SetTrigger ("isWalking");
 	}
 
-	virtual protected void StartAttack(){
-	}
-
-	virtual protected void EndAttack(){
+	virtual public void DoAttack(){
 	}
 
 
@@ -86,6 +97,7 @@ public class BaseEnemyBehavior : MonoBehaviour {
 		//start Death animation
 		isActive = false;
 		canBeActivated = false;
+		anim.SetTrigger ("isDeactivated");
 		StartCoroutine (DisableForTime (3.0f));
 	}
 
@@ -93,5 +105,11 @@ public class BaseEnemyBehavior : MonoBehaviour {
 	IEnumerator DisableForTime(float seconds){
 		yield return new WaitForSeconds (seconds);
 		canBeActivated = true;
+	}
+
+	public void Activate(){
+		Debug.Log ("finished activating");
+		isActive = true;
+		anim.SetTrigger ("isWalking");
 	}
 }

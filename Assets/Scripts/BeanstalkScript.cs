@@ -13,7 +13,8 @@ public class BeanstalkScript : MonoBehaviour {
 	// Time variables
 	public float waitTillGrowth = 3;
 	public float growthSpeed = .001f;
-	public float decayCountdown = 10;
+	public float decayCountdown = 10f;
+	private float decayTimer;
 	private float colorChangeRate;
 
 	// Bean state variables
@@ -31,6 +32,7 @@ public class BeanstalkScript : MonoBehaviour {
 		pivotPoint.transform.parent = this.transform;
 		pivotBody = pivotPoint.GetComponent<Rigidbody2D> ();
 		grown = false;
+		decayTimer = decayCountdown;
 	}
 
 	// Allows player to climb only if the beanstalk is sufficiently large
@@ -83,8 +85,21 @@ public class BeanstalkScript : MonoBehaviour {
 	// Makes the beanstalk decay over time
 	void Decay(){
 		decayCountdown -= Time.deltaTime;
-		renderer.color -= new Color(colorChangeRate / 2,colorChangeRate,colorChangeRate,0);
-		if (decayCountdown < 0) {
+
+		if (decayCountdown > decayTimer * 0.5f) {
+			renderer.color -= new Color(colorChangeRate / 2,
+				colorChangeRate, colorChangeRate,0);
+		} else if (decayCountdown > decayTimer * 0.3f) {
+			renderer.color -= new Color(colorChangeRate / 2,
+										colorChangeRate, colorChangeRate,0);
+			transform.localScale -= new Vector3 (0.01f * growthSpeed, 0.01f * growthSpeed, 0);
+			transform.Translate (new Vector2 (0, -1.5f * growthSpeed));
+		} else if (decayCountdown > decayTimer * 0.05f) {
+			renderer.color -= new Color(colorChangeRate / 2,
+										colorChangeRate, colorChangeRate, 10f *  colorChangeRate);
+			transform.localScale -= new Vector3 (2f * growthSpeed, 2f * growthSpeed, 0);
+			transform.Translate (new Vector2 (0, -20f * growthSpeed));
+		}  else {
 			Destroy (this.gameObject);
 			PlayerController.instance.Climb (false);
 		}
