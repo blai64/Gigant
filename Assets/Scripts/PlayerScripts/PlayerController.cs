@@ -86,6 +86,7 @@ public class PlayerController : MonoBehaviour {
 		isGrounded = Physics2D.Linecast (transform.position, groundCheck.position,
 										 1 << LayerMask.NameToLayer ("Ground"));
 		remainingJumps = (isGrounded) ? maxJumps : remainingJumps;
+
 		if (Health.instance.hp <= 0 && !isDead) {
 			Die ();
 		}
@@ -95,8 +96,7 @@ public class PlayerController : MonoBehaviour {
 			if (isClimbing) {
 				ClimbingInputManager ();
 				rb2d.velocity = new Vector2 (0f, verticalDirection * maxSpeed);
-			}
-			else {
+			} else {
 				InputManager ();
 				//update lateral movement
 				rb2d.velocity = new Vector2 (horizontalDirection * maxSpeed, rb2d.velocity.y);
@@ -104,7 +104,7 @@ public class PlayerController : MonoBehaviour {
 				//update vertical movememnt
 				if (doJump) {
 					remainingJumps--;
-					rb2d.velocity =  new Vector2 (rb2d.velocity.x, jumpForce);
+					rb2d.velocity = new Vector2 (rb2d.velocity.x, jumpForce);
 					doJump = false; 
 				}
 			}
@@ -118,7 +118,6 @@ public class PlayerController : MonoBehaviour {
 
 	void InputManager() {
 		//Lateral Movement
-
 		if (Input.GetKeyDown (KeyCode.LeftArrow) || Input.GetKeyDown (KeyCode.A) ||
 			((Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A)) && (horizontalDirection == 0))) {
 			ChangeDirection (true);
@@ -181,14 +180,16 @@ public class PlayerController : MonoBehaviour {
 		if ((Input.GetKeyDown (KeyCode.P) ||
 			 Input.GetKeyDown (KeyCode.LeftShift) ||
 		     Input.GetKeyDown (KeyCode.RightShift)) && isGrounded) {
-			PlantBeanstalk ();
+			if (beanCount > 0)
+				PlantBeanstalk ();
 		}
 	}
 
 	void ClimbingInputManager() {
 		verticalDirection = 0;
 
-		if (BeanstalkScript.instance.FullyGrown ()) {
+		//if (BeanstalkScript.instance.FullyGrown ())
+		{
 			
 			if (Input.GetKey (KeyCode.UpArrow) || Input.GetKey (KeyCode.W)) {
 				anim.enabled = true;
@@ -282,7 +283,7 @@ public class PlayerController : MonoBehaviour {
 		// trigger for climbing the beanstalk
 		if (col.CompareTag ("Beanstalk") && 
 			(Input.GetKeyDown (KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) 
-			&& !isClimbing) {
+			&& !isClimbing && col.gameObject.GetComponent<BeanstalkScript>().FullyGrown()) {
 			transform.position = new Vector3 (col.transform.position.x, 
 				transform.position.y, 
 				transform.position.z);
@@ -290,8 +291,8 @@ public class PlayerController : MonoBehaviour {
 		}
 		// trigger for being in range to cut the beanstalk
 		else if (col.CompareTag ("Beanstalk") && isAttacking && 
-			BeanstalkScript.instance.FullyGrown()) {
-			BeanstalkScript.instance.CutBeanstalk ();
+			col.gameObject.GetComponent<BeanstalkScript>().FullyGrown()){
+			col.gameObject.GetComponent<BeanstalkScript> ().CutBeanstalk();
 		}
 	}
 
@@ -338,6 +339,7 @@ public class PlayerController : MonoBehaviour {
 		bean.transform.position = new Vector3 (transform.position.x,
 											   transform.position.y - 1.22f,
 											   transform.position.z);
+		beanCount--;
 	}
 		
 	//############################ Knocked by Enemy #############################
