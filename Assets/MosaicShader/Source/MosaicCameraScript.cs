@@ -124,7 +124,7 @@ public class MosaicCameraScript : MonoBehaviour
 		}
 
 		if (MosaicOpacity <= 0.0f && depixelizing) {
-			Debug.Log (depixelizing);
+			
 			//health.SetActive (true);
 			//bean.SetActive (true);
 			isMosaic = false;
