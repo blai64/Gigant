@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BasicEnemyBehavior : BaseEnemyBehavior {
 	private int attackCounter;
-	private int attackThreshold = 150;
+	private int attackThreshold = 500;
 	private float attackDistance = 6f;
 
 	public GameObject EnemyHitbox;
@@ -16,7 +16,8 @@ public class BasicEnemyBehavior : BaseEnemyBehavior {
 
 
 			if (attackCounter > attackThreshold) {
-				StartAttack ();
+				base.isAttacking = true;
+				base.anim.SetTrigger ("isAttacking");
 				attackCounter = 0;
 			}
 
@@ -24,23 +25,11 @@ public class BasicEnemyBehavior : BaseEnemyBehavior {
 
 
 	}
-
-	//TODO: deprecated
-	override protected IEnumerator Activate(){
-		Debug.Log ("Do Basic Enemy Activation Stuff");
-		while (transform.localScale.x < 0.5) {
-			transform.localScale += new Vector3 (0.01f, 0.01f, 0);
-			yield return 0;
-		}
-
-		StartCoroutine (base.Activate ());
-	}
-
+		
+	/*
 	virtual protected void StartAttack(){
 		base.isAttacking = true;
-		//start animation
-
-		//temporary coroutine to call the attack;
+		
 		DoAttack();
 	}
 
@@ -49,9 +38,9 @@ public class BasicEnemyBehavior : BaseEnemyBehavior {
 		//do any clean up here.
 		base.isAttacking = false;
 	}
-
+*/
 	//ANIMATION EVENT should call this to do damage
-	public void DoAttack(){
+	override public void DoAttack(){
 		//attack logic, e.g. creating hitbox in front of enemy, throwing object, etc
 		StartCoroutine(BasicAttack());
 	}
