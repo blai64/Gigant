@@ -19,13 +19,13 @@ public class SceneIndicator : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		xPosition = player.transform.position.x;
-		if (xPosition > 80.0f && xPosition < 155.0f) {
+		if (xPosition > 80.0f && xPosition < 150.0f) {
 			txt.text = "Front";
-		} else if (xPosition > -38.0f && xPosition < 35.0f) {
+		} else if (xPosition > -30.0f && xPosition < 30.0f) {
 			txt.text = "Left";
-		} else if (xPosition > 200.0f && xPosition < 275.0f) {
+		} else if (xPosition > 200.0f && xPosition < 265.0f) {
 			txt.text = "Right";
-		} else if (xPosition > 320.0f && xPosition < 400.0f) {
+		} else if (xPosition > 325.0f && xPosition < 380.0f) {
 			txt.text = "Back";
 		}
 	}
