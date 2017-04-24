@@ -295,6 +295,9 @@ public class PlayerController : MonoBehaviour {
 		if(col.gameObject.CompareTag("Pit")){
 			Die();
 		}
+		if(col.gameObject.CompareTag("Boulder")){
+			Die();
+		}
 	}
 
 	void OnTriggerStay2D(Collider2D col) {
