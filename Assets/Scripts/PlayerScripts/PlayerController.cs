@@ -25,13 +25,13 @@ public class PlayerController : MonoBehaviour {
 	//Movement Logic 
 
 	public float maxSpeed = 10f; 
-	public float jumpForce = 10f; 
+	public float jumpForce = 20f; 															
 	//lateral movement
 	private int horizontalDirection; // [-1,0,1], for determining direction of velocity
 	private int verticalDirection;
 
 	//vertical movement
-	private int maxJumps = 2; 
+	private int maxJumps = 1; 																// Alex) Changed maxJumps to 1 4/23
 	private int remainingJumps; // Remaining number of jumps
 	private bool doJump; // try to start jump on current frame
 
@@ -43,6 +43,7 @@ public class PlayerController : MonoBehaviour {
 
 	//####################################################################
 	//Combat logic
+	private float attackCooldown = 0;
 
 	//####################################################################
 	//Checkpoint
@@ -103,6 +104,8 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		if (!disabled) {
+			if (attackCooldown >= 0)														// Alex) puts a cooldown on attacking	4/23
+				attackCooldown -= Time.deltaTime;
 			//case on whether or not currently latched onto beanstalk
 			if (isClimbing) {
 				ClimbingInputManager ();
@@ -174,7 +177,7 @@ public class PlayerController : MonoBehaviour {
 		}
 			
 		//Combat
-		if (Input.GetKeyDown(KeyCode.Space) && isGrounded) {
+		if (Input.GetKeyDown(KeyCode.Space) && isGrounded && attackCooldown < 0) {
 			SoundManager.instance.PlaySound ("sword slash");
 			Attack ();
 		}
@@ -269,6 +272,7 @@ public class PlayerController : MonoBehaviour {
 
 	private void Attack() {
 		isAttacking = true;
+		attackCooldown = .5f;
 		anim.SetTrigger ("isAttacking");
 		anim.SetBool ("isClimbing", false);
 	}
@@ -303,11 +307,8 @@ public class PlayerController : MonoBehaviour {
 				transform.position.z);
 			Climb (true);
 		}
-		// trigger for being in range to cut the beanstalk
-		else if (col.CompareTag ("Beanstalk") && isAttacking && 
-			col.gameObject.GetComponent<BeanstalkScript>().FullyGrown()){
-			col.gameObject.GetComponent<BeanstalkScript> ().CutBeanstalk();
-		}
+							// Alex) Put beanstalk cutting script
+							//       on sword itself 4/23
 	}
 
 	void OnTriggerExit2D(Collider2D col) {
