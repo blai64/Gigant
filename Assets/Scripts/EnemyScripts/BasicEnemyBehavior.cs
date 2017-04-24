@@ -5,7 +5,7 @@ using UnityEngine;
 public class BasicEnemyBehavior : BaseEnemyBehavior {
 	private int attackCounter;
 	private int attackThreshold = 250;
-	private float attackDistance = 6f;
+	private float attackDistance = 5f;
 
 	public GameObject EnemyHitbox;
 
