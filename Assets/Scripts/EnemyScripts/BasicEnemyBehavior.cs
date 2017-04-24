@@ -5,25 +5,34 @@ using UnityEngine;
 public class BasicEnemyBehavior : BaseEnemyBehavior {
 	private int attackCounter;
 	private int attackThreshold = 250;
-	private float attackDistance = 6f;
+	private float attackDistance = 5f;																					// Alex) changed attackDistance from 6 to 5  4/23
+	private float distanceBetweenPlayer;
+
 
 	public GameObject EnemyHitbox;
 
 	override protected void Update(){
 		base.Update ();
-		if (base.isActive && !base.isDead && !base.isAttacking) {
-			attackCounter += 1;
+		distanceBetweenPlayer = Mathf.Abs (transform.position.x - PlayerController.instance.transform.position.x);			
+		if (base.isActive && !base.isDead && !base.isAttacking) {															
+			attackCounter += 1;																							
 
 
-			if (attackCounter > attackThreshold) {
-				base.isAttacking = true;
-				base.anim.SetTrigger ("isAttacking");
+			if (attackCounter > attackThreshold && distanceBetweenPlayer < attackDistance) {								// Alex) Made it so enemy only attacks if he has an 
+				base.isAttacking = true;																					//       attack charged up and is in range to hit target
+				base.anim.SetTrigger ("isAttacking");																		//       4/23
 				attackCounter = 0;
 			}
-
 		}
+	}
 
-
+	void OnTriggerStay2D(Collider2D col){																					// Alex) Enemy knocks down beanstalks 4/23
+		if (col.CompareTag ("Beanstalk") && attackCounter > attackThreshold) {
+			base.isAttacking = true;																					
+			base.anim.SetTrigger ("isAttacking");																		
+			attackCounter = 0;
+			col.gameObject.GetComponent<BeanstalkScript> ().EnemyCutBeanstalk (col.gameObject);
+		}
 	}
 		
 	/*
@@ -62,6 +71,4 @@ public class BasicEnemyBehavior : BaseEnemyBehavior {
 		Destroy (temp);
 		EndAttack ();
 	}
-
-
 }

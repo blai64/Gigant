@@ -39,14 +39,26 @@ public class BeanstalkScript : MonoBehaviour {
 	public bool FullyGrown(){
 		return grown;
 	}
+		
 
 	// Begins to tilt over the beanstalk if the player cuts it down
-	public void CutBeanstalk(){
-		if (transform.position.x < PlayerController.instance.transform.position.x)
-			direction = 1;
-		else
+	public void PlayerCutBeanstalk(){
+		if (transform.position.x < PlayerController.instance.transform.position.x && PlayerController.instance.isLeft)				// Alex) Made it so you have to be facing beanstalk
+			direction = 1;																											//       to cut it 4/23
+		else if(transform.position.x > PlayerController.instance.transform.position.x && !PlayerController.instance.isLeft)
 			direction = -1;
 		cut = true;
+	}
+
+	// Begins to tilt over the beanstalk if the enemy cuts it down
+	public void EnemyCutBeanstalk(GameObject enemy){
+	/*	if (transform.position.x < enemy.transform.position.x )			
+			direction = 1;																											
+		else if(transform.position.x > enemy.transform.position.x )
+			direction = -1;
+		cut = true;  */
+		grown = true;
+
 	}
 
 	void Update () {
