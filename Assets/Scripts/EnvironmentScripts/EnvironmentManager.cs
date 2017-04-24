@@ -36,6 +36,15 @@ public class EnvironmentManager : MonoBehaviour {
 		if (col.CompareTag("Player")){
 			StartCoroutine (StartFalling ());
 		}
+		Rotate (boulder1);
+		Rotate (boulder2);
+		Rotate (boulder3);
+		Rotate (boulder4);
+		Rotate (boulder5);
+		Rotate (boulder6);
+		Rotate (boulder7);
+		Rotate (boulder8);
+		Rotate (boulder9);
 	}
 
 	IEnumerator StartFalling(){
@@ -57,5 +66,12 @@ public class EnvironmentManager : MonoBehaviour {
 		boulder8.SetActive (true);
 		yield return new WaitForSeconds (0.5f);
 		boulder9.SetActive (true);
+	}
+
+	void Rotate(GameObject obj){
+//			Quaternion theRotation = obj.transform.localRotation;
+//			theRotation.z *= 270;
+//			obj.transform.localRotation = theRotation;
+		obj.transform.Rotate(Vector3.right * Time.deltaTime);
 	}
 }
