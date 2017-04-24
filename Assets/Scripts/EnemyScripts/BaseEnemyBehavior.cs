@@ -22,6 +22,8 @@ public class BaseEnemyBehavior : MonoBehaviour {
 
 	private Vector3 originalPosition;
 
+	public BoxCollider2D bounds; 
+
 	// Use this for initialization
 	void Start () {
 		rb2d = GetComponent<Rigidbody2D> ();
@@ -42,6 +44,18 @@ public class BaseEnemyBehavior : MonoBehaviour {
 			direction = Mathf.Sign (PlayerController.instance.transform.position.x - transform.position.x);
 			anim.SetBool ("isLeft", (direction < 0));
 			rb2d.velocity = new Vector2 (direction * moveSpeed, rb2d.velocity.y);
+
+			if (bounds != null) {
+				float x = transform.position.x;
+				float y = transform.position.y;
+
+
+				x = Mathf.Clamp(x, bounds.bounds.center.x - bounds.bounds.extents.x, bounds.bounds.center.x + bounds.bounds.extents.x);
+				y = Mathf.Clamp(y, bounds.bounds.center.y - bounds.bounds.extents.y, bounds.bounds.center.y + bounds.bounds.extents.y);
+
+				transform.position = new Vector3(x, y, transform.position.z);
+			}
+
 		}
 
 	}

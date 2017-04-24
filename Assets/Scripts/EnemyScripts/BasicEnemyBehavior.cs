@@ -8,6 +8,7 @@ public class BasicEnemyBehavior : BaseEnemyBehavior {
 	private float attackDistance = 5f;																					// Alex) changed attackDistance from 6 to 5  4/23
 	private float distanceBetweenPlayer;
 
+
 	public GameObject EnemyHitbox;
 
 	override protected void Update(){
