@@ -150,8 +150,6 @@ public class MosaicCameraScript : MonoBehaviour
     }
 
 	public void SetTargetPosition(Vector3 newTarget, BoxCollider2D newBounds){
-
-		Debug.Log ("here");
 		PlayerController.instance.Disable(true);
 		targetPosition = newTarget;
 		targetBounds = newBounds;
