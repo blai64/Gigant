@@ -9,7 +9,18 @@ public class MainCamera : MonoBehaviour
 	private Camera mainCamera;
 
 	public Vector2 margin = new Vector2(1, 1); // If the player stays inside this margin, the camera won't move.
-	public Vector2 smoothing = new Vector2(10, 10); // The bigger the value, the faster is the camera.
+	public Vector2 smoothing = new Vector2(1, 1); // The bigger the value, the faster is the camera.
+
+	private float dampTime = 0.2f;
+	public float xOffset = 0f;
+	public float yOffset = 0f;
+
+	public float DampTime {
+		get { return dampTime; } 
+		set { dampTime = value; } 
+	}
+
+	private Vector3 velocity = Vector3.zero;
 
 	public BoxCollider2D cameraBounds;
 
@@ -42,9 +53,6 @@ public class MainCamera : MonoBehaviour
 		//var x = transform.position.x;
 		//var y = transform.position.y;
 
-		var x = player.position.x;
-		var y = player.position.y;
-
 		if (isFollowing)
 		{
 			/*
@@ -53,10 +61,25 @@ public class MainCamera : MonoBehaviour
 
 			if (Mathf.Abs(y - player.position.y) > margin.y)
 				y = Mathf.Lerp(y, player.position.y, smoothing.y * Time.deltaTime);
-				*/
+
 			x = Mathf.Lerp(x, player.position.x, smoothing.x * Time.deltaTime);
 			y = Mathf.Lerp(y, player.position.y, smoothing.y * Time.deltaTime);
+			*/
+			Vector3 point = mainCamera.WorldToViewportPoint(player.position);
+			Vector3 destination;
+			float oldZ = transform.position.z;
+
+			//float direction = (float) pb.GetDirection ();
+			Vector3 delta = player.position - mainCamera.ViewportToWorldPoint(new Vector3(0.5f - xOffset,
+				0.5f + yOffset,
+				0f));
+			destination = transform.position + delta;
+			destination.z = oldZ;
+			transform.position = Vector3.SmoothDamp(transform.position, destination, ref velocity, dampTime);
 		}
+		/*
+		float x = transform.position.x;
+		float y = transform.position.y;
 			
 
 		// ortographicSize is the haldf of the height of the Camera.
@@ -66,6 +89,7 @@ public class MainCamera : MonoBehaviour
 		y = Mathf.Clamp(y, min.y + mainCamera.orthographicSize, max.y - mainCamera.orthographicSize);
 
 		transform.position = new Vector3(x, y, transform.position.z);
+		*/
 
 	}
 

@@ -16,6 +16,10 @@ public class SceneChangeTrigger : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D col){
 		if (col.CompareTag("Player")) {
 			MosaicCameraScript.instance.SetTargetPosition (targetPosition, newBounds);
+			BaseEnemyBehavior[] enemies = FindObjectsOfType(typeof(BaseEnemyBehavior)) as BaseEnemyBehavior[];
+			foreach (BaseEnemyBehavior enemy in enemies) {
+				enemy.Reset ();
+			}
 			//MainCamera.instance.UpdateBounds (newBounds);
 		}
 	}
