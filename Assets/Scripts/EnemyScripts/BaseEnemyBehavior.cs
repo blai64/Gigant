@@ -20,6 +20,8 @@ public class BaseEnemyBehavior : MonoBehaviour {
 
 	protected Animator anim;
 
+	private Vector3 originalPosition;
+
 	// Use this for initialization
 	void Start () {
 		rb2d = GetComponent<Rigidbody2D> ();
@@ -28,6 +30,8 @@ public class BaseEnemyBehavior : MonoBehaviour {
 		health = 3;
 		anim.SetBool ("isLeft", true);
 
+
+		originalPosition = transform.position;
 	}
 
 	
@@ -112,5 +116,19 @@ public class BaseEnemyBehavior : MonoBehaviour {
 		Debug.Log ("finished activating");
 		isActive = true;
 		anim.SetTrigger ("isWalking");
+	}
+
+	public void Reset(){
+		if (isActive) {
+			anim.SetTrigger ("isDeactivated");
+		}
+
+		transform.position = originalPosition;
+		isActive = false; 
+		isAttacked = false; 
+		isAttacking = false;
+		isDead = false;
+
+
 	}
 }
