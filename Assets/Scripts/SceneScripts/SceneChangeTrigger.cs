@@ -25,7 +25,7 @@ public class SceneChangeTrigger : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D col){
 		if (!isTunnel && col.CompareTag ("Player")) {
 			ChangeScene ();
-		} else if (isTunnel) {
+		} else if (isTunnel && col.CompareTag("Player")) {
 			touchingPlayer = true;
 		}
 	}

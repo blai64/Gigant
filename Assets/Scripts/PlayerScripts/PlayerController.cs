@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour {
 	private Animator anim;
 
 	[HideInInspector] public bool isGrounded = false;
-	[HideInInspector] public bool isLeft = false;
+	[HideInInspector] public bool isLeft;
 
 	[HideInInspector] public bool isDead;
 
@@ -47,6 +47,7 @@ public class PlayerController : MonoBehaviour {
 	//####################################################################
 	//Combat logic
 	private float attackCooldown = 0;
+	public GameObject swordHitbox;
 
 	//####################################################################
 	//Checkpoint
@@ -84,6 +85,8 @@ public class PlayerController : MonoBehaviour {
 
 		checkpointLocation = transform.position;
 		checkpointCameraBound = MainCamera.instance.cameraBounds;
+
+		isLeft = true;
 	}
 
 	void DoGroundCheck(){
@@ -250,7 +253,6 @@ public class PlayerController : MonoBehaviour {
 	//################## State Changing Helper Functions ######################
 
 	public void Climb(bool climb) {
-		Debug.Log (climb);
 		horizontalDirection = 0;
 		isClimbing = climb;
 		rb2d.gravityScale = (climb) ? 0 : initialGravity;
@@ -260,9 +262,12 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private void ChangeDirection(bool left) {
+		if (isLeft ^ left)
+			swordHitbox.transform.Rotate (0f, 0f, 180f);
 		isLeft = left;
 		horizontalDirection = left ? -1 : 1;
 		anim.SetBool ("isLeft", left);
+
 	}
 
 	private void Move(bool isRunning) {
@@ -352,7 +357,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void OnCollisionEnter2D(Collision2D col) {
-		if (col.gameObject.CompareTag ("Enemy")) {
+		if (col.gameObject.CompareTag ("Enemy") && !hurting) {
 			Health.instance.hp--;
 			Knocked ();
 			hurting = true;
@@ -373,6 +378,9 @@ public class PlayerController : MonoBehaviour {
 		MosaicCameraScript.instance.SetTargetPosition (checkpointLocation, checkpointCameraBound);
 		Health.instance.hp = 3;
 		isDead = false; 
+		anim.ResetTrigger ("isHurt");
+		anim.ResetTrigger ("isDead");
+		anim.ResetTrigger ("isAttacking");
 	}
 		
 
