@@ -38,9 +38,5 @@ public class SceneChangeTrigger : MonoBehaviour {
 		
 	public void ChangeScene(){
 		MosaicCameraScript.instance.SetTargetPosition (targetPosition, newBounds);
-		BaseEnemyBehavior[] enemies = FindObjectsOfType(typeof(BaseEnemyBehavior)) as BaseEnemyBehavior[];
-		foreach (BaseEnemyBehavior enemy in enemies) {
-			enemy.Reset ();
-		}
 	}
 }
