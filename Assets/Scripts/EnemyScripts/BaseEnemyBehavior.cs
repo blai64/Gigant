@@ -62,37 +62,13 @@ public class BaseEnemyBehavior : MonoBehaviour {
 
 	void OnTriggerEnter2D (Collider2D col){
 		if (col.CompareTag("Player") && !isActive){
-			//StartCoroutine (Activate ());
-			Debug.Log("starting to activate");
 			anim.SetTrigger("isActivated");
 		}
 		if (col.CompareTag ("Weapon") && PlayerController.instance.isAttacking) {
-			Debug.Log ("Attacked!");
 			GetDamaged (1);
 		}
 
 	}
-
-	/*
-	void OnCollisionEnter2D(Collision2D col){
-		if (col.gameObject.CompareTag ("Weapon") && isAttacked) {
-			Debug.Log ("Attacked!");
-			GetDamaged (1);
-		}
-	}*/
-
-
-	//TODO: deprecated, since animation events should be able to handle all of this
-	//without coroutines, just have an activate function that starts animation, setting 
-	//active once animation is over.
-	/*
-	virtual protected IEnumerator Activate(){
-		Debug.Log ("Starting base enemy activation");
-		yield return new WaitForSeconds (1.0f);
-		Debug.Log ("Base enemy activated - movement starts");
-		isActive = true;
-	}*/
-
 
 	public void EndAttack(){
 		isAttacking = false;
@@ -127,7 +103,6 @@ public class BaseEnemyBehavior : MonoBehaviour {
 	}
 
 	public void Activate(){
-		Debug.Log ("finished activating");
 		isActive = true;
 		anim.SetTrigger ("isWalking");
 	}

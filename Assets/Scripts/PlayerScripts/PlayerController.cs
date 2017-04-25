@@ -100,7 +100,8 @@ public class PlayerController : MonoBehaviour {
 		remainingJumps = (isGrounded) ? maxJumps : remainingJumps;
 
 		if (Health.instance.hp <= 0 && !isDead) {
-			Die ();
+			Debug.Log ("imDying"); 
+			Die (false);
 		}
 
 		if (!disabled) {
@@ -277,9 +278,10 @@ public class PlayerController : MonoBehaviour {
 		anim.SetBool ("isClimbing", false);
 	}
 
-	private void Die() {
+	private void Die(bool fell) {
 		anim.SetBool ("isClimbing", false);
-		anim.SetTrigger ("isDead");
+		if (!fell)
+			anim.SetTrigger ("isDead");
 		Disable (false);
 		isDead = true;
 		StartCoroutine (Respawn ());
@@ -293,7 +295,10 @@ public class PlayerController : MonoBehaviour {
 			checkpointCameraBound = MainCamera.instance.cameraBounds;
 		}
 		if(col.gameObject.CompareTag("Pit")){
-			Die();
+			Die(true);
+		}
+		if(col.gameObject.CompareTag("Boulder")){
+			Die(false);
 		}
 	}
 

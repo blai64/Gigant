@@ -24,7 +24,6 @@ public class SceneChangeTrigger : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D col){
 		if (!isTunnel && col.CompareTag ("Player")) {
-			Debug.Log ("Changing scene normally");
 			ChangeScene ();
 		} else if (isTunnel) {
 			touchingPlayer = true;
@@ -36,18 +35,7 @@ public class SceneChangeTrigger : MonoBehaviour {
 			touchingPlayer = false;
 		}
 	}
-
-
-	/*
-	void OnTriggerStay2D(Collider2D col){
-		if (isTunnel && col.CompareTag("Player")  && Input.GetKeyDown(KeyCode.UpArrow)) {
-			Debug.Log ("going through tunnel");
-			ChangeScene ();
-			//MainCamera.instance.UpdateBounds (newBounds);
-		}
-	}
-
-*/
+		
 	public void ChangeScene(){
 		MosaicCameraScript.instance.SetTargetPosition (targetPosition, newBounds);
 		BaseEnemyBehavior[] enemies = FindObjectsOfType(typeof(BaseEnemyBehavior)) as BaseEnemyBehavior[];
