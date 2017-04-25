@@ -37,6 +37,8 @@ public class PlayerController : MonoBehaviour {
 
 	//Vertical beanstalk 
 	private bool isClimbing;
+	private bool atTopOfStalk;
+	private CapsuleCollider2D beanstalkCollider;
 
 	//private bool isKnocking;
 	private bool hurting;
@@ -97,10 +99,13 @@ public class PlayerController : MonoBehaviour {
 	void Update () {
 		isGrounded = DoGroundCheck ();
 	
+		if (isGrounded && isClimbing) {
+			Climb (false);
+		}
+
 		remainingJumps = (isGrounded) ? maxJumps : remainingJumps;
 
 		if (Health.instance.hp <= 0 && !isDead) {
-			Debug.Log ("imDying"); 
 			Die (false);
 		}
 
@@ -111,6 +116,19 @@ public class PlayerController : MonoBehaviour {
 			if (isClimbing) {
 				ClimbingInputManager ();
 				rb2d.velocity = new Vector2 (0f, verticalDirection * maxSpeed);
+				if (atTopOfStalk && verticalDirection < 0) {
+					atTopOfStalk = false; 
+				} else if (atTopOfStalk) {
+					rb2d.velocity = new Vector2 (0f, 0f);
+				}
+
+				float curY = transform.position.y; 
+				curY= Mathf.Clamp(curY, Mathf.NegativeInfinity, beanstalkCollider.bounds.center.y + beanstalkCollider.bounds.extents.y);
+
+				transform.position = new Vector3 (transform.position.x, curY, transform.position.z);
+
+
+					
 			} else {
 				InputManager ();
 				//update lateral movement
@@ -310,6 +328,7 @@ public class PlayerController : MonoBehaviour {
 			transform.position = new Vector3 (col.transform.position.x, 
 				transform.position.y, 
 				transform.position.z);
+			beanstalkCollider = col.gameObject.GetComponent<CapsuleCollider2D> ();
 			Climb (true);
 		}
 							// Alex) Put beanstalk cutting script
@@ -319,7 +338,8 @@ public class PlayerController : MonoBehaviour {
 	void OnTriggerExit2D(Collider2D col) {
 		if (col.CompareTag ("Beanstalk") && isClimbing) {
 			//we know that player is exiting off the top
-			Climb (false);
+			atTopOfStalk = true;
+			//Climb (false);
 
 		}
 	}
