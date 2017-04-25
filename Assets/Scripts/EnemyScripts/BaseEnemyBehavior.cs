@@ -91,8 +91,19 @@ public class BaseEnemyBehavior : MonoBehaviour {
 		if (col.CompareTag ("Weapon") && PlayerController.instance.isAttacking) {
 			GetDamaged (1);
 		}
-
 	}
+
+	/*void OnCollisionEnter2D(Collider2D col){
+		if (col.gameObject.CompareTag ("Beanstalk") && col.gameObject.GetComponent<BeanstalkScript> ().isCut ()) {
+			GetDamaged (1);
+			RedFlash ();
+		}
+	}
+
+	void OnCollisionExit2D(Collider2D col){
+		if (col.gameObject.CompareTag ("Beanstalk"))
+			RevertFromRed ();
+	}*/
 
 	public void EndAttack(){
 		isAttacking = false;

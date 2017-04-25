@@ -40,6 +40,10 @@ public class BeanstalkScript : MonoBehaviour {
 	public bool FullyGrown(){
 		return grown;
 	}
+
+	public bool isCut(){
+		return cut;
+	}
 		
 
 	// Begins to tilt over the beanstalk if the player cuts it down

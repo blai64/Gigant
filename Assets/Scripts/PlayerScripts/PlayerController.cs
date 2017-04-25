@@ -96,7 +96,6 @@ public class PlayerController : MonoBehaviour {
 
 	void Update () {
 		isGrounded = DoGroundCheck ();
-		Debug.Log (isGrounded);
 		remainingJumps = (isGrounded) ? maxJumps : remainingJumps;
 
 		if (Health.instance.hp <= 0 && !isDead) {
