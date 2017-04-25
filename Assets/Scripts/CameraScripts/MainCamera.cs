@@ -77,7 +77,7 @@ public class MainCamera : MonoBehaviour
 			destination.z = oldZ;
 			transform.position = Vector3.SmoothDamp(transform.position, destination, ref velocity, dampTime);
 		}
-		/*
+
 		float x = transform.position.x;
 		float y = transform.position.y;
 			
@@ -89,7 +89,7 @@ public class MainCamera : MonoBehaviour
 		y = Mathf.Clamp(y, min.y + mainCamera.orthographicSize, max.y - mainCamera.orthographicSize);
 
 		transform.position = new Vector3(x, y, transform.position.z);
-		*/
+
 
 	}
 

@@ -26,6 +26,7 @@ public class BaseEnemyBehavior : MonoBehaviour {
 	private SpriteRenderer renderer;
 	private Color originalColor;
 	private List<GameObject> childList = new List<GameObject>();
+	public BoxCollider2D bounds; 
 
 	// Use this for initialization
 	void Start () {
@@ -66,39 +67,32 @@ public class BaseEnemyBehavior : MonoBehaviour {
 			direction = Mathf.Sign (PlayerController.instance.transform.position.x - transform.position.x);
 			anim.SetBool ("isLeft", (direction < 0));
 			rb2d.velocity = new Vector2 (direction * moveSpeed, rb2d.velocity.y);
+
+			if (bounds != null) {
+				float x = transform.position.x;
+				float y = transform.position.y;
+
+
+				x = Mathf.Clamp(x, bounds.bounds.center.x - bounds.bounds.extents.x, bounds.bounds.center.x + bounds.bounds.extents.x);
+				y = Mathf.Clamp(y, bounds.bounds.center.y - bounds.bounds.extents.y, bounds.bounds.center.y + bounds.bounds.extents.y);
+
+				transform.position = new Vector3(x, y, transform.position.z);
+			}
+
 		}
 
 	}
 
 	void OnTriggerEnter2D (Collider2D col){
 		if (col.CompareTag("Player") && !isActive){
-			//StartCoroutine (Activate ());
-			Debug.Log("starting to activate");
 			anim.SetTrigger("isActivated");
 		}
 
-	}
-
-	/*
-	void OnCollisionEnter2D(Collision2D col){
-		if (col.gameObject.CompareTag ("Weapon") && isAttacked) {
-			Debug.Log ("Attacked!");
+		if (col.CompareTag ("Weapon") && PlayerController.instance.isAttacking) {
 			GetDamaged (1);
 		}
-	}*/
 
-
-	//TODO: deprecated, since animation events should be able to handle all of this
-	//without coroutines, just have an activate function that starts animation, setting 
-	//active once animation is over.
-	/*
-	virtual protected IEnumerator Activate(){
-		Debug.Log ("Starting base enemy activation");
-		yield return new WaitForSeconds (1.0f);
-		Debug.Log ("Base enemy activated - movement starts");
-		isActive = true;
-	}*/
-
+	}
 
 	public void EndAttack(){
 		isAttacking = false;
@@ -132,7 +126,6 @@ public class BaseEnemyBehavior : MonoBehaviour {
 	}
 
 	public void Activate(){
-		Debug.Log ("finished activating");
 		isActive = true;
 		anim.SetTrigger ("isWalking");
 		health = 3;
