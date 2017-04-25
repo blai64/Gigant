@@ -253,7 +253,6 @@ public class PlayerController : MonoBehaviour {
 	//################## State Changing Helper Functions ######################
 
 	public void Climb(bool climb) {
-		Debug.Log (climb);
 		horizontalDirection = 0;
 		isClimbing = climb;
 		rb2d.gravityScale = (climb) ? 0 : initialGravity;
@@ -362,7 +361,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void OnCollisionEnter2D(Collision2D col) {
-		if (col.gameObject.CompareTag ("Enemy")) {
+		if (col.gameObject.CompareTag ("Enemy") && !hurting) {
 			Health.instance.hp--;
 			Knocked ();
 			hurting = true;
