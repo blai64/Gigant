@@ -326,10 +326,6 @@ public class PlayerController : MonoBehaviour {
 		if(col.gameObject.CompareTag("Boulder")){
 			Health.instance.hp--;
 		}
-		if (col.gameObject.CompareTag ("BoulderExit")) {
-			Debug.Log ("boulderexit");
-			BoulderManager.instance.startFalling = false;
-		}
 		if (col.gameObject.CompareTag ("Beanstalk")) {
 			canClimb = true;
 		}
