@@ -85,24 +85,22 @@ public class PlayerController : MonoBehaviour {
 		checkpointCameraBound = MainCamera.instance.cameraBounds;
 	}
 
-	bool DoGroundCheck(){
+	void DoGroundCheck(){
 		foreach (Transform groundCheck in groundChecks) {
 			isGrounded = Physics2D.Linecast (transform.position, groundCheck.position,
 				1 << LayerMask.NameToLayer ("Ground"));
 			if (isGrounded) {
-				return true;
+				break;
 			}
 		}
-		return false;
 	}
 
 	void Update () {
-		isGrounded = DoGroundCheck ();
-	
-		if (isGrounded && isClimbing) {
+		DoGroundCheck ();
+		if (isGrounded && isClimbing && !(Input.GetKey (KeyCode.UpArrow) || Input.GetKey (KeyCode.W))) {
+			Debug.Log ("should stop climbing");	
 			Climb (false);
 		}
-
 		remainingJumps = (isGrounded) ? maxJumps : remainingJumps;
 
 		if (Health.instance.hp <= 0 && !isDead) {
@@ -116,11 +114,12 @@ public class PlayerController : MonoBehaviour {
 			if (isClimbing) {
 				ClimbingInputManager ();
 				rb2d.velocity = new Vector2 (0f, verticalDirection * maxSpeed);
+				/*
 				if (atTopOfStalk && verticalDirection < 0) {
 					atTopOfStalk = false; 
 				} else if (atTopOfStalk) {
 					rb2d.velocity = new Vector2 (0f, 0f);
-				}
+				}*/
 
 				float curY = transform.position.y; 
 				curY= Mathf.Clamp(curY, Mathf.NegativeInfinity, beanstalkCollider.bounds.center.y + beanstalkCollider.bounds.extents.y);
@@ -220,8 +219,6 @@ public class PlayerController : MonoBehaviour {
 
 	void ClimbingInputManager() {
 		verticalDirection = 0;
-
-		//if (BeanstalkScript.instance.FullyGrown ())
 		{
 			
 			if (Input.GetKey (KeyCode.UpArrow) || Input.GetKey (KeyCode.W)) {
@@ -249,6 +246,7 @@ public class PlayerController : MonoBehaviour {
 	//################## State Changing Helper Functions ######################
 
 	public void Climb(bool climb) {
+		Debug.Log (climb);
 		horizontalDirection = 0;
 		isClimbing = climb;
 		rb2d.gravityScale = (climb) ? 0 : initialGravity;
@@ -274,19 +272,20 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private void Fall() {
+		float currHeight = rb2d.position.y;
 		if (!isGrounded) {
 			if (!isClimbing) {
-				float currHeight = rb2d.position.y;
 				if (currHeight - prevHeight < 0f && !hurting) {
 					anim.SetBool ("isJumping", false);
 					anim.SetBool ("isClimbing", false);
 					anim.SetBool ("isFalling", true);
 				}
-				prevHeight = currHeight;
+
 			}
 		} else if (anim.GetBool ("isFalling")) {
 			anim.SetBool ("isFalling", false);
 		}
+		prevHeight = currHeight;
 	}
 
 	private void Attack() {
@@ -374,7 +373,7 @@ public class PlayerController : MonoBehaviour {
 	void PlantBeanstalk() {
 		GameObject bean = Instantiate (beanstalkPrefab);
 		bean.transform.position = new Vector3 (transform.position.x,
-											   transform.position.y - 1.22f,
+			transform.position.y - 1.22f,
 											   transform.position.z);
 		beanCount--;
 	}

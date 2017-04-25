@@ -22,6 +22,10 @@ public class BaseEnemyBehavior : MonoBehaviour {
 
 	private Vector3 originalPosition;
 
+	// Color changing parameters
+	private SpriteRenderer renderer;
+	private Color originalColor;
+	private List<GameObject> childList = new List<GameObject>();
 	public BoxCollider2D bounds; 
 
 	// Use this for initialization
@@ -31,11 +35,30 @@ public class BaseEnemyBehavior : MonoBehaviour {
 		canBeActivated = true;
 		health = 3;
 		anim.SetBool ("isLeft", true);
-
+		renderer = this.GetComponentInChildren<SpriteRenderer> ();
+		originalColor = this.GetComponentInChildren<SpriteRenderer> ().color;
+		for (int i = 0; i < this.gameObject.transform.GetChild (0).childCount; i++) {
+			childList.Add (this.gameObject.transform.GetChild (0).GetChild (i).gameObject);
+		}
 
 		originalPosition = transform.position;
 	}
 
+	// turns golem red when hit
+	public void RedFlash(){
+		renderer.color = new Color (1, 0, 0, 1);
+		foreach (GameObject child in childList) {
+			child.GetComponent<SpriteRenderer> ().color = new Color (1, 0, 0, 1);
+		}
+	}
+
+	// turns golem back to grey after being hit
+	public void RevertFromRed(){
+		renderer.color = originalColor;
+		foreach (GameObject child in childList) {
+			child.GetComponent<SpriteRenderer> ().color = originalColor;
+		}
+	}
 	
 	// Update is called once per frame
 	virtual protected void Update () {
@@ -64,11 +87,23 @@ public class BaseEnemyBehavior : MonoBehaviour {
 		if (col.CompareTag("Player") && !isActive){
 			anim.SetTrigger("isActivated");
 		}
+
 		if (col.CompareTag ("Weapon") && PlayerController.instance.isAttacking) {
 			GetDamaged (1);
 		}
-
 	}
+
+	/*void OnCollisionEnter2D(Collider2D col){
+		if (col.gameObject.CompareTag ("Beanstalk") && col.gameObject.GetComponent<BeanstalkScript> ().isCut ()) {
+			GetDamaged (1);
+			RedFlash ();
+		}
+	}
+
+	void OnCollisionExit2D(Collider2D col){
+		if (col.gameObject.CompareTag ("Beanstalk"))
+			RevertFromRed ();
+	}*/
 
 	public void EndAttack(){
 		isAttacking = false;
@@ -99,12 +134,12 @@ public class BaseEnemyBehavior : MonoBehaviour {
 	IEnumerator DisableForTime(float seconds){
 		yield return new WaitForSeconds (seconds);
 		canBeActivated = true;
-		health = 3;
 	}
 
 	public void Activate(){
 		isActive = true;
 		anim.SetTrigger ("isWalking");
+		health = 3;
 	}
 
 	public void Reset(){
@@ -117,7 +152,6 @@ public class BaseEnemyBehavior : MonoBehaviour {
 		isAttacked = false; 
 		isAttacking = false;
 		isDead = false;
-
 
 	}
 }

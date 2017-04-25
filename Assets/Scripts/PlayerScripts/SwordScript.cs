@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SwordScript : MonoBehaviour {
+	private bool hitEnemy = false;
 
 	// Use this for initialization
 	void Start () {
@@ -19,7 +20,21 @@ public class SwordScript : MonoBehaviour {
 			PlayerController.instance.isAttacking &&
 			col.gameObject.GetComponent<BeanstalkScript>().FullyGrown()){						
 			col.gameObject.GetComponent<BeanstalkScript> ().PlayerCutBeanstalk ();
+		}
+		if (col.CompareTag ("Enemy") && !hitEnemy &&
+		   PlayerController.instance.isAttacking &&
+			col.gameObject.GetComponent<BaseEnemyBehavior>().health > 0) {
+			hitEnemy = true;
+			col.gameObject.GetComponent<BaseEnemyBehavior> ().GetDamaged (1);
+			col.gameObject.GetComponent<BaseEnemyBehavior> ().RedFlash ();
 
+		}
+	}
+
+	void OnTriggerExit2D(Collider2D col){
+		if (col.CompareTag ("Enemy")) {
+			hitEnemy = false;
+			col.gameObject.GetComponent<BaseEnemyBehavior> ().RevertFromRed ();
 		}
 	}
 }
