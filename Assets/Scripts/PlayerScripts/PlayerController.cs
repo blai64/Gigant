@@ -36,7 +36,10 @@ public class PlayerController : MonoBehaviour {
 	private bool doJump; // try to start jump on current frame
 
 	//Vertical beanstalk 
+	private bool canClimb; // this stops him from immediately climbing after k=jumping off
 	private bool isClimbing;
+	private bool atTopOfStalk;
+	private CapsuleCollider2D beanstalkCollider;
 
 	//private bool isKnocking;
 	private bool hurting;
@@ -83,23 +86,26 @@ public class PlayerController : MonoBehaviour {
 		checkpointCameraBound = MainCamera.instance.cameraBounds;
 	}
 
-	bool DoGroundCheck(){
+	void DoGroundCheck(){
 		foreach (Transform groundCheck in groundChecks) {
 			isGrounded = Physics2D.Linecast (transform.position, groundCheck.position,
 				1 << LayerMask.NameToLayer ("Ground"));
 			if (isGrounded) {
-				return true;
+				break;
 			}
 		}
-		return false;
 	}
 
 	void Update () {
-		isGrounded = DoGroundCheck ();
-		remainingJumps = (isGrounded) ? maxJumps : remainingJumps;
+		DoGroundCheck ();
+		if (isGrounded && isClimbing && !(Input.GetKey (KeyCode.UpArrow) || Input.GetKey (KeyCode.W))) {
+			Climb (false);
+		}
+
+		canClimb = (isGrounded && !isClimbing) ? true : canClimb;
+		remainingJumps = (isGrounded || isClimbing) ? maxJumps : remainingJumps;
 
 		if (Health.instance.hp <= 0 && !isDead) {
-			Debug.Log ("imDying"); 
 			Die (false);
 		}
 
@@ -110,6 +116,20 @@ public class PlayerController : MonoBehaviour {
 			if (isClimbing) {
 				ClimbingInputManager ();
 				rb2d.velocity = new Vector2 (0f, verticalDirection * maxSpeed);
+				/*
+				if (atTopOfStalk && verticalDirection < 0) {
+					atTopOfStalk = false; 
+				} else if (atTopOfStalk) {
+					rb2d.velocity = new Vector2 (0f, 0f);
+				}*/
+
+				float curY = transform.position.y; 
+				curY = Mathf.Clamp (curY, Mathf.NegativeInfinity, beanstalkCollider.bounds.center.y + beanstalkCollider.bounds.extents.y);
+
+				transform.position = new Vector3 (transform.position.x, curY, transform.position.z);
+
+
+					
 			} else {
 				InputManager ();
 				//update lateral movement
@@ -122,6 +142,8 @@ public class PlayerController : MonoBehaviour {
 					doJump = false; 
 				}
 			}
+		} else if (isGrounded){
+			rb2d.velocity = new Vector2 (0f, 0f);
 		}
 
 		Fall ();
@@ -228,6 +250,7 @@ public class PlayerController : MonoBehaviour {
 	//################## State Changing Helper Functions ######################
 
 	public void Climb(bool climb) {
+		Debug.Log (climb);
 		horizontalDirection = 0;
 		isClimbing = climb;
 		rb2d.gravityScale = (climb) ? 0 : initialGravity;
@@ -253,19 +276,20 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private void Fall() {
+		float currHeight = rb2d.position.y;
 		if (!isGrounded) {
 			if (!isClimbing) {
-				float currHeight = rb2d.position.y;
 				if (currHeight - prevHeight < 0f && !hurting) {
 					anim.SetBool ("isJumping", false);
 					anim.SetBool ("isClimbing", false);
 					anim.SetBool ("isFalling", true);
 				}
-				prevHeight = currHeight;
+
 			}
 		} else if (anim.GetBool ("isFalling")) {
 			anim.SetBool ("isFalling", false);
 		}
+		prevHeight = currHeight;
 	}
 
 	private void Attack() {
@@ -301,17 +325,22 @@ public class PlayerController : MonoBehaviour {
 			Debug.Log ("boulderexit");
 			BoulderManager.instance.startFalling = false;
 		}
+		if (col.gameObject.CompareTag ("Beanstalk")) {
+			canClimb = true;
+		}
 	}
 
 	void OnTriggerStay2D(Collider2D col) {
 		// trigger for climbing the beanstalk
-		if (col.CompareTag ("Beanstalk") && 
+		if (col.CompareTag ("Beanstalk") && canClimb &&
 			(Input.GetKeyDown (KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) 
 			&& !isClimbing && col.gameObject.GetComponent<BeanstalkScript>().FullyGrown()) {
 			transform.position = new Vector3 (col.transform.position.x, 
 				transform.position.y, 
 				transform.position.z);
+			beanstalkCollider = col.gameObject.GetComponent<CapsuleCollider2D> ();
 			Climb (true);
+			canClimb = false;
 		}
 							// Alex) Put beanstalk cutting script
 							//       on sword itself 4/23
@@ -320,7 +349,8 @@ public class PlayerController : MonoBehaviour {
 	void OnTriggerExit2D(Collider2D col) {
 		if (col.CompareTag ("Beanstalk") && isClimbing) {
 			//we know that player is exiting off the top
-			Climb (false);
+			atTopOfStalk = true;
+			//Climb (false);
 
 		}
 	}

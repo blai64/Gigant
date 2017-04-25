@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BasicEnemyBehavior : BaseEnemyBehavior {
 	private int attackCounter;
-	private int attackThreshold = 250;
+	private int attackThreshold = 50;
 	private float attackDistance = 5f;																					// Alex) changed attackDistance from 6 to 5  4/23
 	private float distanceBetweenPlayer;
 
@@ -26,6 +26,7 @@ public class BasicEnemyBehavior : BaseEnemyBehavior {
 			}
 		}
 	}
+		
 
 	/* void OnTriggerStay2D(Collider2D col){																					// Alex) Enemy knocks down beanstalks 4/23
 		if (col.CompareTag ("Beanstalk") && attackCounter > attackThreshold && 
