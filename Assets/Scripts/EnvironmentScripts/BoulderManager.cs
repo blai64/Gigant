@@ -52,7 +52,7 @@ public class BoulderManager : MonoBehaviour {
 	}
 
 	void Rotate(GameObject obj){
-		obj.transform.Rotate(Vector3.right * Time.deltaTime);
+		obj.transform.Rotate(Vector3.back * Time.deltaTime * 1000);
 	}
 
 
