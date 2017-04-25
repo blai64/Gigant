@@ -297,6 +297,10 @@ public class PlayerController : MonoBehaviour {
 		if(col.gameObject.CompareTag("Boulder")){
 			Die(false);
 		}
+		if (col.gameObject.CompareTag ("BoulderExit")) {
+			Debug.Log ("boulderexit");
+			BoulderManager.instance.startFalling = false;
+		}
 	}
 
 	void OnTriggerStay2D(Collider2D col) {
