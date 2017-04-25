@@ -295,7 +295,7 @@ public class PlayerController : MonoBehaviour {
 			Die(true);
 		}
 		if(col.gameObject.CompareTag("Boulder")){
-			Die(false);
+			Health.instance.hp--;
 		}
 		if (col.gameObject.CompareTag ("BoulderExit")) {
 			Debug.Log ("boulderexit");
