@@ -96,7 +96,7 @@ public class PlayerController : MonoBehaviour {
 
 	void Update () {
 		isGrounded = DoGroundCheck ();
-	
+		Debug.Log (isGrounded);
 		remainingJumps = (isGrounded) ? maxJumps : remainingJumps;
 
 		if (Health.instance.hp <= 0 && !isDead) {
@@ -201,8 +201,6 @@ public class PlayerController : MonoBehaviour {
 
 	void ClimbingInputManager() {
 		verticalDirection = 0;
-
-		//if (BeanstalkScript.instance.FullyGrown ())
 		{
 			
 			if (Input.GetKey (KeyCode.UpArrow) || Input.GetKey (KeyCode.W)) {
@@ -349,7 +347,7 @@ public class PlayerController : MonoBehaviour {
 	void PlantBeanstalk() {
 		GameObject bean = Instantiate (beanstalkPrefab);
 		bean.transform.position = new Vector3 (transform.position.x,
-											   transform.position.y - 1.22f,
+			transform.position.y - 1.22f,
 											   transform.position.z);
 		beanCount--;
 	}

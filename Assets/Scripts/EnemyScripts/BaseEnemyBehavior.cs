@@ -22,6 +22,11 @@ public class BaseEnemyBehavior : MonoBehaviour {
 
 	private Vector3 originalPosition;
 
+	// Color changing parameters
+	private SpriteRenderer renderer;
+	private Color originalColor;
+	private List<GameObject> childList = new List<GameObject>();
+
 	// Use this for initialization
 	void Start () {
 		rb2d = GetComponent<Rigidbody2D> ();
@@ -29,11 +34,30 @@ public class BaseEnemyBehavior : MonoBehaviour {
 		canBeActivated = true;
 		health = 3;
 		anim.SetBool ("isLeft", true);
-
+		renderer = this.GetComponentInChildren<SpriteRenderer> ();
+		originalColor = this.GetComponentInChildren<SpriteRenderer> ().color;
+		for (int i = 0; i < this.gameObject.transform.GetChild (0).childCount; i++) {
+			childList.Add (this.gameObject.transform.GetChild (0).GetChild (i).gameObject);
+		}
 
 		originalPosition = transform.position;
 	}
 
+	// turns golem red when hit
+	public void RedFlash(){
+		renderer.color = new Color (1, 0, 0, 1);
+		foreach (GameObject child in childList) {
+			child.GetComponent<SpriteRenderer> ().color = new Color (1, 0, 0, 1);
+		}
+	}
+
+	// turns golem back to grey after being hit
+	public void RevertFromRed(){
+		renderer.color = originalColor;
+		foreach (GameObject child in childList) {
+			child.GetComponent<SpriteRenderer> ().color = originalColor;
+		}
+	}
 	
 	// Update is called once per frame
 	virtual protected void Update () {
@@ -51,10 +75,6 @@ public class BaseEnemyBehavior : MonoBehaviour {
 			//StartCoroutine (Activate ());
 			Debug.Log("starting to activate");
 			anim.SetTrigger("isActivated");
-		}
-		if (col.CompareTag ("Weapon") && PlayerController.instance.isAttacking) {
-			Debug.Log ("Attacked!");
-			GetDamaged (1);
 		}
 
 	}
@@ -109,13 +129,13 @@ public class BaseEnemyBehavior : MonoBehaviour {
 	IEnumerator DisableForTime(float seconds){
 		yield return new WaitForSeconds (seconds);
 		canBeActivated = true;
-		health = 3;
 	}
 
 	public void Activate(){
 		Debug.Log ("finished activating");
 		isActive = true;
 		anim.SetTrigger ("isWalking");
+		health = 3;
 	}
 
 	public void Reset(){
@@ -128,7 +148,6 @@ public class BaseEnemyBehavior : MonoBehaviour {
 		isAttacked = false; 
 		isAttacking = false;
 		isDead = false;
-
 
 	}
 }

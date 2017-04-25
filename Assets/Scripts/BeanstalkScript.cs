@@ -22,6 +22,7 @@ public class BeanstalkScript : MonoBehaviour {
 	private bool cut = false;
 	private int direction;
 	private float fullyRotated = 2;
+	public float growSize = .5f;
 
 	void Start () {
 		renderer = this.GetComponent<SpriteRenderer> ();
@@ -70,9 +71,12 @@ public class BeanstalkScript : MonoBehaviour {
 		else{
 			if (!grown) {
 				transform.localScale += new Vector3 (growthSpeed, growthSpeed, 0);
-				transform.Translate (new Vector2 (0, growthSpeed * 10f));
+				if(growSize >= .8f)
+					transform.Translate (new Vector2 (0, growthSpeed * (10 - growSize * 3/2)));
+				else
+					transform.Translate (new Vector2 (0, growthSpeed * (10 - growSize * growSize)));
 			}
-			if (transform.localScale.y > .5f)
+			if (transform.localScale.y > growSize)
 				grown = true;
 		}
 
