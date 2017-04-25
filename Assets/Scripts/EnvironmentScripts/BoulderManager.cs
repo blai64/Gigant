@@ -12,7 +12,7 @@ public class BoulderManager : MonoBehaviour {
 	private Vector3 spawnPos;
 	private Rigidbody2D rb2d;
 
-	private bool startFalling; // use flag to check if the boulder reaches the bottom
+	public bool startFalling; // use flag to check if the boulder reaches the bottom
 	public bool reset;
 	public float range;
 
@@ -25,6 +25,12 @@ public class BoulderManager : MonoBehaviour {
 		startFalling = false;
 		reset = true;
 		rb2d = boulderPrefab.GetComponent<Rigidbody2D> ();
+	}
+
+	void Awake() {
+		if (instance == null)
+			instance = this;
+
 	}
 
 
@@ -56,4 +62,5 @@ public class BoulderManager : MonoBehaviour {
 			startFalling = true;
 		}
 	}
+		
 }
