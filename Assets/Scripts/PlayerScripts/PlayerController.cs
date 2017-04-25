@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour {
 	private bool doJump; // try to start jump on current frame
 
 	//Vertical beanstalk 
+	private bool canClimb; // this stops him from immediately climbing after k=jumping off
 	private bool isClimbing;
 	private bool atTopOfStalk;
 	private CapsuleCollider2D beanstalkCollider;
@@ -98,10 +99,11 @@ public class PlayerController : MonoBehaviour {
 	void Update () {
 		DoGroundCheck ();
 		if (isGrounded && isClimbing && !(Input.GetKey (KeyCode.UpArrow) || Input.GetKey (KeyCode.W))) {
-			Debug.Log ("should stop climbing");	
 			Climb (false);
 		}
-		remainingJumps = (isGrounded) ? maxJumps : remainingJumps;
+
+		canClimb = (isGrounded && !isClimbing) ? true : canClimb;
+		remainingJumps = (isGrounded || isClimbing) ? maxJumps : remainingJumps;
 
 		if (Health.instance.hp <= 0 && !isDead) {
 			Die (false);
@@ -122,7 +124,7 @@ public class PlayerController : MonoBehaviour {
 				}*/
 
 				float curY = transform.position.y; 
-				curY= Mathf.Clamp(curY, Mathf.NegativeInfinity, beanstalkCollider.bounds.center.y + beanstalkCollider.bounds.extents.y);
+				curY = Mathf.Clamp (curY, Mathf.NegativeInfinity, beanstalkCollider.bounds.center.y + beanstalkCollider.bounds.extents.y);
 
 				transform.position = new Vector3 (transform.position.x, curY, transform.position.z);
 
@@ -140,6 +142,8 @@ public class PlayerController : MonoBehaviour {
 					doJump = false; 
 				}
 			}
+		} else if (isGrounded){
+			rb2d.velocity = new Vector2 (0f, 0f);
 		}
 
 		Fall ();
@@ -321,11 +325,14 @@ public class PlayerController : MonoBehaviour {
 			Debug.Log ("boulderexit");
 			BoulderManager.instance.startFalling = false;
 		}
+		if (col.gameObject.CompareTag ("Beanstalk")) {
+			canClimb = true;
+		}
 	}
 
 	void OnTriggerStay2D(Collider2D col) {
 		// trigger for climbing the beanstalk
-		if (col.CompareTag ("Beanstalk") && 
+		if (col.CompareTag ("Beanstalk") && canClimb &&
 			(Input.GetKeyDown (KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) 
 			&& !isClimbing && col.gameObject.GetComponent<BeanstalkScript>().FullyGrown()) {
 			transform.position = new Vector3 (col.transform.position.x, 
@@ -333,6 +340,7 @@ public class PlayerController : MonoBehaviour {
 				transform.position.z);
 			beanstalkCollider = col.gameObject.GetComponent<CapsuleCollider2D> ();
 			Climb (true);
+			canClimb = false;
 		}
 							// Alex) Put beanstalk cutting script
 							//       on sword itself 4/23
