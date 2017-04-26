@@ -115,6 +115,10 @@ public class MosaicCameraScript : MonoBehaviour
 			PlayerController.instance.GetComponent<Rigidbody2D> ().velocity = new Vector2(0,0);
 			MainCamera.instance.UpdateBounds(targetBounds);
 			PlayerController.instance.Disable (true);
+			BaseEnemyBehavior[] enemies = FindObjectsOfType(typeof(BaseEnemyBehavior)) as BaseEnemyBehavior[];
+			foreach (BaseEnemyBehavior enemy in enemies) {
+				enemy.Reset ();
+			}
 		}
 
 		if (depixelizing && !pixelizing) {
