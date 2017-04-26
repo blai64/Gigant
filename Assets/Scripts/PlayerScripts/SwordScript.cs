@@ -32,7 +32,7 @@ public class SwordScript : MonoBehaviour {
 	}
 
 	void OnTriggerExit2D(Collider2D col){
-		if (col.CompareTag ("Enemy")) {
+		if (col.CompareTag ("Enemy") && hitEnemy) {
 			hitEnemy = false;
 			col.gameObject.GetComponent<BaseEnemyBehavior> ().RevertFromRed ();
 		}
