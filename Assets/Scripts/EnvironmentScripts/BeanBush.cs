@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BeanBush : MonoBehaviour {
-	private float beanRate = 2f;
+	
+	public float beanRate = 2f;
 	private float progress;
 
 	private int maxBeans; 
@@ -11,15 +12,14 @@ public class BeanBush : MonoBehaviour {
 	private Object beanLock;
 
 	[HideInInspector] int beanCount;
-	// Use this for initialization
+
 	void Start () {
 		beanLock = new Object ();
 		maxBeans = transform.childCount;
 		progress = 0f;
 		beanCount = 0;
 	}
-	
-	// Update is called once per frame
+
 	void Update () {
 		if (beanCount < maxBeans)
 			progress += Time.deltaTime;

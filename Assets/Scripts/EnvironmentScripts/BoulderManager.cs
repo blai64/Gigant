@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class BoulderManager : MonoBehaviour {
 
-	public static BoulderManager instance;
 
 	public GameObject boulderPrefab;
 	public Transform spawnTrans;
@@ -27,24 +26,21 @@ public class BoulderManager : MonoBehaviour {
 		rb2d = boulderPrefab.GetComponent<Rigidbody2D> ();
 	}
 
-	void Awake() {
-		if (instance == null)
-			instance = this;
-
-	}
 
 
 	void Update(){
+		boulderPrefab.SetActive (startFalling);
 		if (reset) {
 			boulderPrefab.transform.position = new Vector3 (spawnPos.x + range * Random.value, spawnPos.y, spawnPos.z);
 			rb2d.velocity = new Vector2 (0.0f, 0.0f);
 		}
 		if (startFalling) {
+			Debug.Log (startFalling);
 			reset = false;
 			boulderPrefab.SetActive (true);
 			Rotate (boulderPrefab);
 
-			if (Mathf.Abs(boulderPrefab.transform.position.y - disappearTrans.transform.position.y) <= 2.0f) {
+			if (Mathf.Abs (boulderPrefab.transform.position.y - disappearTrans.transform.position.y) <= 2.0f) {
 				reset = true;
 			}
 		}
@@ -52,7 +48,7 @@ public class BoulderManager : MonoBehaviour {
 	}
 
 	void Rotate(GameObject obj){
-		obj.transform.Rotate(Vector3.right * Time.deltaTime);
+		obj.transform.Rotate(Vector3.back * Time.deltaTime * 1000);
 	}
 
 

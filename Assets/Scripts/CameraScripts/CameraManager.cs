@@ -29,7 +29,6 @@ public class CameraManager : MonoBehaviour {
 
 	void Start () {
 		cam = GetComponent<Camera> ();
-		Debug.Log (cam.orthographicSize); 
 		blackBarInactiveOffset = TopBlack.transform.localPosition.y;
 	}
 
