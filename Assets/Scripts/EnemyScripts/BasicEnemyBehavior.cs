@@ -28,6 +28,8 @@ public class BasicEnemyBehavior : BaseEnemyBehavior {
 	}
 		
 
+		
+
 	/* void OnTriggerStay2D(Collider2D col){																					// Alex) Enemy knocks down beanstalks 4/23
 		if (col.CompareTag ("Beanstalk") && attackCounter > attackThreshold && 
 			col.gameObject.GetComponent<BeanstalkScript>().FullyGrown() ) {
