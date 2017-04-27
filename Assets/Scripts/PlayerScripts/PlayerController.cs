@@ -94,7 +94,7 @@ public class PlayerController : MonoBehaviour {
 	void DoGroundCheck(){
 		foreach (Transform groundCheck in groundChecks) {
 			isGrounded = Physics2D.Linecast (transform.position, groundCheck.position,
-				1 << LayerMask.NameToLayer ("Ground"));
+				1 << LayerMask.NameToLayer ("Ground") | 1 << LayerMask.NameToLayer("Enemy"));
 			if (isGrounded) {
 				break;
 			}
