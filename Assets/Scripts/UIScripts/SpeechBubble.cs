@@ -56,6 +56,15 @@ public class SpeechBubble : MonoBehaviour {
 
 	public IEnumerator AnimateText() {
 		for (int i = 0; i < text.Length; i++) {
+			//check for special text tag
+			if (text[i] == '<'){
+				int count = 2;
+				while (count > 0) {
+					if (text [i] == '>')
+						count--;
+					i++;
+				}
+			}
 			textBox.text = text.Substring (0, i);
 			yield return new WaitForSeconds (0.05f);
 		}
