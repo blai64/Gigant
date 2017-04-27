@@ -102,6 +102,8 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void Update () {
+		print (inFrontOfTunnel);
+
 		DoGroundCheck ();
 		if (isGrounded && isClimbing && !(Input.GetKey (KeyCode.UpArrow) || Input.GetKey (KeyCode.W))) {
 			Climb (false);
