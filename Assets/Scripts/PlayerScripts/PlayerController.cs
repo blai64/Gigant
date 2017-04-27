@@ -62,6 +62,8 @@ public class PlayerController : MonoBehaviour {
 
 	[HideInInspector] public int beanCount;
 	public int maxBeans = 5;
+	private bool canPlantBean;
+
 
 	public GameObject weapon; //Sword gameObject
 	[HideInInspector] public bool isAttacking;
@@ -93,6 +95,8 @@ public class PlayerController : MonoBehaviour {
 
 	void DoGroundCheck(){
 		foreach (Transform groundCheck in groundChecks) {
+			canPlantBean = Physics2D.Linecast (transform.position, groundCheck.position,
+				1 << LayerMask.NameToLayer ("Ground"));
 			isGrounded = Physics2D.Linecast (transform.position, groundCheck.position,
 				1 << LayerMask.NameToLayer ("Ground") | 1 << LayerMask.NameToLayer("Enemy"));
 			if (isGrounded) {
@@ -221,7 +225,7 @@ public class PlayerController : MonoBehaviour {
 		if ((Input.GetKeyDown (KeyCode.P) ||
 			 Input.GetKeyDown (KeyCode.LeftShift) ||
 		     Input.GetKeyDown (KeyCode.RightShift)) && isGrounded) {
-			if (beanCount > 0)
+			if (beanCount > 0 && canPlantBean)
 				PlantBeanstalk ();
 		}
 	}
