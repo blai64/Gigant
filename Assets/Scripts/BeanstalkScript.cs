@@ -114,11 +114,15 @@ public class BeanstalkScript : MonoBehaviour {
 										colorChangeRate, colorChangeRate,0);
 			transform.localScale -= new Vector3 (0.01f * growthSpeed, 0.01f * growthSpeed, 0);
 			transform.Translate (new Vector2 (0, -1.5f * growthSpeed));
+			if(transform.localScale.y < .2f)
+				Destroy (this.gameObject);
 		} else if (decayCountdown > decayTimer * 0.05f) {
 			renderer.color -= new Color(colorChangeRate / 2,
 										colorChangeRate, colorChangeRate, 10f *  colorChangeRate);
 			transform.localScale -= new Vector3 (2f * growthSpeed, 2f * growthSpeed, 0);
 			transform.Translate (new Vector2 (0, -20f * growthSpeed));
+			if(transform.localScale.y < .2f)
+				Destroy (this.gameObject);
 		}  else {
 			Destroy (this.gameObject);
 			PlayerController.instance.Climb (false);

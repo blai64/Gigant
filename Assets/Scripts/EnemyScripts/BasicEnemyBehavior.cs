@@ -9,6 +9,8 @@ public class BasicEnemyBehavior : BaseEnemyBehavior {
 	private float distanceBetweenPlayer;
 
 
+
+
 	public GameObject EnemyHitbox;
 
 

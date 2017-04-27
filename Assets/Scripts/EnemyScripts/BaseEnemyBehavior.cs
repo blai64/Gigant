@@ -67,7 +67,6 @@ public class BaseEnemyBehavior : MonoBehaviour {
 			direction = Mathf.Sign (PlayerController.instance.transform.position.x - transform.position.x);
 			anim.SetBool ("isLeft", (direction < 0));
 			rb2d.velocity = new Vector2 (direction * moveSpeed, rb2d.velocity.y);
-
 			if (bounds != null) {
 				float x = transform.position.x;
 				float y = transform.position.y;
