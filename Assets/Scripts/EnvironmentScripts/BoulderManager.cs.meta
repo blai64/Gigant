@@ -1,10 +1,15 @@
 fileFormatVersion: 2
 guid: 58a9752424473431fb0920e0f6298737
-timeCreated: 1493047715
+timeCreated: 1493326303
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - boulderPrefab: {instanceID: 0}
+  - exclamationPoint: {fileID: 1169434417945660, guid: 457416fa5a58548ebb5f97b7e7daf3b0,
+      type: 2}
+  - spawnTrans: {instanceID: 0}
+  - disappearTrans: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
