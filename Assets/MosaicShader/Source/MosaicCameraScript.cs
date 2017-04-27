@@ -11,8 +11,6 @@ public class MosaicCameraScript : MonoBehaviour
 	public GameObject white;
 	SpriteRenderer renderer;
 	private Color rendererAlpha;
-	public GameObject health;
-	public GameObject bean;
 
 
 	private Vector3 targetPosition;
@@ -55,13 +53,21 @@ public class MosaicCameraScript : MonoBehaviour
     void Start()
     {
 		anim = player.GetComponentInChildren<Animator> ();
-		isMosaic = false;
+		isMosaic = true;
 		depixelizing = false;
 		pixelizing = false;
+		//0427 
 		//fade 
 		rendererAlpha = white.GetComponent<SpriteRenderer> ().color;
-		rendererAlpha.a = 0f;
+		rendererAlpha.a = 1.0f;
+		MosaicOpacity = 2.0f;
+		targetPosition = PlayerController.instance.transform.position;
+		targetBounds = MainCamera.instance.cameraBounds;
+		//why if i change mosaicopacity & rendereralpha.a -> nullreferrence??
 		white.GetComponent<SpriteRenderer> ().color = rendererAlpha;
+		material.SetFloat("_MosaicOpacity", MosaicOpacity);
+
+
 	}
 
     void Awake()
@@ -103,6 +109,8 @@ public class MosaicCameraScript : MonoBehaviour
 			MosaicOpacity += 0.1f;
 			rendererAlpha.a += 0.05f;
 			white.GetComponent<SpriteRenderer> ().color = rendererAlpha;
+			Debug.Log ("MosaicOpacity =  " + MosaicOpacity);
+			Debug.Log ("rendererAlpha =  " + rendererAlpha.a);
 		}
 
 
@@ -129,16 +137,12 @@ public class MosaicCameraScript : MonoBehaviour
 		}
 
 		if (MosaicOpacity <= 0.0f && depixelizing) {
-			
-			//health.SetActive (true);
-			//bean.SetActive (true);
 			isMosaic = false;
 			depixelizing = false;
 			PlayerController.instance.Enable(true);
 
 		} else if(MosaicOpacity > 0.0f) {
-			//health.SetActive (false);
-			//bean.SetActive (false);
+
 		}
 			
 
