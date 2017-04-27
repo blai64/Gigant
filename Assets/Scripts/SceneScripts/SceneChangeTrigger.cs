@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SceneChangeTrigger : MonoBehaviour {
 	public Transform targetPositionTransform;
@@ -9,6 +10,8 @@ public class SceneChangeTrigger : MonoBehaviour {
 	public BoxCollider2D newBounds;
 
 	public bool isTunnel;
+	public bool isExit = false;
+	public string nextLevelName = "";
 	private bool touchingPlayer;
 
 	void Start(){
@@ -30,13 +33,17 @@ public class SceneChangeTrigger : MonoBehaviour {
 		}
 	}
 
-	void OnTriggerExit2D(Collider2D col){
+	void OnTriggerExit2D(Collider2D col) {
 		if (isTunnel) {
 			touchingPlayer = false;
 		}
 	}
 		
-	public void ChangeScene(){
-		MosaicCameraScript.instance.SetTargetPosition (targetPosition, newBounds);
+	public void ChangeScene() {
+		if (!isExit) {
+			MosaicCameraScript.instance.SetTargetPosition (targetPosition, newBounds);
+		} else {
+			SceneManager.LoadScene (nextLevelName);
+		}
 	}
 }

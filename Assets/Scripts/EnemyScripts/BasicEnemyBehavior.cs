@@ -17,7 +17,7 @@ public class BasicEnemyBehavior : BaseEnemyBehavior {
 	override protected void Update(){
 		base.Update ();
 		distanceBetweenPlayer = Mathf.Abs (transform.position.x - PlayerController.instance.transform.position.x);			
-		if (base.isActive && !base.isDead && !base.isAttacking) {															
+		if (base.isActive && !base.isAttacking) {															
 			attackCounter += 1;																							
 
 
