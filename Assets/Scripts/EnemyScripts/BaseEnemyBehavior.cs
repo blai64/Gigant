@@ -90,8 +90,11 @@ public class BaseEnemyBehavior : MonoBehaviour {
 	//		GetDamaged (1);
 		}
 	}
-		
-
+	void OnTriggerStay2D (Collider2D col){
+		if (col.CompareTag("Player") && !isActive && canBeActivated){
+			anim.SetTrigger("isActivated");
+		}		
+	}
 	public void EndAttack(){
 		isAttacking = false;
 		anim.SetTrigger ("isWalking");
@@ -127,6 +130,8 @@ public class BaseEnemyBehavior : MonoBehaviour {
 
 	public void Activate(){
 		isActive = true;
+		anim.ResetTrigger ("isActivated");
+
 		anim.SetTrigger ("isWalking");
 		health = 3;
 	}
