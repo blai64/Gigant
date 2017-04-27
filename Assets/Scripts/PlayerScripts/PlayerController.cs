@@ -327,6 +327,9 @@ public class PlayerController : MonoBehaviour {
 		}
 		if(col.gameObject.CompareTag("Boulder")){
 			Health.instance.hp--;
+			Knocked ();
+			hurting = true;
+			anim.SetTrigger ("isHurt");
 		}
 		if (col.gameObject.CompareTag ("Beanstalk")) {
 			canClimb = true;
