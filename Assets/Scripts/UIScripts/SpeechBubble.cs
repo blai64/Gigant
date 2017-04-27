@@ -21,8 +21,9 @@ public class SpeechBubble : MonoBehaviour {
 
 		tutorialText = new List<string> ();
 		tutorialText.Add ("Why, if it isn't <color=brown>Jack</color>!\nMy have you grown.");
-//		tutorialText.Add ("I remember the first time I gave you some <color=green>magic beans</color>\nfor this here cow of yers.");
-//		tutorialText.Add ("I hear you've come to <color=red>slay the giant</color>!\nYou'll need to climb to the top and reach his head.");
+		tutorialText.Add ("I remember the first time I gave you some <color=green>magic</color> <color=green>beans</color>\nfor this here cow of yers.");
+		tutorialText.Add ("I guess you're here to\n<color=red>slay</color> <color=red>the</color> <color=red>giant</color>!\nYou'll need to climb to the top and reach his head.");
+		tutorialText.Add ("There are some\n<color=green>magic</color> <color=green>bean</color> <color=green>bushes</color> around here.\nWatch out for <color=grey>golems</color> along the way!");
 
 		textBox = transform.Find ("Panel/Text").GetComponent<Text> ();
 	}
@@ -48,7 +49,6 @@ public class SpeechBubble : MonoBehaviour {
 		text = tutorialText [index];
 
 		yield return StartCoroutine(AnimateText ());
-//		yield return new WaitForSeconds (1.0f);
 
 		index++;
 		isPlaying = false;
