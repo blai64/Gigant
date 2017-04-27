@@ -5,7 +5,6 @@ using UnityEngine;
 public class BaseEnemyBehavior : MonoBehaviour {
 
 	[HideInInspector] public bool isActive; //flag for detecting player
-	[HideInInspector] public bool isDead; //flag for defeated/dead state
 	[HideInInspector] public bool isAttacking; //flag for attacking state
 	[HideInInspector] public float direction;
 	[HideInInspector] public bool isAttacked; //flag for attacked by Jack
@@ -63,7 +62,7 @@ public class BaseEnemyBehavior : MonoBehaviour {
 	// Update is called once per frame
 	virtual protected void Update () {
 		//only move when not dead or attacking
-		if (isActive && !isDead && !isAttacking) {
+		if (isActive  && !isAttacking) {
 			direction = Mathf.Sign (PlayerController.instance.transform.position.x - transform.position.x);
 			anim.SetBool ("isLeft", (direction < 0));
 			rb2d.velocity = new Vector2 (direction * moveSpeed, rb2d.velocity.y);
@@ -84,7 +83,7 @@ public class BaseEnemyBehavior : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D (Collider2D col){
-		if (col.CompareTag("Player") && !isActive){
+		if (col.CompareTag("Player") && !isActive && canBeActivated){
 			anim.SetTrigger("isActivated");
 		}
 
@@ -114,6 +113,8 @@ public class BaseEnemyBehavior : MonoBehaviour {
 		//Destroy (gameObject);//temporary...
 		//start Death animation
 		isActive = false;
+		isAttacking = false;
+
 		canBeActivated = false;
 		anim.SetTrigger ("isDeactivated");
 		StartCoroutine (DisableForTime (3.0f));
@@ -126,6 +127,7 @@ public class BaseEnemyBehavior : MonoBehaviour {
 	}
 
 	public void Activate(){
+		print ("activated");
 		isActive = true;
 		anim.SetTrigger ("isWalking");
 		health = 3;
@@ -140,7 +142,7 @@ public class BaseEnemyBehavior : MonoBehaviour {
 		isActive = false; 
 		isAttacked = false; 
 		isAttacking = false;
-		isDead = false;
+
 
 	}
 }

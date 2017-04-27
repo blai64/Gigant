@@ -102,8 +102,6 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void Update () {
-		print (inFrontOfTunnel);
-
 		DoGroundCheck ();
 		if (isGrounded && isClimbing && !(Input.GetKey (KeyCode.UpArrow) || Input.GetKey (KeyCode.W))) {
 			Climb (false);
@@ -324,7 +322,7 @@ public class PlayerController : MonoBehaviour {
 			checkpointLocation = col.transform.position;
 			checkpointCameraBound = MainCamera.instance.cameraBounds;
 		}
-		if(col.gameObject.CompareTag("Pit")){
+		if(col.gameObject.CompareTag("Pit") && Health.hp <= 0){
 			Die(true);
 		}
 		if(col.gameObject.CompareTag("Boulder")){
