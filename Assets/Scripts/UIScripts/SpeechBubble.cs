@@ -43,7 +43,6 @@ public class SpeechBubble : MonoBehaviour {
 		text = textToShow [index];
 
 		yield return StartCoroutine(AnimateText ());
-//		yield return new WaitForSeconds (1.0f);
 
 		index++;
 		isPlaying = false;

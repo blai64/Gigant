@@ -6,6 +6,7 @@ public class BoulderManager : MonoBehaviour {
 
 
 	public GameObject boulderPrefab;
+	public GameObject exclamationPointPrefab;
 	public Transform spawnTrans;
 	public Transform disappearTrans;
 	private Vector3 spawnPos;
@@ -14,6 +15,7 @@ public class BoulderManager : MonoBehaviour {
 	public bool startFalling; // use flag to check if the boulder reaches the bottom
 	public bool reset;
 	public float range;
+
 
 
 
@@ -35,7 +37,12 @@ public class BoulderManager : MonoBehaviour {
 			rb2d.velocity = new Vector2 (0.0f, 0.0f);
 		}
 		if (startFalling) {
-			Debug.Log (startFalling);
+			if (reset) {
+				GameObject warning = Instantiate (exclamationPointPrefab);
+				warning.transform.position = new Vector3 (boulderPrefab.transform.position.x,
+					PlayerController.instance.transform.position.y + 3,
+					spawnPos.z);
+			}
 			reset = false;
 			boulderPrefab.SetActive (true);
 			Rotate (boulderPrefab);

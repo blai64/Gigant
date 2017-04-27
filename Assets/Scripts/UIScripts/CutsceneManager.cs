@@ -149,9 +149,8 @@ public class CutsceneManager : MonoBehaviour {
 
 		StartCoroutine (CameraManager.instance.Zoom (false));
 		StartCoroutine (CameraManager.instance.MoveCinematic (false));
-		Debug.Log ("???");
 		PlayerController.instance.Enable (true);
-		Debug.Log ("???");
+
 		yield return 0;
 	}
 }

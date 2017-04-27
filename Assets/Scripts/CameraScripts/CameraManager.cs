@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraManager : MonoBehaviour {
+	
 	public static CameraManager instance;
-
 
 	private Camera cam;
 
@@ -15,12 +15,10 @@ public class CameraManager : MonoBehaviour {
 
 	private bool isActive;
 
-
 	public GameObject TopBlack;
 	public GameObject BottomBlack;
 
-
-	void Awake(){
+	void Awake() {
 		if (instance == null)
 			instance = this;
 		else
@@ -32,8 +30,7 @@ public class CameraManager : MonoBehaviour {
 		blackBarInactiveOffset = TopBlack.transform.localPosition.y;
 	}
 
-
-	public IEnumerator Zoom(bool zoomIn){
+	public IEnumerator Zoom(bool zoomIn) {
 		float t = 0f;
 		float curCameraSize = cam.orthographicSize;
 
@@ -44,11 +41,9 @@ public class CameraManager : MonoBehaviour {
 			cam.orthographicSize = Mathf.Lerp (curCameraSize, newCameraSize, t);
 			yield return 0;
 		}
-	
-		//StartCoroutine (StartCinematic ());
 	}
 
-	public IEnumerator MoveCinematic(bool starting){
+	public IEnumerator MoveCinematic(bool starting) {
 		float t = 0f;
 
 		Vector3 oldTopPosition = TopBlack.transform.localPosition;
@@ -71,6 +66,4 @@ public class CameraManager : MonoBehaviour {
 
 		isActive = starting;
 	}
-
-
 }

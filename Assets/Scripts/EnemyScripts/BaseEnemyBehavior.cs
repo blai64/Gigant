@@ -61,6 +61,14 @@ public class BaseEnemyBehavior : MonoBehaviour {
 	
 	// Update is called once per frame
 	virtual protected void Update () {
+		// Turns boxColliders on arms on and off depending on whether the enemy is attacking or not
+		if (isAttacking) {
+			this.gameObject.transform.GetChild (0).GetChild (1).gameObject.GetComponent<BoxCollider2D> ().enabled = true;
+			this.gameObject.transform.GetChild (0).GetChild (2).gameObject.GetComponent<BoxCollider2D> ().enabled = true;
+		} else {
+			this.gameObject.transform.GetChild (0).GetChild (1).gameObject.GetComponent<BoxCollider2D> ().enabled = false;
+			this.gameObject.transform.GetChild (0).GetChild (2).gameObject.GetComponent<BoxCollider2D> ().enabled = false;
+		}
 		//only move when not dead or attacking
 		if (isActive  && !isAttacking) {
 			direction = Mathf.Sign (PlayerController.instance.transform.position.x - transform.position.x);

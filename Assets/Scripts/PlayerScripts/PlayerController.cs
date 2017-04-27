@@ -326,11 +326,14 @@ public class PlayerController : MonoBehaviour {
 			checkpointLocation = col.transform.position;
 			checkpointCameraBound = MainCamera.instance.cameraBounds;
 		}
-		if(col.gameObject.CompareTag("Pit") && Health.instance.hp <= 0){
+		if(col.gameObject.CompareTag("Pit")) {
 			Die(true);
 		}
-		if(col.gameObject.CompareTag("Boulder")){
+		if(col.gameObject.CompareTag("Boulder")) {
 			Health.instance.hp--;
+			Knocked ();
+			hurting = true;
+			anim.SetTrigger ("isHurt");
 		}
 		if (col.gameObject.CompareTag ("Beanstalk")) {
 			canClimb = true;
