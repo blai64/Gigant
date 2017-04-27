@@ -365,7 +365,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void OnCollisionEnter2D(Collision2D col) {
-		if (col.gameObject.CompareTag ("Enemy") ) {
+		if (col.gameObject.CompareTag ("Enemy") && col.gameObject.GetComponent<BaseEnemyBehavior>().isAttacking) {
 			Health.instance.hp--;
 			Knocked ();
 			hurting = true;
