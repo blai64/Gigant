@@ -63,19 +63,19 @@ public class BasicEnemyBehavior : BaseEnemyBehavior {
 
 	IEnumerator BasicAttack(){
 		float t = 0f; 
-		GameObject temp = Instantiate (EnemyHitbox, transform.position, transform.rotation);
+		//GameObject temp = Instantiate (EnemyHitbox, transform.position, transform.rotation);
 
-		Vector3 oldPos = temp.transform.position;
-		Vector3 newPos = oldPos + (base.direction * attackDistance * Vector3.right);
+		//Vector3 oldPos = temp.transform.position;
+		//Vector3 newPos = oldPos + (base.direction * attackDistance * Vector3.right);
 
 		while (t < 1.0) {
 			t += Time.deltaTime / 0.5f;
 
-			temp.transform.position = Vector3.Lerp (oldPos, newPos, t);
+			//temp.transform.position = Vector3.Lerp (oldPos, newPos, t);
 			yield return 0;
 		}
 
-		Destroy (temp);
+		//Destroy (temp);
 		EndAttack ();
 	}
 }
