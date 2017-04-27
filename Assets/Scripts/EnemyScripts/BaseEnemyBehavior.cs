@@ -61,7 +61,6 @@ public class BaseEnemyBehavior : MonoBehaviour {
 	
 	// Update is called once per frame
 	virtual protected void Update () {
-		print (isAttacking);
 		//only move when not dead or attacking
 		if (isActive  && !isAttacking) {
 			direction = Mathf.Sign (PlayerController.instance.transform.position.x - transform.position.x);
