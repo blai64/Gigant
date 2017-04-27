@@ -43,8 +43,10 @@ public class CutsceneManager : MonoBehaviour {
 		speechBubble.SetActive (false);
 
 		StartCoroutine (CameraManager.instance.Zoom (false));
-		yield return StartCoroutine (CameraManager.instance.MoveCinematic (false));
-
+		StartCoroutine (CameraManager.instance.MoveCinematic (false));
+		Debug.Log ("???");
 		PlayerController.instance.Enable (true);
+		Debug.Log ("???");
+		yield return 0;
 	}
 }
