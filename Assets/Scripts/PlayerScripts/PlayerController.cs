@@ -44,6 +44,8 @@ public class PlayerController : MonoBehaviour {
 	//private bool isKnocking;
 	private bool hurting;
 
+	private bool inFrontOfTunnel;
+
 	//####################################################################
 	//Combat logic
 	private float attackCooldown = 0;
@@ -194,7 +196,7 @@ public class PlayerController : MonoBehaviour {
 		//Should only jump if you have remaining jumps and also if you are slow enough
 		//to prevent using both jumps immediately
 		if (remainingJumps > 0 && !isClimbing &&
-			rb2d.velocity.y <= 1.0f &&
+			rb2d.velocity.y <= 1.0f && !inFrontOfTunnel && 
 			(Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown (KeyCode.W))) {
 			doJump = true;
 			SoundManager.instance.PlaySound ("jump");
@@ -329,6 +331,9 @@ public class PlayerController : MonoBehaviour {
 		if (col.gameObject.CompareTag ("Beanstalk")) {
 			canClimb = true;
 		}
+		if (col.gameObject.CompareTag ("SceneChangeTrigger") && col.gameObject.GetComponent<SceneChangeTrigger>().isTunnel) {
+			inFrontOfTunnel = true;
+		}
 	}
 
 	void OnTriggerStay2D(Collider2D col) {
@@ -353,6 +358,9 @@ public class PlayerController : MonoBehaviour {
 			atTopOfStalk = true;
 			//Climb (false);
 
+		}
+		if (col.gameObject.CompareTag ("SceneChangeTrigger") && col.gameObject.GetComponent<SceneChangeTrigger>().isTunnel) {
+			inFrontOfTunnel = false;
 		}
 	}
 
