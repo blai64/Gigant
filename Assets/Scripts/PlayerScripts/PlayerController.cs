@@ -322,7 +322,7 @@ public class PlayerController : MonoBehaviour {
 			checkpointLocation = col.transform.position;
 			checkpointCameraBound = MainCamera.instance.cameraBounds;
 		}
-		if(col.gameObject.CompareTag("Pit") && Health.instance.hp <= 0){
+		if(col.gameObject.CompareTag("Pit") || Health.instance.hp <= 0){
 			Die(true);
 		}
 		if(col.gameObject.CompareTag("Boulder")){
