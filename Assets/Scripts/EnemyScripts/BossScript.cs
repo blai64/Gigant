@@ -17,6 +17,12 @@ public class BossScript : MonoBehaviour {
 		stage = 0;
 	}
 
+	void OnTriggerEnter2D(Collider2D col){
+		if (col.CompareTag ("Weapon") && PlayerController.instance.isAttacking) {
+			GetDamaged (1);
+		}
+	}
+
 	public void GetDamaged (int damage){
 		health -= damage;
 		Debug.Log (health);

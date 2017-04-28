@@ -29,14 +29,6 @@ public class SwordScript : MonoBehaviour {
 			col.gameObject.GetComponent<BaseEnemyBehavior> ().RedFlash ();
 
 		}
-
-		if (col.CompareTag ("Boss") &&
-			PlayerController.instance.isAttacking &&
-			col.gameObject.GetComponent<BossScript>().health > 0) {
-
-			col.gameObject.GetComponent<BossScript> ().GetDamaged (1);
-
-		}
 	}
 
 	void OnTriggerExit2D(Collider2D col){

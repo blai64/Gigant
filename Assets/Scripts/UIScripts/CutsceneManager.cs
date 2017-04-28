@@ -385,12 +385,8 @@ public class CutsceneManager : MonoBehaviour {
 
 		yield return new WaitForSeconds (0.3f);
 
-		SetActiveBubble (playerSpeechBubble, playerSb);
-		activeSb.Play(bossText1);
-
-		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
-
-		activeSb.Play (bossText2);
+		SetActiveBubble (bossSpeechBubble, bossSb);
+		activeSb.Play(bossText3);
 
 		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
 
@@ -459,16 +455,12 @@ public class CutsceneManager : MonoBehaviour {
 
 		yield return new WaitForSeconds (0.3f);
 
-		SetActiveBubble (playerSpeechBubble, playerSb);
-		activeSb.Play(bossText1);
+		SetActiveBubble (bossSpeechBubble, bossSb);
+		activeSb.Play(bossText5);
 
-		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
+		yield return StartCoroutine (Wait ());
 
-		activeSb.Play (bossText2);
-
-		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
-
-		StartCoroutine (EndCutsceneBossP2());
+		StartCoroutine (EndCutsceneBossP4());
 
 
 	}
