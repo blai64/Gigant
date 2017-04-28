@@ -27,7 +27,13 @@ public class SwordScript : MonoBehaviour {
 			hitEnemy = true;
 			col.gameObject.GetComponent<BaseEnemyBehavior> ().GetDamaged (1);
 			col.gameObject.GetComponent<BaseEnemyBehavior> ().RedFlash ();
-
+		}
+		else if(col.CompareTag ("AdvancedEnemy") && !hitEnemy &&
+			PlayerController.instance.isAttacking &&
+			col.gameObject.GetComponent<BaseAdvancedEnemyBehavior>().health > 0) {
+			hitEnemy = true;
+			col.gameObject.GetComponent<BaseAdvancedEnemyBehavior> ().GetDamaged (1);
+			col.gameObject.GetComponent<BaseAdvancedEnemyBehavior> ().RedFlash ();
 		}
 	}
 
@@ -35,6 +41,10 @@ public class SwordScript : MonoBehaviour {
 		if (col.CompareTag ("Enemy") && hitEnemy) {
 			hitEnemy = false;
 			col.gameObject.GetComponent<BaseEnemyBehavior> ().RevertFromRed ();
+		}
+		else if (col.CompareTag ("AdvancedEnemy") && hitEnemy) {
+			hitEnemy = false;
+			col.gameObject.GetComponent<BaseAdvancedEnemyBehavior> ().RevertFromRed ();
 		}
 	}
 }
