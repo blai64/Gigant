@@ -9,6 +9,7 @@ public class ButtonMenu : MonoBehaviour {
 	private Button btn;
 	private string btnName;
 	private PauseGame pg;
+	public string next;
 
 	void Awake() {
 		
@@ -24,7 +25,7 @@ public class ButtonMenu : MonoBehaviour {
 		switch (btnName) {
 
 		case "Play":
-			btn.onClick.AddListener (delegate{ChangeScene("Alpha_Scene1");});
+			btn.onClick.AddListener (delegate{ChangeScene("Tutorial");});
 			break;
 
 		case "Main Menu":
@@ -49,6 +50,10 @@ public class ButtonMenu : MonoBehaviour {
 
 		case "Mute":
 			btn.onClick.AddListener (Mute);
+			break;
+
+		case "Next":
+			btn.onClick.AddListener (delegate{ChangeScene(next);});
 			break;
 
 		default:

@@ -17,135 +17,56 @@ Platform assembly: C:\Users\Poob\Documents\Gigant\JackTheGiantSlayer_Data\Manage
 Loading C:\Users\Poob\Documents\Gigant\JackTheGiantSlayer_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
 Platform assembly: C:\Users\Poob\Documents\Gigant\JackTheGiantSlayer_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll (this message is harmless)
 Loading C:\Users\Poob\Documents\Gigant\JackTheGiantSlayer_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll into Unity Child Domain
-- Completed reload, in  0.023 seconds
+- Completed reload, in  0.024 seconds
 Platform assembly: C:\Users\Poob\Documents\Gigant\JackTheGiantSlayer_Data\Managed\System.Core.dll (this message is harmless)
 Platform assembly: C:\Users\Poob\Documents\Gigant\JackTheGiantSlayer_Data\Managed\System.dll (this message is harmless)
 desktop: 1366x768 60Hz; virtual: 1366x768 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
 <RI> Initialized touch support.
-UnloadTime: 1.311609 ms
-Scene 'Alpha_Scene1' couldn't be loaded because it has not been added to the build settings or the AssetBundle has not been loaded.
-To add a scene to the build settings use the menu File->Build Settings...
- 
-(Filename:  Line: 127)
+UnloadTime: 2.516734 ms
+Unloading 6 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 7.803372 ms
 
-Scene 'Alpha_Scene1' couldn't be loaded because it has not been added to the build settings or the AssetBundle has not been loaded.
-To add a scene to the build settings use the menu File->Build Settings...
- 
-(Filename:  Line: 127)
-
-Scene 'Alpha_Scene1' couldn't be loaded because it has not been added to the build settings or the AssetBundle has not been loaded.
-To add a scene to the build settings use the menu File->Build Settings...
- 
-(Filename:  Line: 127)
-
-Scene 'Alpha_Scene1' couldn't be loaded because it has not been added to the build settings or the AssetBundle has not been loaded.
-To add a scene to the build settings use the menu File->Build Settings...
- 
-(Filename:  Line: 127)
-
-Scene 'Alpha_Scene1' couldn't be loaded because it has not been added to the build settings or the AssetBundle has not been loaded.
-To add a scene to the build settings use the menu File->Build Settings...
- 
-(Filename:  Line: 127)
-
-Unloading 7 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 4.516436 ms
-
-Unloading 5 unused Assets to reduce memory usage. Loaded Objects now: 820.
-Total: 0.227511 ms (FindLiveObjects: 0.038916 ms CreateObjectMapping: 0.022665 ms MarkObjects: 0.159514 ms  DeleteObjects: 0.006414 ms)
-
-Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 0.604272 ms
-
-Unloading 142 unused Assets to reduce memory usage. Loaded Objects now: 320.
-Total: 0.376334 ms (FindLiveObjects: 0.023093 ms CreateObjectMapping: 0.016250 ms MarkObjects: 0.171060 ms  DeleteObjects: 0.165501 ms)
+Unloading 5 unused Assets to reduce memory usage. Loaded Objects now: 829.
+Total: 0.488378 ms (FindLiveObjects: 0.071845 ms CreateObjectMapping: 0.041909 ms MarkObjects: 0.362649 ms  DeleteObjects: 0.011546 ms)
 
 Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 0.448607 ms
+UnloadTime: 0.647037 ms
 
-Unloading 3 unused Assets to reduce memory usage. Loaded Objects now: 811.
-Total: 0.362649 ms (FindLiveObjects: 0.069279 ms CreateObjectMapping: 0.035067 ms MarkObjects: 0.248466 ms  DeleteObjects: 0.009408 ms)
-
-Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 0.566211 ms
-
-Unloading 133 unused Assets to reduce memory usage. Loaded Objects now: 320.
-Total: 0.477687 ms (FindLiveObjects: 0.030790 ms CreateObjectMapping: 0.022665 ms MarkObjects: 0.209121 ms  DeleteObjects: 0.214681 ms)
-
-Scene 'Alpha_Scene1' couldn't be loaded because it has not been added to the build settings or the AssetBundle has not been loaded.
-To add a scene to the build settings use the menu File->Build Settings...
- 
-(Filename:  Line: 127)
-
-Scene 'Alpha_Scene1' couldn't be loaded because it has not been added to the build settings or the AssetBundle has not been loaded.
-To add a scene to the build settings use the menu File->Build Settings...
- 
-(Filename:  Line: 127)
-
-Scene 'Alpha_Scene1' couldn't be loaded because it has not been added to the build settings or the AssetBundle has not been loaded.
-To add a scene to the build settings use the menu File->Build Settings...
- 
-(Filename:  Line: 127)
-
-Scene 'Alpha_Scene1' couldn't be loaded because it has not been added to the build settings or the AssetBundle has not been loaded.
-To add a scene to the build settings use the menu File->Build Settings...
- 
-(Filename:  Line: 127)
-
-Scene 'Alpha_Scene1' couldn't be loaded because it has not been added to the build settings or the AssetBundle has not been loaded.
-To add a scene to the build settings use the menu File->Build Settings...
- 
-(Filename:  Line: 127)
-
-Scene 'Alpha_Scene1' couldn't be loaded because it has not been added to the build settings or the AssetBundle has not been loaded.
-To add a scene to the build settings use the menu File->Build Settings...
- 
-(Filename:  Line: 127)
-
-Scene 'Alpha_Scene1' couldn't be loaded because it has not been added to the build settings or the AssetBundle has not been loaded.
-To add a scene to the build settings use the menu File->Build Settings...
- 
-(Filename:  Line: 127)
-
-Scene 'Alpha_Scene1' couldn't be loaded because it has not been added to the build settings or the AssetBundle has not been loaded.
-To add a scene to the build settings use the menu File->Build Settings...
- 
-(Filename:  Line: 127)
-
-Scene 'Alpha_Scene1' couldn't be loaded because it has not been added to the build settings or the AssetBundle has not been loaded.
-To add a scene to the build settings use the menu File->Build Settings...
- 
-(Filename:  Line: 127)
-
-Scene 'Alpha_Scene1' couldn't be loaded because it has not been added to the build settings or the AssetBundle has not been loaded.
-To add a scene to the build settings use the menu File->Build Settings...
- 
-(Filename:  Line: 127)
-
-Scene 'Alpha_Scene1' couldn't be loaded because it has not been added to the build settings or the AssetBundle has not been loaded.
-To add a scene to the build settings use the menu File->Build Settings...
- 
-(Filename:  Line: 127)
-
-Scene 'Alpha_Scene1' couldn't be loaded because it has not been added to the build settings or the AssetBundle has not been loaded.
-To add a scene to the build settings use the menu File->Build Settings...
- 
-(Filename:  Line: 127)
-
-Unloading 6 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 0.551243 ms
-
-Unloading 3 unused Assets to reduce memory usage. Loaded Objects now: 820.
-Total: 0.431928 ms (FindLiveObjects: 0.065430 ms CreateObjectMapping: 0.044048 ms MarkObjects: 0.310047 ms  DeleteObjects: 0.011546 ms)
+Unloading 11 unused Assets to reduce memory usage. Loaded Objects now: 915.
+Total: 1.007976 ms (FindLiveObjects: 0.099642 ms CreateObjectMapping: 0.087668 ms MarkObjects: 0.639767 ms  DeleteObjects: 0.179613 ms)
 
 Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 0.656446 ms
+UnloadTime: 0.774906 ms
 
-Unloading 142 unused Assets to reduce memory usage. Loaded Objects now: 320.
-Total: 0.461436 ms (FindLiveObjects: 0.038488 ms CreateObjectMapping: 0.020527 ms MarkObjects: 0.189449 ms  DeleteObjects: 0.212543 ms)
+Unloading 147 unused Assets to reduce memory usage. Loaded Objects now: 320.
+Total: 0.497359 ms (FindLiveObjects: 0.034639 ms CreateObjectMapping: 0.022237 ms MarkObjects: 0.220240 ms  DeleteObjects: 0.218957 ms)
+
+Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 0.458443 ms
+
+Unloading 3 unused Assets to reduce memory usage. Loaded Objects now: 814.
+Total: 0.378044 ms (FindLiveObjects: 0.056877 ms CreateObjectMapping: 0.032929 ms MarkObjects: 0.278401 ms  DeleteObjects: 0.009408 ms)
+
+Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 0.617529 ms
+
+Unloading 132 unused Assets to reduce memory usage. Loaded Objects now: 320.
+Total: 0.488378 ms (FindLiveObjects: 0.034212 ms CreateObjectMapping: 0.021382 ms MarkObjects: 0.221523 ms  DeleteObjects: 0.209549 ms)
+
+Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 0.407552 ms
+
+Unloading 3 unused Assets to reduce memory usage. Loaded Objects now: 2349.
+Total: 0.644472 ms (FindLiveObjects: 0.100498 ms CreateObjectMapping: 0.057733 ms MarkObjects: 0.475549 ms  DeleteObjects: 0.009836 ms)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at CutsceneManager+<StartCutsceneTutorial>c__Iterator2.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+ 
+(Filename:  Line: -1)
 
 Setting up 2 worker threads for Enlighten.
-  Thread -> id: e4 -> priority: 1 
-  Thread -> id: 8e8 -> priority: 1 
+  Thread -> id: 233c -> priority: 1 
+  Thread -> id: 26fc -> priority: 1 

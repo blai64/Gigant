@@ -72,7 +72,7 @@ public class CutsceneManager : MonoBehaviour {
 		level2Text2.Add ("......");
 		level2Text3.Add ("What you said earlier got me thinkin'.\nCan I check your magic beans?");
 		level2Text3.Add ("......");
-		level2Text3.Add ("Whoops. I've dropped all our beans off the moutain.\nDon't worry, I think there's a bean bush somewhere areound here.");
+		level2Text3.Add ("Whoops. I've dropped all our beans off the moutain.\nDon't worry, I think there's a bean bush somewhere around here.");
 
 		level3Text1.Add ("Why if it isn't Jack!\nHow's it going bud?");
 		level3Text2.Add ("......\n......");
@@ -110,13 +110,13 @@ public class CutsceneManager : MonoBehaviour {
 			//TODO: case on which scene this is, start the correct cutscene
 			switch (SceneManager.GetActiveScene().name)
 			{
-			case "Level1":
+			case "Level2":
 				StartCoroutine (StartCutsceneLevel1 ());
 				break;
-			case "Level2":
+			case "Level3":
 				StartCoroutine (StartCutsceneLevel2 ());
 				break;
-			case "Level3":
+			case "Level4":
 				StartCoroutine (StartCutsceneLevel3 ());
 				break;
 			case "Zao_BossLevel":
@@ -256,6 +256,8 @@ public class CutsceneManager : MonoBehaviour {
 
 		SetActiveBubble (hermitSpeechBubble, hermitSb);
 		activeSb.Play(level2Text3);
+
+		PlayerController.instance.beanCount = 0;
 
 		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
 
