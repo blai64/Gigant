@@ -70,7 +70,7 @@ public class BaseEnemyBehavior : MonoBehaviour {
 			this.gameObject.transform.GetChild (0).GetChild (2).gameObject.GetComponent<BoxCollider2D> ().enabled = false;
 		}
 		//only move when not dead or attacking
-		if (isActive  && !isAttacking) {
+		if (isActive && !isAttacking) {
 			direction = Mathf.Sign (PlayerController.instance.transform.position.x - transform.position.x);
 			anim.SetBool ("isLeft", (direction < 0));
 			rb2d.velocity = new Vector2 (direction * moveSpeed, rb2d.velocity.y);
@@ -79,12 +79,14 @@ public class BaseEnemyBehavior : MonoBehaviour {
 				float y = transform.position.y;
 
 
-				x = Mathf.Clamp(x, bounds.bounds.center.x - bounds.bounds.extents.x, bounds.bounds.center.x + bounds.bounds.extents.x);
-				y = Mathf.Clamp(y, bounds.bounds.center.y - bounds.bounds.extents.y, bounds.bounds.center.y + bounds.bounds.extents.y);
+				x = Mathf.Clamp (x, bounds.bounds.center.x - bounds.bounds.extents.x, bounds.bounds.center.x + bounds.bounds.extents.x);
+				y = Mathf.Clamp (y, bounds.bounds.center.y - bounds.bounds.extents.y, bounds.bounds.center.y + bounds.bounds.extents.y);
 
-				transform.position = new Vector3(x, y, transform.position.z);
+				transform.position = new Vector3 (x, y, transform.position.z);
 			}
 
+		} else {
+			rb2d.velocity = Vector2.zero;
 		}
 
 	}
