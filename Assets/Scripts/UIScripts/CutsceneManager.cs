@@ -47,6 +47,7 @@ public class CutsceneManager : MonoBehaviour {
 	private List<string> bossText5 = new List<string> ();
 
 	//cutscene boss
+	public GameObject boss;
 	public GameObject bossSpeechBubble;
 	private SpeechBubble bossSb;
 
@@ -118,6 +119,7 @@ public class CutsceneManager : MonoBehaviour {
 			case "Level3":
 				StartCoroutine (StartCutsceneLevel3 ());
 				break;
+			case "Blai_Beta":
 			case "BossLevel":
 				StartCoroutine (StartCutsceneBoss ());
 				break;
@@ -190,20 +192,29 @@ public class CutsceneManager : MonoBehaviour {
 		yield return new WaitForSeconds (0.3f);
 
 		SetActiveBubble (hermitSpeechBubble, hermitSb);
-		activeSb.Play(tutorialText);
+		activeSb.Play(level1Text1);
 
 		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
 
 		SetActiveBubble (playerSpeechBubble, playerSb);
-		activeSb.Play(tutorialText2);
+		activeSb.Play(level1Text2);
 
 		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
 
 		SetActiveBubble (hermitSpeechBubble, hermitSb);
-		activeSb.Play(tutorialText3);
+		activeSb.Play(level1Text3);
 
 		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
 		//yield return 0;
+		SetActiveBubble (hermitSpeechBubble, hermitSb);
+		activeSb.Play(level1Text4);
+
+		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
+
+		SetActiveBubble (hermitSpeechBubble, hermitSb);
+		activeSb.Play(level1Text5);
+
+		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
 
 		StartCoroutine (EndCutsceneLevel1());
 	}
@@ -233,20 +244,19 @@ public class CutsceneManager : MonoBehaviour {
 		yield return new WaitForSeconds (0.3f);
 
 		SetActiveBubble (hermitSpeechBubble, hermitSb);
-		activeSb.Play(tutorialText);
+		activeSb.Play(level2Text1);
 
 		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
 
 		SetActiveBubble (playerSpeechBubble, playerSb);
-		activeSb.Play(tutorialText2);
+		activeSb.Play(level2Text2);
 
 		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
 
 		SetActiveBubble (hermitSpeechBubble, hermitSb);
-		activeSb.Play(tutorialText3);
+		activeSb.Play(level2Text3);
 
 		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
-		//yield return 0;
 
 		StartCoroutine (EndCutsceneLevel1());
 	}
@@ -276,20 +286,29 @@ public class CutsceneManager : MonoBehaviour {
 		yield return new WaitForSeconds (0.3f);
 
 		SetActiveBubble (hermitSpeechBubble, hermitSb);
-		activeSb.Play(tutorialText);
+		activeSb.Play(level3Text1);
 
 		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
 
 		SetActiveBubble (playerSpeechBubble, playerSb);
-		activeSb.Play(tutorialText2);
+		activeSb.Play(level3Text2);
 
 		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
 
 		SetActiveBubble (hermitSpeechBubble, hermitSb);
-		activeSb.Play(tutorialText3);
+		activeSb.Play(level3Text3);
 
 		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
 		//yield return 0;
+		SetActiveBubble (hermitSpeechBubble, hermitSb);
+		activeSb.Play(level3Text4);
+
+		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
+
+		SetActiveBubble (hermitSpeechBubble, hermitSb);
+		activeSb.Play(level3Text5);
+
+		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
 
 		StartCoroutine (EndCutsceneLevel1());
 	}
@@ -313,24 +332,31 @@ public class CutsceneManager : MonoBehaviour {
 
 		yield return 0;
 
-		StartCoroutine (CameraManager.instance.Zoom (true));
-		yield return StartCoroutine (CameraManager.instance.MoveCinematic (true));
+		StartCoroutine (CameraManager.instance.Zoom (false));
+		yield return StartCoroutine (CameraManager.instance.MoveCinematic (true,true, 3.5f));
+
+		MainCamera.instance.player = boss.transform;
 
 		yield return new WaitForSeconds (0.3f);
 
-		bossSpeechBubble.SetActive (true);
-		bossSb.Play(tutorialText);
-		yield return 0;
+		SetActiveBubble (playerSpeechBubble, playerSb);
+		activeSb.Play(bossText1);
+
+		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
+
+		StartCoroutine (EndCutsceneBoss());
 	
+
 	}
 
 	public IEnumerator EndCutsceneBoss() {
+		MainCamera.instance.player = player.transform;
 
-		bossSpeechBubble.SetActive (false);
-
-		StartCoroutine (CameraManager.instance.Zoom (false));
-		StartCoroutine (CameraManager.instance.MoveCinematic (false));
+		StartCoroutine (CameraManager.instance.Zoom (true));
+		StartCoroutine (CameraManager.instance.MoveCinematic (false,true, 3.5f));
 		PlayerController.instance.Enable (true);
+
+
 
 		yield return 0;
 	}
