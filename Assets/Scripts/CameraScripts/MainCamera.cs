@@ -5,7 +5,7 @@ using UnityEngine;
 public class MainCamera : MonoBehaviour
 {
 	public static MainCamera instance;
-	private Transform player;
+	public Transform player;
 	private Camera mainCamera;
 
 	public Vector2 margin = new Vector2(1, 1); // If the player stays inside this margin, the camera won't move.
