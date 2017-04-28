@@ -1,0 +1,72 @@
+Initialize engine version: 5.5.2f1 (3829d7f588f3)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: Intel(R) HD Graphics 4600 (ID=0x416)
+    Vendor:   Intel
+    VRAM:     1136 MB
+    Driver:   21.21.13.7654
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\Users\Poob\Documents\Gigant\JackTheGiantSlayer_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\Poob\Documents\Gigant\JackTheGiantSlayer_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\Poob\Documents\Gigant\JackTheGiantSlayer_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\Poob\Documents\Gigant\JackTheGiantSlayer_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Users\Poob\Documents\Gigant\JackTheGiantSlayer_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading C:\Users\Poob\Documents\Gigant\JackTheGiantSlayer_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: C:\Users\Poob\Documents\Gigant\JackTheGiantSlayer_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading C:\Users\Poob\Documents\Gigant\JackTheGiantSlayer_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+Platform assembly: C:\Users\Poob\Documents\Gigant\JackTheGiantSlayer_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll (this message is harmless)
+Loading C:\Users\Poob\Documents\Gigant\JackTheGiantSlayer_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll into Unity Child Domain
+- Completed reload, in  0.024 seconds
+Platform assembly: C:\Users\Poob\Documents\Gigant\JackTheGiantSlayer_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: C:\Users\Poob\Documents\Gigant\JackTheGiantSlayer_Data\Managed\System.dll (this message is harmless)
+desktop: 1366x768 60Hz; virtual: 1366x768 at 0,0
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+UnloadTime: 2.516734 ms
+Unloading 6 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 7.803372 ms
+
+Unloading 5 unused Assets to reduce memory usage. Loaded Objects now: 829.
+Total: 0.488378 ms (FindLiveObjects: 0.071845 ms CreateObjectMapping: 0.041909 ms MarkObjects: 0.362649 ms  DeleteObjects: 0.011546 ms)
+
+Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 0.647037 ms
+
+Unloading 11 unused Assets to reduce memory usage. Loaded Objects now: 915.
+Total: 1.007976 ms (FindLiveObjects: 0.099642 ms CreateObjectMapping: 0.087668 ms MarkObjects: 0.639767 ms  DeleteObjects: 0.179613 ms)
+
+Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 0.774906 ms
+
+Unloading 147 unused Assets to reduce memory usage. Loaded Objects now: 320.
+Total: 0.497359 ms (FindLiveObjects: 0.034639 ms CreateObjectMapping: 0.022237 ms MarkObjects: 0.220240 ms  DeleteObjects: 0.218957 ms)
+
+Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 0.458443 ms
+
+Unloading 3 unused Assets to reduce memory usage. Loaded Objects now: 814.
+Total: 0.378044 ms (FindLiveObjects: 0.056877 ms CreateObjectMapping: 0.032929 ms MarkObjects: 0.278401 ms  DeleteObjects: 0.009408 ms)
+
+Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 0.617529 ms
+
+Unloading 132 unused Assets to reduce memory usage. Loaded Objects now: 320.
+Total: 0.488378 ms (FindLiveObjects: 0.034212 ms CreateObjectMapping: 0.021382 ms MarkObjects: 0.221523 ms  DeleteObjects: 0.209549 ms)
+
+Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 0.407552 ms
+
+Unloading 3 unused Assets to reduce memory usage. Loaded Objects now: 2349.
+Total: 0.644472 ms (FindLiveObjects: 0.100498 ms CreateObjectMapping: 0.057733 ms MarkObjects: 0.475549 ms  DeleteObjects: 0.009836 ms)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at CutsceneManager+<StartCutsceneTutorial>c__Iterator2.MoveNext () [0x00000] in <filename unknown>:0 
+  at UnityEngine.SetupCoroutine.InvokeMoveNext (IEnumerator enumerator, IntPtr returnValueAddress) [0x00000] in <filename unknown>:0 
+ 
+(Filename:  Line: -1)
+
+Setting up 2 worker threads for Enlighten.
+  Thread -> id: 233c -> priority: 1 
+  Thread -> id: 26fc -> priority: 1 
