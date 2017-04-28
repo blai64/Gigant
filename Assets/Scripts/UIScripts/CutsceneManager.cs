@@ -119,6 +119,7 @@ public class CutsceneManager : MonoBehaviour {
 			case "Level3":
 				StartCoroutine (StartCutsceneLevel3 ());
 				break;
+			case "Zao_BossLevel":
 			case "Blai_Beta":
 			case "BossLevel":
 				StartCoroutine (StartCutsceneBoss ());
@@ -173,9 +174,9 @@ public class CutsceneManager : MonoBehaviour {
 
 		StartCoroutine (CameraManager.instance.Zoom (false));
 		StartCoroutine (CameraManager.instance.MoveCinematic (false));
-		Debug.Log ("???");
+
 		PlayerController.instance.Enable (true);
-		Debug.Log ("???");
+
 		yield return 0;
 	}
 
@@ -225,9 +226,9 @@ public class CutsceneManager : MonoBehaviour {
 
 		StartCoroutine (CameraManager.instance.Zoom (false));
 		StartCoroutine (CameraManager.instance.MoveCinematic (false));
-		Debug.Log ("???");
+
 		PlayerController.instance.Enable (true);
-		Debug.Log ("???");
+
 		yield return 0;
 	}
 
@@ -267,11 +268,12 @@ public class CutsceneManager : MonoBehaviour {
 
 		StartCoroutine (CameraManager.instance.Zoom (false));
 		StartCoroutine (CameraManager.instance.MoveCinematic (false));
-		Debug.Log ("???");
+
 		PlayerController.instance.Enable (true);
-		Debug.Log ("???");
+
 		yield return 0;
 	}
+
 
 	//###################################################################################
 
@@ -319,21 +321,65 @@ public class CutsceneManager : MonoBehaviour {
 
 		StartCoroutine (CameraManager.instance.Zoom (false));
 		StartCoroutine (CameraManager.instance.MoveCinematic (false));
-		Debug.Log ("???");
+
 		PlayerController.instance.Enable (true);
-		Debug.Log ("???");
+
+		yield return 0;
+	}
+
+
+
+	//###################################################################################
+
+	IEnumerator StartCutsceneBoss() {
+		PlayerController.instance.Disable (true);
+
+		yield return 0;
+
+		StartCoroutine (CameraManager.instance.Zoom (true));
+		yield return StartCoroutine (CameraManager.instance.MoveCinematic (true));
+
+		yield return new WaitForSeconds (0.3f);
+
+		SetActiveBubble (playerSpeechBubble, playerSb);
+		activeSb.Play(bossText1);
+
+		yield return StartCoroutine (Wait ());
+
+		activeSb.Play(bossText2);
+
+		yield return StartCoroutine (Wait ());
+
+		StartCoroutine (EndCutsceneBoss());
+	}
+
+	public IEnumerator EndCutsceneBoss() {
+
+		SetActiveBubble (null,null);
+
+		StartCoroutine (CameraManager.instance.Zoom (false));
+		StartCoroutine (CameraManager.instance.MoveCinematic (false));
+
+		PlayerController.instance.Enable (true);
+
 		yield return 0;
 	}
 
 	//###################################################################################
 
-	public IEnumerator StartCutsceneBoss(){
+	public IEnumerator StartCutsceneBossP2(){
 		PlayerController.instance.Disable (true);
 
 		yield return 0;
 
 		StartCoroutine (CameraManager.instance.Zoom (false));
-		yield return StartCoroutine (CameraManager.instance.MoveCinematic (true,true, 3.5f));
+		yield return StartCoroutine (CameraManager.instance.MoveCinematic (true,true, -0.05f));
+
+		StartCoroutine (CameraManager.instance.Zoom (false));
+		yield return StartCoroutine (CameraManager.instance.MoveCinematic (true,true, -0.05f));
+
+		StartCoroutine (CameraManager.instance.Zoom (false));
+		yield return StartCoroutine (CameraManager.instance.MoveCinematic (true,true, -0.05f));
 
 		MainCamera.instance.player = boss.transform;
 
@@ -344,16 +390,102 @@ public class CutsceneManager : MonoBehaviour {
 
 		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
 
-		StartCoroutine (EndCutsceneBoss());
+		activeSb.Play (bossText2);
+
+		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
+
+		StartCoroutine (EndCutsceneBossP2());
 	
 
 	}
 
-	public IEnumerator EndCutsceneBoss() {
+	public IEnumerator EndCutsceneBossP2() {
 		MainCamera.instance.player = player.transform;
 
 		StartCoroutine (CameraManager.instance.Zoom (true));
-		StartCoroutine (CameraManager.instance.MoveCinematic (false,true, 3.5f));
+		yield return StartCoroutine (CameraManager.instance.MoveCinematic (false,true, 0.05f));
+
+		StartCoroutine (CameraManager.instance.Zoom (true));
+		yield return StartCoroutine (CameraManager.instance.MoveCinematic (false,true, 0.05f));
+
+		StartCoroutine (CameraManager.instance.Zoom (true));
+		yield return StartCoroutine (CameraManager.instance.MoveCinematic (false,true, 0.05f));
+
+
+		PlayerController.instance.Enable (true);
+
+
+
+		StartCoroutine (StartCutsceneBossP3 ());
+	}
+
+	//###################################################################################
+
+	IEnumerator StartCutsceneBossP3() {
+		PlayerController.instance.Disable (true);
+
+		yield return 0;
+
+		StartCoroutine (CameraManager.instance.Zoom (true));
+		yield return StartCoroutine (CameraManager.instance.MoveCinematic (true));
+
+		yield return new WaitForSeconds (0.3f);
+
+		SetActiveBubble (playerSpeechBubble, playerSb);
+		activeSb.Play(bossText4);
+
+		yield return StartCoroutine (Wait ());
+
+		StartCoroutine (EndCutsceneBoss());
+	}
+
+	//###################################################################################
+
+	public IEnumerator StartCutsceneBossP4(){
+		PlayerController.instance.Disable (true);
+
+		yield return 0;
+
+		StartCoroutine (CameraManager.instance.Zoom (false));
+		yield return StartCoroutine (CameraManager.instance.MoveCinematic (true,true, -0.05f));
+
+		StartCoroutine (CameraManager.instance.Zoom (false));
+		yield return StartCoroutine (CameraManager.instance.MoveCinematic (true,true, -0.05f));
+
+		StartCoroutine (CameraManager.instance.Zoom (false));
+		yield return StartCoroutine (CameraManager.instance.MoveCinematic (true,true, -0.05f));
+
+		MainCamera.instance.player = boss.transform;
+
+		yield return new WaitForSeconds (0.3f);
+
+		SetActiveBubble (playerSpeechBubble, playerSb);
+		activeSb.Play(bossText1);
+
+		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
+
+		activeSb.Play (bossText2);
+
+		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
+
+		StartCoroutine (EndCutsceneBossP2());
+
+
+	}
+
+	public IEnumerator EndCutsceneBossP4() {
+		MainCamera.instance.player = player.transform;
+
+		StartCoroutine (CameraManager.instance.Zoom (true));
+		yield return StartCoroutine (CameraManager.instance.MoveCinematic (false,true, 0.05f));
+
+		StartCoroutine (CameraManager.instance.Zoom (true));
+		yield return StartCoroutine (CameraManager.instance.MoveCinematic (false,true, 0.05f));
+
+		StartCoroutine (CameraManager.instance.Zoom (true));
+		yield return StartCoroutine (CameraManager.instance.MoveCinematic (false,true, 0.05f));
+
+
 		PlayerController.instance.Enable (true);
 
 
