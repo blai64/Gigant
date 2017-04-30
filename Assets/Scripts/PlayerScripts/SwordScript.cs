@@ -16,11 +16,11 @@ public class SwordScript : MonoBehaviour {
 	}
 
 	void OnTriggerStay2D(Collider2D col){
-		if(col.CompareTag("Beanstalk") && 
+		/*if(col.CompareTag("Beanstalk") && 
 			PlayerController.instance.isAttacking &&
 			col.gameObject.GetComponent<BeanstalkScript>().FullyGrown()){						
 			col.gameObject.GetComponent<BeanstalkScript> ().PlayerCutBeanstalk ();
-		}
+		}*/
 		if (col.CompareTag ("Enemy") && !hitEnemy &&
 		   PlayerController.instance.isAttacking &&
 			col.gameObject.GetComponent<BaseEnemyBehavior>().health > 0) {

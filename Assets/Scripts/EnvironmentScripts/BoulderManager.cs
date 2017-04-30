@@ -38,7 +38,8 @@ public class BoulderManager : MonoBehaviour {
 		}
 		if (startFalling) {
 			if (reset) {
-				if (PlayerController.instance.transform.position.y + 3 < spawnPos.y) {
+				if (PlayerController.instance.transform.position.y + 3 < spawnPos.y && 
+					this.gameObject.transform.GetChild(1).transform.position.y <= PlayerController.instance.transform.position.y) {
 					GameObject warning = Instantiate (exclamationPointPrefab);
 					warning.transform.position = new Vector3 (boulderPrefab.transform.position.x,
 						PlayerController.instance.transform.position.y + 3,
