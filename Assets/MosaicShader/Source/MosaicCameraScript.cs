@@ -109,8 +109,10 @@ public class MosaicCameraScript : MonoBehaviour
 			MosaicOpacity += 0.1f;
 			rendererAlpha.a += 0.05f;
 			white.GetComponent<SpriteRenderer> ().color = rendererAlpha;
+			/*
 			Debug.Log ("MosaicOpacity =  " + MosaicOpacity);
 			Debug.Log ("rendererAlpha =  " + rendererAlpha.a);
+			*/
 		}
 
 
