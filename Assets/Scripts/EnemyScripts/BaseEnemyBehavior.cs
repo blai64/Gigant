@@ -27,6 +27,9 @@ public class BaseEnemyBehavior : MonoBehaviour {
 	private List<GameObject> childList = new List<GameObject>();
 	public BoxCollider2D bounds; 
 
+	// Ignore collision between player if inactive
+	public GameObject playerPrefab;
+
 	// Use this for initialization
 	void Start () {
 		rb2d = GetComponent<Rigidbody2D> ();
@@ -41,6 +44,7 @@ public class BaseEnemyBehavior : MonoBehaviour {
 		}
 
 		originalPosition = transform.position;
+
 	}
 
 	// turns golem red when hit
@@ -89,17 +93,31 @@ public class BaseEnemyBehavior : MonoBehaviour {
 			rb2d.velocity = Vector2.zero;
 		}
 
+
 	}
 
+
+
 	void OnTriggerEnter2D (Collider2D col){
-		if (col.CompareTag("Player") && !isActive && canBeActivated){
-			anim.SetTrigger("isActivated");
+		if (col.CompareTag ("Player") && !isActive && canBeActivated) {
+			anim.SetTrigger ("isActivated");
 		}
 
 		if (col.CompareTag ("Weapon") && PlayerController.instance.isAttacking) {
 	//		GetDamaged (1);
 		}
 	}
+
+
+	void OnCollisionEnter2D(Collision2D collision)
+	{
+		if (collision.gameObject.tag == "Player" && !isActive)
+		{
+			Physics2D.IgnoreCollision(playerPrefab.GetComponent<PolygonCollider2D>(), GetComponent<PolygonCollider2D>());
+		}
+	}
+
+
 	void OnTriggerStay2D (Collider2D col){
 		if (col.CompareTag("Player") && !isActive && canBeActivated){
 			anim.SetTrigger("isActivated");
