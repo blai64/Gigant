@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class BoulderManager : MonoBehaviour {
 
+	public static BoulderManager instance;
+
 
 	public GameObject boulderPrefab;
 	public GameObject exclamationPointPrefab;
@@ -15,7 +17,7 @@ public class BoulderManager : MonoBehaviour {
 	public bool startFalling; // use flag to check if the boulder reaches the bottom
 	public bool reset;
 	public float range;
-
+	public float speed;
 
 
 
@@ -28,6 +30,10 @@ public class BoulderManager : MonoBehaviour {
 		rb2d = boulderPrefab.GetComponent<Rigidbody2D> ();
 	}
 
+	void Awake(){
+		if (instance == null)
+			instance = this;
+	}
 
 
 	void Update(){
@@ -35,8 +41,10 @@ public class BoulderManager : MonoBehaviour {
 		if (reset) {
 			boulderPrefab.transform.position = new Vector3 (spawnPos.x + range * Random.value, spawnPos.y, spawnPos.z);
 			rb2d.velocity = new Vector2 (0.0f, 0.0f);
+
 		}
 		if (startFalling) {
+			Debug.Log ("startFalling =  " + startFalling);
 			if (reset) {
 				GameObject warning = Instantiate (exclamationPointPrefab);
 				warning.transform.position = new Vector3 (boulderPrefab.transform.position.x,
@@ -45,6 +53,10 @@ public class BoulderManager : MonoBehaviour {
 			}
 			reset = false;
 			boulderPrefab.SetActive (true);
+			rb2d.velocity = new Vector2 (0.0f, -speed);
+			//make the boulders fall in constant speed
+
+
 			Rotate (boulderPrefab);
 
 			if (Mathf.Abs (boulderPrefab.transform.position.y - disappearTrans.transform.position.y) <= 2.0f) {
@@ -57,7 +69,7 @@ public class BoulderManager : MonoBehaviour {
 	void Rotate(GameObject obj){
 		obj.transform.Rotate(Vector3.back * Time.deltaTime * 1000);
 	}
-
+//
 
 	void OnTriggerEnter2D (Collider2D col){
 		if (col.CompareTag("Player")){
