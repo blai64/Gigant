@@ -50,21 +50,8 @@ public class MainCamera : MonoBehaviour
 
 	void Update()
 	{
-		//var x = transform.position.x;
-		//var y = transform.position.y;
-
 		if (isFollowing)
 		{
-			/*
-			if (Mathf.Abs(x - player.position.x) > margin.x)
-				x = Mathf.Lerp(x, player.position.x, smoothing.x * Time.deltaTime);
-
-			if (Mathf.Abs(y - player.position.y) > margin.y)
-				y = Mathf.Lerp(y, player.position.y, smoothing.y * Time.deltaTime);
-
-			x = Mathf.Lerp(x, player.position.x, smoothing.x * Time.deltaTime);
-			y = Mathf.Lerp(y, player.position.y, smoothing.y * Time.deltaTime);
-			*/
 			Vector3 point = mainCamera.WorldToViewportPoint(player.position);
 			Vector3 destination;
 			float oldZ = transform.position.z;

@@ -328,7 +328,11 @@ public class PlayerController : MonoBehaviour {
 			anim.SetTrigger ("isDead");
 		Disable (false);
 		isDead = true;
+
+		CutsceneManager.instance.playerRespawning = true;
+		CutsceneManager.instance.causeOfDeath = (fell) ? "fall" : "enemy";
 		rb2d.velocity = Vector2.zero;
+
 		StartCoroutine (Respawn ());
 	}
 
