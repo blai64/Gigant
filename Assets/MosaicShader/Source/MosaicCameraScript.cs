@@ -111,7 +111,11 @@ public class MosaicCameraScript : MonoBehaviour {
 			MainCamera.instance.UpdateBounds(targetBounds);
 			PlayerController.instance.Disable (true);
 			BaseEnemyBehavior[] enemies = FindObjectsOfType(typeof(BaseEnemyBehavior)) as BaseEnemyBehavior[];
+			BaseAdvancedEnemyBehavior[] enemies2 = FindObjectsOfType(typeof(BaseAdvancedEnemyBehavior)) as BaseAdvancedEnemyBehavior[];
 			foreach (BaseEnemyBehavior enemy in enemies) {
+				enemy.Reset ();
+			}
+			foreach (BaseAdvancedEnemyBehavior enemy in enemies2) {
 				enemy.Reset ();
 			}
 		}

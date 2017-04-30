@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 07b41b862d1814fc48e884ea928882e2
+timeCreated: 1493579415
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - bounds: {instanceID: 0}
+  - VictoryVine: {fileID: 1802142978237782, guid: c5ba66cc17e3540c79de822a3e1640f5,
+      type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

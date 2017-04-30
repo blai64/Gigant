@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BoulderManager : MonoBehaviour {
 
+	public static BoulderManager instance;
 
 	public GameObject boulderPrefab;
 	public GameObject exclamationPointPrefab;
@@ -20,6 +21,7 @@ public class BoulderManager : MonoBehaviour {
 	public bool startFalling; // use flag to check if the boulder reaches the bottom
 	public bool reset;
 	public float range;
+	public float speed;
 
 	void Start () {
 		spawnPos = spawnTrans.position;
@@ -30,8 +32,13 @@ public class BoulderManager : MonoBehaviour {
 		newRotate = Random.Range (-rotateSpeed, rotateSpeed);
 	}
 
-	void Update() {
-		
+	void Awake() {
+		if (instance == null)
+			instance = this;
+	}
+
+
+	void Update(){
 		boulderPrefab.SetActive (startFalling);
 
 		if (reset) {
@@ -41,17 +48,26 @@ public class BoulderManager : MonoBehaviour {
 			boulderPrefab.transform.localScale = new Vector3 (newScale, newScale, newScale);
 			newRotate = Random.Range (-rotateSpeed, rotateSpeed);
 			rb2d.velocity = new Vector2 (0.0f, 0.0f);
+
 		}
 
 		if (startFalling) {
+			Debug.Log ("startFalling =  " + startFalling);
 			if (reset) {
-				GameObject warning = Instantiate (exclamationPointPrefab);
-				warning.transform.position = new Vector3 (boulderPrefab.transform.position.x,
-					PlayerController.instance.transform.position.y + 3,
-					spawnPos.z);
+				if (PlayerController.instance.transform.position.y + 3 < spawnPos.y && 
+					this.gameObject.transform.GetChild(1).transform.position.y <= PlayerController.instance.transform.position.y) {
+					GameObject warning = Instantiate (exclamationPointPrefab);
+					warning.transform.position = new Vector3 (boulderPrefab.transform.position.x,
+						PlayerController.instance.transform.position.y + 3,
+						spawnPos.z);
+				}
 			}
 			reset = false;
 			boulderPrefab.SetActive (true);
+			rb2d.velocity = new Vector2 (0.0f, -speed);
+			//make the boulders fall in constant speed
+
+
 			Rotate (boulderPrefab);
 
 			if (Mathf.Abs (boulderPrefab.transform.position.y - disappearTrans.transform.position.y) <= 2.0f) {
@@ -61,7 +77,7 @@ public class BoulderManager : MonoBehaviour {
 
 	}
 
-	void Rotate(GameObject obj){
+	void Rotate(GameObject obj) {
 		obj.transform.Rotate(Vector3.back * Time.deltaTime * newRotate);
 	}
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Text.RegularExpressions;
 
 public class SpeechBubble : MonoBehaviour {
 
@@ -15,6 +16,7 @@ public class SpeechBubble : MonoBehaviour {
 	private bool hasStarted = false;
 	private bool isPlaying = false;
 
+	private IEnumerator curRoutine;
 	void Awake() {
 		csm = CSManager.GetComponent<CutsceneManager> ();
 		textBox = transform.Find ("Panel/Text").GetComponent<Text> ();
@@ -27,6 +29,14 @@ public class SpeechBubble : MonoBehaviour {
 			} else {
 				StartCoroutine (PlayNext ());
 			}
+		}
+		else if (hasStarted && isPlaying && Input.anyKeyDown){
+			if (curRoutine != null) {
+				StopCoroutine (curRoutine);
+			}
+			textBox.text = text; 
+			isPlaying = false; 
+			index++;
 		}
 	}
 
@@ -42,13 +52,18 @@ public class SpeechBubble : MonoBehaviour {
 		isPlaying = true;
 		text = textToShow [index];
 
-		yield return StartCoroutine(AnimateText ());
+		curRoutine = AnimateText ();
+
+		yield return StartCoroutine(curRoutine);
 
 		index++;
 		isPlaying = false;
 	}
 
 	public IEnumerator AnimateText() {
+		string temp; 
+		string remainingText; 
+		string regex = "(\\<.*?\\>)";
 		for (int i = 0; i < text.Length; i++) {
 			//check for special text tag
 			if (text[i] == '<'){
@@ -59,7 +74,12 @@ public class SpeechBubble : MonoBehaviour {
 					i++;
 				}
 			}
-			textBox.text = text.Substring (0, i);
+
+			remainingText = "";
+			temp = text.Substring (i, text.Length - i);
+			remainingText = Regex.Replace (temp, regex, "");
+
+			textBox.text = text.Substring (0, i) + "<color=#00000000>" + remainingText + "</color>";
 			yield return new WaitForSeconds (0.05f);
 		}
 	}
