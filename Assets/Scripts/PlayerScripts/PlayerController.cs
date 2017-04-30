@@ -317,6 +317,9 @@ public class PlayerController : MonoBehaviour {
 			anim.SetTrigger ("isDead");
 		Disable (false);
 		isDead = true;
+
+		CutsceneManager.instance.playerRespawning = true;
+		CutsceneManager.instance.causeOfDeath = (fell) ? "fall" : "enemy";
 		StartCoroutine (Respawn ());
 	}
 

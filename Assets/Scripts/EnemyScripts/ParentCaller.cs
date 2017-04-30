@@ -24,4 +24,7 @@ public class ParentCaller : MonoBehaviour {
 		parentScript.EndAttack ();
 	}
 
+	public void DoEmit(){
+		parentScript.DoEmit ();
+	}
 }
