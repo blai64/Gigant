@@ -50,6 +50,7 @@ public class PlayerController : MonoBehaviour {
 	//Combat logic
 	private float attackCooldown = 0;
 	public GameObject swordHitbox;
+	private float damageDisableTime = 0.8f;
 
 	//####################################################################
 	//Checkpoint
@@ -331,7 +332,7 @@ public class PlayerController : MonoBehaviour {
 		}
 		if(col.gameObject.CompareTag("Boulder")) {
 			Health.instance.hp--;
-			Knocked ();
+			Knocked ((col.transform.position.x < transform.position.x));
 			hurting = true;
 			anim.SetTrigger ("isHurt");
 		}
@@ -374,7 +375,7 @@ public class PlayerController : MonoBehaviour {
 	void OnCollisionEnter2D(Collision2D col) {
 		if (col.gameObject.CompareTag ("Damage") && !hurting) {
 			Health.instance.hp--;
-			Knocked ();
+			Knocked ((col.transform.position.x < transform.position.x));
 			hurting = true;
 			anim.SetTrigger ("isHurt");
 		}
@@ -411,9 +412,11 @@ public class PlayerController : MonoBehaviour {
 		
 	//############################ Knocked by Enemy #############################
 
-	void Knocked() {
+	void Knocked(bool hitFromLeft) {
 		Disable (false); 
 		//rb2d.velocity = new Vector2(maxSpeed, 5.0f);
+
+		ChangeDirection (hitFromLeft);
 
 		if (!isLeft) {
 			rb2d.velocity = new Vector2 (-maxSpeed, 10.0f);
@@ -429,7 +432,7 @@ public class PlayerController : MonoBehaviour {
 
 
 	IEnumerator Wait() {
-		yield return new WaitForSeconds (1.2f);
+		yield return new WaitForSeconds (damageDisableTime);
 		hurting = false;
 		Enable (true);
 	}
