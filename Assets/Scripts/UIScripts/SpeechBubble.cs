@@ -15,6 +15,7 @@ public class SpeechBubble : MonoBehaviour {
 	private bool hasStarted = false;
 	private bool isPlaying = false;
 
+	private IEnumerator curRoutine;
 	void Awake() {
 		csm = CSManager.GetComponent<CutsceneManager> ();
 		textBox = transform.Find ("Panel/Text").GetComponent<Text> ();
@@ -27,6 +28,14 @@ public class SpeechBubble : MonoBehaviour {
 			} else {
 				StartCoroutine (PlayNext ());
 			}
+		}
+		else if (hasStarted && isPlaying && Input.anyKeyDown){
+			if (curRoutine != null) {
+				StopCoroutine (curRoutine);
+			}
+			textBox.text = text; 
+			isPlaying = false; 
+			index++;
 		}
 	}
 
@@ -42,7 +51,9 @@ public class SpeechBubble : MonoBehaviour {
 		isPlaying = true;
 		text = textToShow [index];
 
-		yield return StartCoroutine(AnimateText ());
+		curRoutine = AnimateText ();
+
+		yield return StartCoroutine(curRoutine);
 
 		index++;
 		isPlaying = false;

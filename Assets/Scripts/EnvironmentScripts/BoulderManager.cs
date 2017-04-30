@@ -46,10 +46,12 @@ public class BoulderManager : MonoBehaviour {
 		if (startFalling) {
 			Debug.Log ("startFalling =  " + startFalling);
 			if (reset) {
-				GameObject warning = Instantiate (exclamationPointPrefab);
-				warning.transform.position = new Vector3 (boulderPrefab.transform.position.x,
-					PlayerController.instance.transform.position.y + 3,
-					spawnPos.z);
+				if (PlayerController.instance.transform.position.y + 3 < spawnPos.y) {
+					GameObject warning = Instantiate (exclamationPointPrefab);
+					warning.transform.position = new Vector3 (boulderPrefab.transform.position.x,
+						PlayerController.instance.transform.position.y + 3,
+						spawnPos.z);
+				}
 			}
 			reset = false;
 			boulderPrefab.SetActive (true);

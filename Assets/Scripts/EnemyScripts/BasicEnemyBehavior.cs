@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BasicEnemyBehavior : BaseEnemyBehavior {
 	private int attackCounter;
-	private int attackThreshold = 50;
+	private int attackThreshold = 100;
 	private float attackDistance = 5f;																					// Alex) changed attackDistance from 6 to 5  4/23
 	private float distanceBetweenPlayer;
 
@@ -63,6 +63,7 @@ public class BasicEnemyBehavior : BaseEnemyBehavior {
 
 	IEnumerator BasicAttack(){
 		float t = 0f; 
+
 		//GameObject temp = Instantiate (EnemyHitbox, transform.position, transform.rotation);
 
 		//Vector3 oldPos = temp.transform.position;
