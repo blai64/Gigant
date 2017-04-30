@@ -26,13 +26,14 @@ public class BaseAdvancedEnemyBehavior : MonoBehaviour {
 	private Color originalColor;
 	private List<GameObject> childList = new List<GameObject>();
 	public BoxCollider2D bounds; 
+	public GameObject VictoryVine;
 
 	// Use this for initialization
 	void Start () {
 		rb2d = GetComponent<Rigidbody2D> ();
 		anim = GetComponentInChildren<Animator> ();
 		canBeActivated = true;
-		health = 5;
+		health = 10;
 		anim.SetBool ("isLeft", true);
 		renderer = this.GetComponentInChildren<SpriteRenderer> ();
 		originalColor = this.GetComponentInChildren<SpriteRenderer> ().color;
@@ -85,6 +86,8 @@ public class BaseAdvancedEnemyBehavior : MonoBehaviour {
 				transform.position = new Vector3(x, y, transform.position.z);
 			}
 
+		}else {
+			rb2d.velocity = Vector2.zero;
 		}
 
 	}
@@ -128,12 +131,20 @@ public class BaseAdvancedEnemyBehavior : MonoBehaviour {
 		canBeActivated = false;
 		anim.SetTrigger ("isDeactivated");
 		StartCoroutine (DisableForTime (3.0f));
+		PlayerController.instance.KilledMegaGolem ();
+		if(PlayerController.instance.MegaGolemsLeft() == 0)
+		{
+			GameObject vine = Instantiate (VictoryVine);
+			vine.transform.position = new Vector3 (PlayerController.instance.transform.position.x, 
+												   PlayerController.instance.transform.position.y - 1.22f,
+												   transform.position.z);
+		}
 	}
 
 
 	IEnumerator DisableForTime(float seconds){
 		yield return new WaitForSeconds (seconds);
-		canBeActivated = true;
+		//canBeActivated = true;
 	}
 
 	public void Activate(){
@@ -141,7 +152,7 @@ public class BaseAdvancedEnemyBehavior : MonoBehaviour {
 		anim.ResetTrigger ("isActivated");
 
 		anim.SetTrigger ("isWalking");
-		health = 5;
+		health = 10;
 	}
 
 	public void Reset(){

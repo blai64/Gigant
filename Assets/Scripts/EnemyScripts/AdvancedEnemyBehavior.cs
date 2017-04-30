@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AdvancedEnemyBehavior : BaseAdvancedEnemyBehavior {
 	private int attackCounter;
-	private int attackThreshold = 250;
+	private int attackThreshold = 200;
 	private float attackDistance = 5f;																					// Alex) changed attackDistance from 6 to 5  4/23
 	private float distanceBetweenPlayer;
 

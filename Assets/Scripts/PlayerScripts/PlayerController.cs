@@ -21,6 +21,9 @@ public class PlayerController : MonoBehaviour {
 
 	public float initialGravity;
 
+
+	private int megaGolemsLeft = 2;
+
 	//####################################################################
 	//Movement Logic 
 
@@ -104,6 +107,14 @@ public class PlayerController : MonoBehaviour {
 				break;
 			}
 		}
+	}
+
+	public void KilledMegaGolem(){
+		megaGolemsLeft -= 1;
+	}
+
+	public int MegaGolemsLeft(){
+		return megaGolemsLeft; 
 	}
 
 	void Update () {
@@ -320,6 +331,8 @@ public class PlayerController : MonoBehaviour {
 
 		CutsceneManager.instance.playerRespawning = true;
 		CutsceneManager.instance.causeOfDeath = (fell) ? "fall" : "enemy";
+		rb2d.velocity = Vector2.zero;
+
 		StartCoroutine (Respawn ());
 	}
 
