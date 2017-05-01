@@ -72,43 +72,41 @@ public class CutsceneManager : MonoBehaviour {
 		bossSb = (bossSpeechBubble != null) ? bossSpeechBubble.GetComponent<SpeechBubble> () : null;
 
 		//cutscene1
-		tutorialText.Add ("Why, if it isn't <color=brown>Jack</color>!\nMy have you grown.");
-		tutorialText.Add ("I remember the first time I gave you some <color=green>magic beans</color>\nfor this here cow of yers.");
-		tutorialText.Add ("I hear you've come to\n<color=red>slay the giant</color>!\nYou'll need to climb to the top and reach his head.");
+		tutorialText.Add ("Why, if it isn't <color=#B1883F>Jack</color>!\nMy have you grown.");
+		tutorialText.Add ("I remember the first time I gave you some <color=#5FC96A>magic</color> <color=#5FC96A>beans</color>\nfor this here cow of yers.");
+		tutorialText.Add ("I hear you've come to\n<color=#AC4744>slay</color> <color=#AC4744>the</color> <color=#AC4744>giant</color>!\nYou'll need to climb to the top and reach his head.");
 
-		level1Text1.Add ("Why if it isn't Jack!\nYou're a slow fella aren't ya?");
+		level1Text1.Add ("Why if it isn't <color=#B1883F>Jack!</color>\nYou're a slow fella aren't ya?");
 		level1Text2.Add ("How did you even get here?");
-		level1Text3.Add ("I just rode ol' Bessie here");
-		level1Text4.Add ("So you're saying my cow got you here faster than the beans you gave me before?");
-		level1Text5.Add ("Ehhh.... enough chit chat. Get to the top of this giant already!\nI thought you were a famous giant slayer or somethin'");
+		level1Text3.Add ("I just rode <color=#FF94D1>ol' Bessie</color> here");
+		level1Text4.Add ("So you're saying my <color=#FF94D1>cow</color> got you here faster than the <color=#5FC96A>beans</color> you gave me before?");
+		level1Text5.Add ("Ehhh.... enough chit chat. Get to the top of this giant already!\nI thought you were a famous <color=#AC4744>giant</color> <color=#AC4744>slayer</color> or somethin'");
 
-		level2Text1.Add ("Why if it isn't Jack again!");
+		level2Text1.Add ("Why if it isn't <color=#B1883F>Jack</color> again!");
 		level2Text2.Add ("......");
-		level2Text3.Add ("What you said earlier got me thinkin'.\nCan I check your magic beans?");
+		level2Text3.Add ("Mind if I check yer\n<color=#5FC96A>bean</color> <color=#5FC96A>collection</color>?");
 		level2Text3.Add ("......");
-		level2Text3.Add ("Whoops. I've dropped all our beans off the moutain.\nDon't worry, I think there's a bean bush somewhere around here.");
+		level2Text3.Add ("Whoops. I've dropped all your <color=#5FC96A>beans</color> off the mountain.\nDon't worry, I think there's a <color=#5FC96A>bean</color> <color=#5FC96A>bushes</color> somewhere around here.");
 
-		level3Text1.Add ("Why if it isn't Jack!\nHow's it going bud?");
+		level3Text1.Add ("Why if it isn't <color=#B1883F>Jack</color>!\nHow's it going bud?");
 		level3Text2.Add ("......\n......");
-		level3Text2.Add ("Why don't you just slay the giant?");
-		level3Text3.Add ("Aww I would but I'm a lover not a killer.\nAin't that right Bessie~?");
+		level3Text2.Add ("Why don't you just <color=#AC4744>slay</color> <color=#AC4744>the</color> <color=#AC4744>giant</color>?");
+		level3Text3.Add ("Aww I would but I'm a <color=#FF94D1>lover</color> not a <color=#AC4744>killer</color>.\nAin't that right <color=#FF94D1>Bessie</color>?");
 		level3Text4.Add ("......");
-		level3Text5.Add ("Anywhoo, I hear there are a couple of guardians up ahead that you'll neeed to defeat to unlock the way to the top. Now get goin'!");
+		level3Text5.Add ("Anywhoo, there are a couple of <color=grey>guardians</color> up ahead that you'll neeed to <color=#AC4744>defeat</color> to unlock the way to the top.\nNow get goin'!");
 
-		bossText1.Add ("At last, the time has come to slay the giant.");
-		bossText2.Add ("Prepare yourself monster!!!");
-		bossText2.Add ("In the name of the people ,I will give you your permanent slumber!");
+		bossText1.Add ("At last, the time has come to <color=#AC4744>slay</color> <color=#AC4744>the</color> <color=#AC4744>giant</color>.");
+		bossText2.Add ("Prepare yourself <color=#AC4744>monster</color>!!!");
+		bossText2.Add ("In the name of the people,\nI will give you your <color=#AC4744>permanent</color> <color=#AC4744>slumber</color>!");
 		bossText3.Add ("**Yawn**");
 		bossText3.Add ("That was a good walk. Burned a whole 500 calories - my New Millenium's Resolution is coming along nicely.");
 		bossText3.Add ("But what's that buzzing sound I hear?");
-		bossText4.Add ("RAHHHHHHH!!!!!");
-		bossText5.Add ("Ewww I've always hated bugs... Well that was enough eercise for the century. Time for another nap!");
-
+		bossText4.Add ("<color=#AC4744>RAHHHHHHH!!!!!</color>");
+		bossText5.Add ("Ewww I've always hated bugs... Well that was enough exercise for the century. Time for another nap!");
 
 		//############################# RESPAWNING DIALOGUE
 
-		fallRespawnText1.Add ("Jump better, scrubb."); 
-
+		fallRespawnText1.Add ("Jump better, scrubb.");
 	}
 
 	public IEnumerator MoveOn(){
