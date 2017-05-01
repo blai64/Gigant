@@ -126,9 +126,9 @@ public class PlayerController : MonoBehaviour {
 		canClimb = (isGrounded && !isClimbing) ? true : canClimb;
 		remainingJumps = (isGrounded || isClimbing) ? maxJumps : remainingJumps;
 
-		if (Health.instance.hp <= 0 && !isDead) {
-			Die (false);
-		}
+//		if (Health.instance.hp <= 0 && !isDead) {
+//			Die (false);
+//		}
 
 		if (!disabled) {
 			if (attackCooldown >= 0)														// Alex) puts a cooldown on attacking	4/23
@@ -396,9 +396,14 @@ public class PlayerController : MonoBehaviour {
 	void OnCollisionEnter2D(Collision2D col) {
 		if (col.gameObject.CompareTag ("Damage") && !hurting) {
 			Health.instance.hp--;
-			Knocked ((col.transform.position.x < transform.position.x));
-			hurting = true;
-			anim.SetTrigger ("isHurt");
+			if (Health.instance.hp <= 0 && !isDead) {
+				Die (false);
+			} else {
+				Knocked ((col.transform.position.x < transform.position.x));
+				hurting = true;
+				anim.SetTrigger ("isHurt");
+			}
+
 		}
 	}
 
