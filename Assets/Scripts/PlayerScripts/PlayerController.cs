@@ -258,7 +258,7 @@ public class PlayerController : MonoBehaviour {
 
 			if (Input.GetKeyDown (KeyCode.LeftArrow) || Input.GetKeyDown (KeyCode.RightArrow) ||
 			    Input.GetKeyDown (KeyCode.A) || Input.GetKeyDown (KeyCode.D)) {
-				isLeft = Input.GetKeyDown (KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A);
+				ChangeDirection (Input.GetKeyDown (KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A));
 				Climb (false);
 			}
 		}
@@ -287,7 +287,6 @@ public class PlayerController : MonoBehaviour {
 		isLeft = left;
 		horizontalDirection = left ? -1 : 1;
 		anim.SetBool ("isLeft", left);
-
 	}
 
 	private void Move(bool isRunning) {
@@ -312,6 +311,7 @@ public class PlayerController : MonoBehaviour {
 
 			}
 		} else if (anim.GetBool ("isFalling")) {
+			anim.SetBool ("isJumping", false);
 			anim.SetBool ("isFalling", false);
 		}
 		prevHeight = currHeight;
