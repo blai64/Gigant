@@ -145,9 +145,11 @@ public class PlayerController : MonoBehaviour {
 				}*/
 
 				float curY = transform.position.y; 
-				curY = Mathf.Clamp (curY, Mathf.NegativeInfinity, beanstalkCollider.bounds.center.y + beanstalkCollider.bounds.extents.y);
+				if (beanstalkCollider != null){
+					curY = Mathf.Clamp (curY, Mathf.NegativeInfinity, beanstalkCollider.bounds.center.y + beanstalkCollider.bounds.extents.y);
+					transform.position = new Vector3 (transform.position.x, curY, transform.position.z);
+				}
 
-				transform.position = new Vector3 (transform.position.x, curY, transform.position.z);
 
 
 					

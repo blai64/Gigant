@@ -27,4 +27,8 @@ public class ParentCaller : MonoBehaviour {
 	public void DoEmit(){
 		parentScript.DoEmit ();
 	}
+
+	public void StopDamaging(){
+		parentScript.StopDamaging ();
+	}
 }

@@ -174,4 +174,8 @@ public class BaseEnemyBehavior : MonoBehaviour {
 		if (psystem != null)
 			psystem.Emit (2);
 	}
+
+	public void StopDamaging(){
+		isAttacking = false;
+	}
 }
