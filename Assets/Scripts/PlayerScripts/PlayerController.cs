@@ -21,6 +21,9 @@ public class PlayerController : MonoBehaviour {
 
 	public float initialGravity;
 
+
+	private int megaGolemsLeft = 2;
+
 	//####################################################################
 	//Movement Logic 
 
@@ -106,6 +109,14 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
+	public void KilledMegaGolem(){
+		megaGolemsLeft -= 1;
+	}
+
+	public int MegaGolemsLeft(){
+		return megaGolemsLeft; 
+	}
+
 	void Update () {
 		DoGroundCheck ();
 		if (isGrounded && isClimbing && !(Input.GetKey (KeyCode.UpArrow) || Input.GetKey (KeyCode.W))) {
@@ -115,9 +126,9 @@ public class PlayerController : MonoBehaviour {
 		canClimb = (isGrounded && !isClimbing) ? true : canClimb;
 		remainingJumps = (isGrounded || isClimbing) ? maxJumps : remainingJumps;
 
-		if (Health.instance.hp <= 0 && !isDead) {
-			Die (false);
-		}
+//		if (Health.instance.hp <= 0 && !isDead) {
+//			Die (false);
+//		}
 
 		if (!disabled) {
 			if (attackCooldown >= 0)														// Alex) puts a cooldown on attacking	4/23
@@ -317,6 +328,11 @@ public class PlayerController : MonoBehaviour {
 			anim.SetTrigger ("isDead");
 		Disable (false);
 		isDead = true;
+
+		CutsceneManager.instance.playerRespawning = true;
+		CutsceneManager.instance.causeOfDeath = (fell) ? "fall" : "enemy";
+		rb2d.velocity = Vector2.zero;
+
 		StartCoroutine (Respawn ());
 	}
 
@@ -378,9 +394,14 @@ public class PlayerController : MonoBehaviour {
 	void OnCollisionEnter2D(Collision2D col) {
 		if (col.gameObject.CompareTag ("Damage") && !hurting) {
 			Health.instance.hp--;
-			Knocked ((col.transform.position.x < transform.position.x));
-			hurting = true;
-			anim.SetTrigger ("isHurt");
+			if (Health.instance.hp <= 0 && !isDead) {
+				Die (false);
+			} else {
+				Knocked ((col.transform.position.x < transform.position.x));
+				hurting = true;
+				anim.SetTrigger ("isHurt");
+			}
+
 		}
 	}
 

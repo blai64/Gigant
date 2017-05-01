@@ -4,8 +4,11 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class CutsceneManager : MonoBehaviour {
+	public static CutsceneManager instance;
 
-	private bool initialized;
+	[HideInInspector] public bool initialized;
+	[HideInInspector] public bool playerRespawning;
+	[HideInInspector] public string causeOfDeath;
 
 	private GameObject activeSpeechBubble;
 	private SpeechBubble activeSb;
@@ -46,10 +49,21 @@ public class CutsceneManager : MonoBehaviour {
 	private List<string> bossText4 = new List<string> ();
 	private List<string> bossText5 = new List<string> ();
 
+
+	private List<string> fallRespawnText1 = new List<string> ();
+
+
 	//cutscene boss
 	public GameObject boss;
 	public GameObject bossSpeechBubble;
 	private SpeechBubble bossSb;
+
+	void Awake(){
+		if (instance == null)
+			instance = this;
+		else
+			Destroy (this);
+	}
 
 	void Start(){
 		anim = player.GetComponentInChildren<Animator> ();
@@ -89,6 +103,12 @@ public class CutsceneManager : MonoBehaviour {
 		bossText3.Add ("But what's that buzzing sound I hear?");
 		bossText4.Add ("RAHHHHHHH!!!!!");
 		bossText5.Add ("Ewww I've always hated bugs... Well that was enough eercise for the century. Time for another nap!");
+
+
+		//############################# RESPAWNING DIALOGUE
+
+		fallRespawnText1.Add ("Jump better, scrubb."); 
+
 	}
 
 	public IEnumerator MoveOn(){
@@ -105,11 +125,10 @@ public class CutsceneManager : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D (Collider2D col){
-		if (col.CompareTag("Player") && !initialized) {
+		if (col.CompareTag ("Player") && !initialized) {
 			initialized = true; 
 			//TODO: case on which scene this is, start the correct cutscene
-			switch (SceneManager.GetActiveScene().name)
-			{
+			switch (SceneManager.GetActiveScene ().name) {
 			case "Level2":
 				StartCoroutine (StartCutsceneLevel1 ());
 				break;
@@ -128,7 +147,19 @@ public class CutsceneManager : MonoBehaviour {
 				StartCoroutine (StartCutsceneTutorial ());
 				break;
 			}
-
+		} else if (col.CompareTag ("Player") && playerRespawning) {
+			playerRespawning = false;
+			switch (causeOfDeath) {
+			case "fall":
+				StartCoroutine (StartCutsceneFallRespawn ());
+				break;
+			case "enemy":
+				break;
+			case "boulder":
+				break;
+			default:
+				break;
+			}
 
 		}
 	}
@@ -207,7 +238,7 @@ public class CutsceneManager : MonoBehaviour {
 
 		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
 		//yield return 0;
-		SetActiveBubble (hermitSpeechBubble, hermitSb);
+		SetActiveBubble (playerSpeechBubble, playerSb);
 		activeSb.Play(level1Text4);
 
 		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
@@ -304,7 +335,7 @@ public class CutsceneManager : MonoBehaviour {
 
 		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
 		//yield return 0;
-		SetActiveBubble (hermitSpeechBubble, hermitSb);
+		SetActiveBubble (playerSpeechBubble, playerSb);
 		activeSb.Play(level3Text4);
 
 		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
@@ -485,5 +516,24 @@ public class CutsceneManager : MonoBehaviour {
 
 
 		yield return 0;
+	}
+
+
+	IEnumerator StartCutsceneFallRespawn() {
+		PlayerController.instance.Disable (true);
+
+		yield return 0;
+
+		StartCoroutine (CameraManager.instance.Zoom (true));
+		yield return StartCoroutine (CameraManager.instance.MoveCinematic (true));
+
+		yield return new WaitForSeconds (0.3f);
+
+		SetActiveBubble (hermitSpeechBubble, hermitSb);
+		activeSb.Play(fallRespawnText1);
+
+		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
+
+		StartCoroutine (EndCutsceneTutorial());
 	}
 }

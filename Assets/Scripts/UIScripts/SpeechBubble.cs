@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Text.RegularExpressions;
 
 public class SpeechBubble : MonoBehaviour {
 
@@ -60,6 +61,9 @@ public class SpeechBubble : MonoBehaviour {
 	}
 
 	public IEnumerator AnimateText() {
+		string temp; 
+		string remainingText; 
+		string regex = "(\\<.*?\\>)";
 		for (int i = 0; i < text.Length; i++) {
 			//check for special text tag
 			if (text[i] == '<'){
@@ -70,7 +74,12 @@ public class SpeechBubble : MonoBehaviour {
 					i++;
 				}
 			}
-			textBox.text = text.Substring (0, i);
+
+			remainingText = "";
+			temp = text.Substring (i, text.Length - i);
+			remainingText = Regex.Replace (temp, regex, "");
+
+			textBox.text = text.Substring (0, i) + "<color=#00000000>" + remainingText + "</color>";
 			yield return new WaitForSeconds (0.05f);
 		}
 	}

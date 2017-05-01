@@ -15,6 +15,9 @@ public class BaseEnemyBehavior : MonoBehaviour {
 
 	public int health;
 
+	public GameObject psystemObject;
+	private ParticleSystem psystem;
+
 	private Rigidbody2D rb2d; 
 
 	protected Animator anim;
@@ -45,6 +48,10 @@ public class BaseEnemyBehavior : MonoBehaviour {
 
 		originalPosition = transform.position;
 
+
+		if (psystemObject != null) {
+			psystem = psystemObject.GetComponent<ParticleSystem> ();
+		}
 	}
 
 	// turns golem red when hit
@@ -92,8 +99,10 @@ public class BaseEnemyBehavior : MonoBehaviour {
 		} else {
 			rb2d.velocity = Vector2.zero;
 		}
-
-
+			
+		if (Input.GetKeyDown (KeyCode.Y)) {
+			DoEmit ();
+		}
 	}
 
 
@@ -113,7 +122,7 @@ public class BaseEnemyBehavior : MonoBehaviour {
 	{
 		if (collision.gameObject.tag == "Player" && !isActive)
 		{
-			Physics2D.IgnoreCollision(playerPrefab.GetComponent<PolygonCollider2D>(), GetComponent<PolygonCollider2D>());
+			Physics2D.IgnoreCollision(playerPrefab.GetComponent<PolygonCollider2D>(), GetComponent<PolygonCollider2D>(), true);
 		}
 	}
 
@@ -158,7 +167,9 @@ public class BaseEnemyBehavior : MonoBehaviour {
 
 	public void Activate(){
 		isActive = true;
+		Physics2D.IgnoreCollision(playerPrefab.GetComponent<PolygonCollider2D>(), GetComponent<PolygonCollider2D>(), false);
 		anim.ResetTrigger ("isActivated");
+
 
 		anim.SetTrigger ("isWalking");
 		health = 3;
@@ -175,5 +186,10 @@ public class BaseEnemyBehavior : MonoBehaviour {
 		isAttacking = false;
 
 
+	}
+
+	public void DoEmit(){
+		if (psystem != null)
+			psystem.Emit (2);
 	}
 }
