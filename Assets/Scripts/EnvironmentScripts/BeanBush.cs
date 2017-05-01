@@ -16,7 +16,7 @@ public class BeanBush : MonoBehaviour {
 		beanLock = new Object ();
 		maxBeans = transform.childCount;
 		progress = 0f;
-		beanCount = 3;
+		beanCount = maxBeans;
 	}
 
 	void Update () {

@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
 
-public class MosaicCameraScript : MonoBehaviour
-{
+public class MosaicCameraScript : MonoBehaviour {
+	
 	public static MosaicCameraScript instance;
 	public bool depixelizing;
 	public bool pixelizing;
@@ -11,7 +11,6 @@ public class MosaicCameraScript : MonoBehaviour
 	public GameObject white;
 	SpriteRenderer renderer;
 	private Color rendererAlpha;
-
 
 	private Vector3 targetPosition;
 	private BoxCollider2D targetBounds;
@@ -50,8 +49,7 @@ public class MosaicCameraScript : MonoBehaviour
     public int AvgTextureTileSizeY = 1;
 
 
-    void Start()
-    {
+    void Start() {
 		anim = player.GetComponentInChildren<Animator> ();
 		isMosaic = true;
 		depixelizing = false;
@@ -63,15 +61,11 @@ public class MosaicCameraScript : MonoBehaviour
 		MosaicOpacity = 2.0f;
 		targetPosition = PlayerController.instance.transform.position;
 		targetBounds = MainCamera.instance.cameraBounds;
-		//why if i change mosaicopacity & rendereralpha.a -> nullreferrence??
 		white.GetComponent<SpriteRenderer> ().color = rendererAlpha;
 		material.SetFloat("_MosaicOpacity", MosaicOpacity);
-
-
 	}
 
-    void Awake()
-    {
+    void Awake() {
 		if (instance == null) {
 			instance = this;
 		} else {
@@ -80,8 +74,8 @@ public class MosaicCameraScript : MonoBehaviour
 		material = new Material(mosaicShader);
     }
 
-    void OnRenderImage(RenderTexture source, RenderTexture destination)
-    {
+    void OnRenderImage(RenderTexture source, RenderTexture destination) {
+		
 		if (isMosaic) {
 			// Generate a texture containings the average colors of the rendered scene per tile
 			int w = source.width / AvgTextureTileSizeX;
@@ -97,27 +91,18 @@ public class MosaicCameraScript : MonoBehaviour
 			// Release temporary texture
 			RenderTexture.ReleaseTemporary (lowRez);
 		}
-
     }
 
-    void Update()
-    {
-
-
+    void Update() {
+		
 		if (pixelizing && !depixelizing) {
 			isMosaic = true;
 			MosaicOpacity += 0.1f;
 			rendererAlpha.a += 0.05f;
 			white.GetComponent<SpriteRenderer> ().color = rendererAlpha;
-			/*
-			Debug.Log ("MosaicOpacity =  " + MosaicOpacity);
-			Debug.Log ("rendererAlpha =  " + rendererAlpha.a);
-			*/
 		}
 
-
 		// Move camera
-
 		if (rendererAlpha.a >= 1.0f) {
 			depixelizing = true;
 			pixelizing = false;
@@ -150,10 +135,6 @@ public class MosaicCameraScript : MonoBehaviour
 		} else if(MosaicOpacity > 0.0f) {
 
 		}
-			
-
-
-
 
 		// Set the uniforms
         material.SetFloat("_Angle", (float)(Angle / 180.0) * Mathf.PI);
@@ -163,7 +144,7 @@ public class MosaicCameraScript : MonoBehaviour
         material.SetFloat("_SceneOpacity", SceneOpacity);
     }
 
-	public void SetTargetPosition(Vector3 newTarget, BoxCollider2D newBounds){
+	public void SetTargetPosition(Vector3 newTarget, BoxCollider2D newBounds) {
 		PlayerController.instance.Disable(true);
 		targetPosition = newTarget;
 		targetBounds = newBounds;

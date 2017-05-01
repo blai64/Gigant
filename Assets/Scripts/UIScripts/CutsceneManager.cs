@@ -74,7 +74,7 @@ public class CutsceneManager : MonoBehaviour {
 		//cutscene1
 		tutorialText.Add ("Why, if it isn't <color=brown>Jack</color>!\nMy have you grown.");
 		tutorialText.Add ("I remember the first time I gave you some <color=green>magic beans</color>\nfor this here cow of yers.");
-		tutorialText.Add ("I hear you've come to <color=red>slay the giant</color>!\nYou'll need to climb to the top and reach his head.");
+		tutorialText.Add ("I hear you've come to\n<color=red>slay the giant</color>!\nYou'll need to climb to the top and reach his head.");
 
 		level1Text1.Add ("Why if it isn't Jack!\nYou're a slow fella aren't ya?");
 		level1Text2.Add ("How did you even get here?");
@@ -129,13 +129,13 @@ public class CutsceneManager : MonoBehaviour {
 			initialized = true; 
 			//TODO: case on which scene this is, start the correct cutscene
 			switch (SceneManager.GetActiveScene ().name) {
-			case "Level2":
+			case "Level1":
 				StartCoroutine (StartCutsceneLevel1 ());
 				break;
-			case "Level3":
+			case "Level2":
 				StartCoroutine (StartCutsceneLevel2 ());
 				break;
-			case "Level4":
+			case "Level3":
 				StartCoroutine (StartCutsceneLevel3 ());
 				break;
 			case "Zao_BossLevel":
