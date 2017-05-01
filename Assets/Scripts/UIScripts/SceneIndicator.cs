@@ -12,29 +12,22 @@ public class SceneIndicator : MonoBehaviour {
 	private float xPosition;
 
 	private string currentScene;
-	// Use this for initialization
 	void Start () {
 		currentScene = SceneManager.GetActiveScene ().name;
 		txt = Indicator.GetComponent<Text> ();
-		txt.text = currentScene + " Front";
-		//txt.text = "Front";
-
-
+		txt.text = currentScene + ": North";
 	}
-	
-	// Update is called once per frame
+
 	void Update () {
 		xPosition = player.transform.position.x;
 		if (xPosition > 80.0f && xPosition < 150.0f) {
-			txt.text = currentScene + "  Front";
+			txt.text = currentScene + ": North";
 		} else if (xPosition > -30.0f && xPosition < 30.0f) {
-			txt.text = currentScene + "  Left";
+			txt.text = currentScene + ": West";
 		} else if (xPosition > 200.0f && xPosition < 265.0f) {
-			txt.text = currentScene + "  Right";
+			txt.text = currentScene + ": East";
 		} else if (xPosition > 325.0f && xPosition < 380.0f) {
-			txt.text = currentScene + "  Back";
+			txt.text = currentScene + ": South";
 		}
-
-
 	}
 }
