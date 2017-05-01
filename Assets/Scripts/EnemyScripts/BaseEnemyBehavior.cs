@@ -30,6 +30,9 @@ public class BaseEnemyBehavior : MonoBehaviour {
 	private List<GameObject> childList = new List<GameObject>();
 	public BoxCollider2D bounds; 
 
+	// Ignore collision between player if inactive
+	public GameObject playerPrefab;
+
 	// Use this for initialization
 	void Start () {
 		rb2d = GetComponent<Rigidbody2D> ();
@@ -45,6 +48,7 @@ public class BaseEnemyBehavior : MonoBehaviour {
 
 		originalPosition = transform.position;
 
+
 		if (psystemObject != null) {
 			psystem = psystemObject.GetComponent<ParticleSystem> ();
 		}
@@ -56,6 +60,8 @@ public class BaseEnemyBehavior : MonoBehaviour {
 		foreach (GameObject child in childList) {
 			child.GetComponent<SpriteRenderer> ().color = new Color (1, 0, 0, 1);
 		}
+
+		StartCoroutine (Revert ());
 	}
 
 	// turns golem back to grey after being hit
@@ -64,6 +70,11 @@ public class BaseEnemyBehavior : MonoBehaviour {
 		foreach (GameObject child in childList) {
 			child.GetComponent<SpriteRenderer> ().color = originalColor;
 		}
+	}
+
+	IEnumerator Revert(){
+		yield return new WaitForSeconds (0.5f);
+		RevertFromRed ();
 	}
 	
 	// Update is called once per frame
@@ -95,22 +106,34 @@ public class BaseEnemyBehavior : MonoBehaviour {
 		} else {
 			rb2d.velocity = Vector2.zero;
 		}
-
+			
 		if (Input.GetKeyDown (KeyCode.Y)) {
 			DoEmit ();
 		}
-
 	}
 
+
+
 	void OnTriggerEnter2D (Collider2D col){
-		if (col.CompareTag("Player") && !isActive && canBeActivated){
-			anim.SetTrigger("isActivated");
+		if (col.CompareTag ("Player") && !isActive && canBeActivated) {
+			anim.SetTrigger ("isActivated");
 		}
 
 		if (col.CompareTag ("Weapon") && PlayerController.instance.isAttacking) {
 	//		GetDamaged (1);
 		}
 	}
+
+
+	void OnCollisionEnter2D(Collision2D collision)
+	{
+		if (collision.gameObject.tag == "Player" && !isActive)
+		{
+			Physics2D.IgnoreCollision(playerPrefab.GetComponent<PolygonCollider2D>(), GetComponent<PolygonCollider2D>(), true);
+		}
+	}
+
+
 	void OnTriggerStay2D (Collider2D col){
 		if (col.CompareTag("Player") && !isActive && canBeActivated){
 			anim.SetTrigger("isActivated");
@@ -151,7 +174,9 @@ public class BaseEnemyBehavior : MonoBehaviour {
 
 	public void Activate(){
 		isActive = true;
+		Physics2D.IgnoreCollision(playerPrefab.GetComponent<PolygonCollider2D>(), GetComponent<PolygonCollider2D>(), false);
 		anim.ResetTrigger ("isActivated");
+
 
 		anim.SetTrigger ("isWalking");
 		health = 3;
@@ -173,5 +198,9 @@ public class BaseEnemyBehavior : MonoBehaviour {
 	public void DoEmit(){
 		if (psystem != null)
 			psystem.Emit (2);
+	}
+
+	public void StopDamaging(){
+		isAttacking = false;
 	}
 }

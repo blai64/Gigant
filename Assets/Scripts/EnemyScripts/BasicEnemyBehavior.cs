@@ -22,7 +22,7 @@ public class BasicEnemyBehavior : BaseEnemyBehavior {
 
 
 			if (attackCounter > attackThreshold && distanceBetweenPlayer < attackDistance) {								// Alex) Made it so enemy only attacks if he has an 
-				base.isAttacking = true;																					//       attack charged up and is in range to hit target
+																					//       attack charged up and is in range to hit target
 				base.anim.SetTrigger ("isAttacking");																		//       4/23
 				attackCounter = 0;
 			}
@@ -58,7 +58,8 @@ public class BasicEnemyBehavior : BaseEnemyBehavior {
 	//ANIMATION EVENT should call this to do damage
 	override public void DoAttack(){
 		//attack logic, e.g. creating hitbox in front of enemy, throwing object, etc
-		StartCoroutine(BasicAttack());
+		base.isAttacking = true;
+		//StartCoroutine(BasicAttack());
 	}
 
 	IEnumerator BasicAttack(){

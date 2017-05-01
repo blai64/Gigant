@@ -27,6 +27,7 @@ public class SwordScript : MonoBehaviour {
 			hitEnemy = true;
 			col.gameObject.GetComponent<BaseEnemyBehavior> ().GetDamaged (1);
 			col.gameObject.GetComponent<BaseEnemyBehavior> ().RedFlash ();
+			StartCoroutine (Revert (col.gameObject.GetComponent<BaseEnemyBehavior> ()));
 		}
 		else if(col.CompareTag ("AdvancedEnemy") && !hitEnemy &&
 			PlayerController.instance.isAttacking &&
@@ -34,9 +35,11 @@ public class SwordScript : MonoBehaviour {
 			hitEnemy = true;
 			col.gameObject.GetComponent<BaseAdvancedEnemyBehavior> ().GetDamaged (1);
 			col.gameObject.GetComponent<BaseAdvancedEnemyBehavior> ().RedFlash ();
+			StartCoroutine (RevertAdvanced (col.gameObject.GetComponent<BaseAdvancedEnemyBehavior> ()));
 		}
 	}
 
+	/*
 	void OnTriggerExit2D(Collider2D col){
 		if (col.CompareTag ("Enemy") && hitEnemy) {
 			hitEnemy = false;
@@ -46,5 +49,16 @@ public class SwordScript : MonoBehaviour {
 			hitEnemy = false;
 			col.gameObject.GetComponent<BaseAdvancedEnemyBehavior> ().RevertFromRed ();
 		}
+	}*/
+
+	IEnumerator Revert(BaseEnemyBehavior b){
+		yield return new WaitForSeconds (0.25f);
+		hitEnemy = false;
+		b.RevertFromRed ();
+	}
+	IEnumerator RevertAdvanced(BaseAdvancedEnemyBehavior b){
+		yield return new WaitForSeconds (0.25f);
+		hitEnemy = false;
+		b.RevertFromRed ();
 	}
 }
