@@ -100,6 +100,9 @@ public class MosaicCameraScript : MonoBehaviour {
 			MosaicOpacity += 0.1f;
 			rendererAlpha.a += 0.05f;
 			white.GetComponent<SpriteRenderer> ().color = rendererAlpha;
+//			anim.ResetTrigger ("isHurt");
+//			anim.ResetTrigger ("isDead");
+//			anim.ResetTrigger ("isAttacking");
 		}
 
 		// Move camera
@@ -118,6 +121,7 @@ public class MosaicCameraScript : MonoBehaviour {
 			foreach (BaseAdvancedEnemyBehavior enemy in enemies2) {
 				enemy.Reset ();
 			}
+
 		}
 
 		if (depixelizing && !pixelizing) {
@@ -125,6 +129,7 @@ public class MosaicCameraScript : MonoBehaviour {
 			rendererAlpha.a -= 0.05f;
 			white.GetComponent<SpriteRenderer> ().color = rendererAlpha;
 			anim.SetBool ("isRunning", false);
+			Debug.Log ("??????");
 		}
 
 		if (MosaicOpacity <= 0.0f && depixelizing) {
