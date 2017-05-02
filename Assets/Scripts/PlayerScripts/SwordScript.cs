@@ -27,6 +27,7 @@ public class SwordScript : MonoBehaviour {
 			hitEnemy = true;
 			col.gameObject.GetComponent<BaseEnemyBehavior> ().GetDamaged (1);
 			col.gameObject.GetComponent<BaseEnemyBehavior> ().RedFlash ();
+			col.gameObject.GetComponent<BaseEnemyBehavior> ().KnockBack (col.gameObject.transform.position.x, transform.position.x);
 			StartCoroutine (Revert (col.gameObject.GetComponent<BaseEnemyBehavior> ()));
 		}
 		else if(col.CompareTag ("AdvancedEnemy") && !hitEnemy &&

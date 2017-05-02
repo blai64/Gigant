@@ -8,6 +8,9 @@ public class PlayerController : MonoBehaviour {
 
 	private Animator anim;
 
+	//This bool is to make transition slower if player dies
+	public bool longerTransition;
+
 	[HideInInspector] public bool isGrounded = false;
 	[HideInInspector] public bool isLeft;
 
@@ -95,6 +98,7 @@ public class PlayerController : MonoBehaviour {
 		checkpointCameraBound = MainCamera.instance.cameraBounds;
 
 		isLeft = true;
+
 	}
 
 	void DoGroundCheck(){
@@ -308,7 +312,6 @@ public class PlayerController : MonoBehaviour {
 					anim.SetBool ("isClimbing", false);
 					anim.SetBool ("isFalling", true);
 				}
-
 			}
 		} else if (anim.GetBool ("isFalling")) {
 			anim.SetBool ("isJumping", false);
@@ -330,6 +333,7 @@ public class PlayerController : MonoBehaviour {
 			anim.SetTrigger ("isDead");
 		Disable (false);
 		isDead = true;
+
 
 		CutsceneManager.instance.playerRespawning = true;
 		CutsceneManager.instance.causeOfDeath = (fell) ? "fall" : "enemy";
@@ -377,7 +381,7 @@ public class PlayerController : MonoBehaviour {
 		// trigger for climbing the beanstalk
 		if (col.CompareTag ("Beanstalk") && canClimb &&
 			(Input.GetKeyDown (KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) 
-			&& !isClimbing && col.gameObject.GetComponent<BeanstalkScript>().FullyGrown()) {
+			&& !isClimbing) {
 			transform.position = new Vector3 (col.transform.position.x, 
 				transform.position.y, 
 				transform.position.z);
@@ -425,14 +429,16 @@ public class PlayerController : MonoBehaviour {
 
 	IEnumerator Respawn() {
 		yield return new WaitForSeconds (1.0f);
-		MosaicCameraScript.instance.SetTargetPosition (checkpointLocation, checkpointCameraBound);
 
 		Health.instance.hp = 3;
 		isDead = false; 
 		anim.ResetTrigger ("isHurt");
 		anim.ResetTrigger ("isDead");
 		anim.ResetTrigger ("isAttacking");
+		longerTransition = true;
 
+		MosaicCameraScript.instance.SetTargetPosition (checkpointLocation, checkpointCameraBound);
+		//longerTransition = false;
 	}
 		
 
@@ -490,6 +496,10 @@ public class PlayerController : MonoBehaviour {
 			rb2d.velocity = new Vector2 (0f, rb2d.velocity.y);
 			horizontalDirection = 0;
 		}
+		if (longerTransition) {
+			longerTransition = false;
+		}
+		//longerTransition = true;
 	}
 }
 
