@@ -302,13 +302,10 @@ public class PlayerController : MonoBehaviour {
 					anim.SetBool ("isClimbing", false);
 					anim.SetBool ("isFalling", true);
 				}
-
 			}
 		} else if (anim.GetBool ("isFalling")) {
 			anim.SetBool ("isJumping", false);
 			anim.SetBool ("isFalling", false);
-		} else {
-			anim.SetBool ("isJumping", false);
 		}
 		prevHeight = currHeight;
 	}
