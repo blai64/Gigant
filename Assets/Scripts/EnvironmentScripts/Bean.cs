@@ -26,6 +26,7 @@ public class Bean : MonoBehaviour {
 				PlayerController.instance.beanCount++;
 				Disappear ();
 				bb.PickBean ();
+				SoundManager.instance.PlaySound ("bean collect");
 			}
 		}
 	}

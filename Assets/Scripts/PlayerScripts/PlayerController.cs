@@ -371,7 +371,7 @@ public class PlayerController : MonoBehaviour {
 		// trigger for climbing the beanstalk
 		if (col.CompareTag ("Beanstalk") && canClimb &&
 			(Input.GetKeyDown (KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) 
-			&& !isClimbing && col.gameObject.GetComponent<BeanstalkScript>().FullyGrown()) {
+			&& !isClimbing) {
 			transform.position = new Vector3 (col.transform.position.x, 
 				transform.position.y, 
 				transform.position.z);

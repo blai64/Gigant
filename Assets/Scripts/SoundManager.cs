@@ -62,6 +62,9 @@ public class SoundManager : MonoBehaviour {
 	public AudioClip StalkDie;
 	private AudioSource stalkDieAudio;
 
+	public AudioClip BeanCollect;
+	private AudioSource beanCollectAudio;
+
 	// Hermit Audio
 	public AudioClip Moo;
 	private AudioSource mooAudio;
@@ -164,6 +167,10 @@ public class SoundManager : MonoBehaviour {
 		stalkDieAudio = gameObject.AddComponent<AudioSource>();
 		stalkDieAudio.clip = StalkDie;
 		sounds["stalk die"] = stalkDieAudio;
+
+		beanCollectAudio = gameObject.AddComponent<AudioSource>();
+		beanCollectAudio.clip = BeanCollect;
+		sounds["bean collect"] = beanCollectAudio;
 
 		// Hermit Audio
 		mooAudio = gameObject.AddComponent<AudioSource>();
