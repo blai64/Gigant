@@ -53,6 +53,14 @@ public class BaseEnemyBehavior : MonoBehaviour {
 		}
 	}
 
+	public void KnockBack(float enemyPos, float swordPos){
+		if (enemyPos >= swordPos) {
+			rb2d.velocity = new Vector2 (10, 0);
+		} else {
+			rb2d.velocity = new Vector2 (-10, 0);
+		}
+	}
+
 	// turns golem red when hit
 	public void RedFlash() {
 		renderer.color = new Color (1, 0, 0, 1);
