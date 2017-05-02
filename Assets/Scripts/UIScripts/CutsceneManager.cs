@@ -50,7 +50,9 @@ public class CutsceneManager : MonoBehaviour {
 	private List<string> bossText4 = new List<string> ();
 	private List<string> bossText5 = new List<string> ();
 
+	private List<string> enemyRespawnText1 = new List<string> ();
 	private List<string> fallRespawnText1 = new List<string> ();
+	private List<string> boulderRespawnText1 = new List<string> ();
 
 	//cutscene boss
 	public GameObject boss;
@@ -115,8 +117,12 @@ public class CutsceneManager : MonoBehaviour {
 		bossText5.Add ("Ewww I've always hated bugs... Well that was enough exercise for the century. Time for another nap!");
 
 		//############################# RESPAWNING DIALOGUE
+		enemyRespawnText1.Add ("They’re trying to kill ya, not hug ya");
 
-		fallRespawnText1.Add ("Jump better, scrubb.");
+		fallRespawnText1.Add ("Good thinking. Maybe if you fall enough, gravity will magically change directions and bring ya to the top of the giant.");
+
+		boulderRespawnText1.Add ("Ya know why them rocks fall?");
+		boulderRespawnText1.Add ("It’s the giant crying from yer stupidity");
 	}
 
 	public IEnumerator MoveOn() {
@@ -157,17 +163,8 @@ public class CutsceneManager : MonoBehaviour {
 			}
 		} else if (col.CompareTag ("Player") && playerRespawning) {
 			playerRespawning = false;
-			switch (causeOfDeath) {
-			case "fall":
-				StartCoroutine (StartCutsceneFallRespawn ());
-				break;
-			case "enemy":
-				break;
-			case "boulder":
-				break;
-			default:
-				break;
-			}
+			StartCoroutine (StartCutsceneRespawn ());
+			
 		}
 	}
 		
@@ -548,7 +545,7 @@ public class CutsceneManager : MonoBehaviour {
 	}
 
 
-	IEnumerator StartCutsceneFallRespawn() {
+	IEnumerator StartCutsceneRespawn() {
 		PlayerController.instance.Disable (true);
 
 		yield return 0;
@@ -559,7 +556,21 @@ public class CutsceneManager : MonoBehaviour {
 		yield return new WaitForSeconds (0.3f);
 
 		SetActiveBubble (hermitSpeechBubble, hermitSb);
-		activeSb.Play(fallRespawnText1);
+
+		switch (causeOfDeath) {
+		case "fall":
+			activeSb.Play(fallRespawnText1);
+			break;
+		case "enemy":
+			activeSb.Play(enemyRespawnText1);
+			break;
+		case "boulder":
+			activeSb.Play(boulderRespawnText1);
+			break;
+		default:
+			activeSb.Play(fallRespawnText1);
+			break; 
+		}
 
 		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
 
