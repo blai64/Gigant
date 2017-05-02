@@ -324,7 +324,7 @@ public class PlayerController : MonoBehaviour {
 		anim.SetBool ("isClimbing", false);
 	}
 
-	private void Die(bool fell) {
+	private void Die(bool fell, string cause) {
 		anim.SetBool ("isClimbing", false);
 		if (!fell)
 			anim.SetTrigger ("isDead");
@@ -332,7 +332,7 @@ public class PlayerController : MonoBehaviour {
 		isDead = true;
 
 		CutsceneManager.instance.playerRespawning = true;
-		CutsceneManager.instance.causeOfDeath = (fell) ? "fall" : "enemy";
+		CutsceneManager.instance.causeOfDeath = cause;
 		rb2d.velocity = Vector2.zero;
 
 		StartCoroutine (Respawn ());
@@ -346,13 +346,17 @@ public class PlayerController : MonoBehaviour {
 			checkpointCameraBound = MainCamera.instance.cameraBounds;
 		}
 		if(col.gameObject.CompareTag("Pit")) {
-			Die(true);
+			Die(true, "fall");
 		}
 		if(col.gameObject.CompareTag("Boulder")) {
 			Health.instance.hp--;
-			Knocked ((col.transform.position.x < transform.position.x));
-			hurting = true;
-			anim.SetTrigger ("isHurt");
+			if (Health.instance.hp <= 0 && !isDead) {
+				Die (false, "boulder");
+			} else {
+				Knocked ((col.transform.position.x < transform.position.x));
+				hurting = true;
+				anim.SetTrigger ("isHurt");
+			}
 		}
 		if (col.gameObject.CompareTag ("Beanstalk")) {
 			canClimb = true;
@@ -394,10 +398,11 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void OnCollisionEnter2D(Collision2D col) {
+		string cause;
 		if (col.gameObject.CompareTag ("Damage") && !hurting) {
 			Health.instance.hp--;
 			if (Health.instance.hp <= 0 && !isDead) {
-				Die (false);
+				Die (false, "enemy");
 			} else {
 				Knocked ((col.transform.position.x < transform.position.x));
 				hurting = true;
