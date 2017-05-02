@@ -13,14 +13,12 @@ public class PlayerController : MonoBehaviour {
 
 	[HideInInspector] public bool isDead;
 
-
 	[HideInInspector] public bool disabled;
 
 	// Beanstalk object
 	public GameObject beanstalkPrefab;
 
 	public float initialGravity;
-
 
 	private int megaGolemsLeft = 2;
 
@@ -149,9 +147,6 @@ public class PlayerController : MonoBehaviour {
 					curY = Mathf.Clamp (curY, Mathf.NegativeInfinity, beanstalkCollider.bounds.center.y + beanstalkCollider.bounds.extents.y);
 					transform.position = new Vector3 (transform.position.x, curY, transform.position.z);
 				}
-
-
-
 					
 			} else {
 				InputManager ();
@@ -165,7 +160,7 @@ public class PlayerController : MonoBehaviour {
 					doJump = false; 
 				}
 			}
-		} else if (isGrounded){
+		} else if (isGrounded) {
 			rb2d.velocity = new Vector2 (0f, 0f);
 		}
 
@@ -247,7 +242,6 @@ public class PlayerController : MonoBehaviour {
 	void ClimbingInputManager() {
 		verticalDirection = 0;
 		{
-			
 			if (Input.GetKey (KeyCode.UpArrow) || Input.GetKey (KeyCode.W)) {
 				anim.enabled = true;
 				verticalDirection = 1;
@@ -313,6 +307,8 @@ public class PlayerController : MonoBehaviour {
 		} else if (anim.GetBool ("isFalling")) {
 			anim.SetBool ("isJumping", false);
 			anim.SetBool ("isFalling", false);
+		} else {
+			anim.SetBool ("isJumping", false);
 		}
 		prevHeight = currHeight;
 	}
@@ -325,6 +321,8 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private void Die(bool fell, string cause) {
+		SoundManager.instance.PlaySound ("death");
+
 		anim.SetBool ("isClimbing", false);
 		if (!fell)
 			anim.SetTrigger ("isDead");
@@ -389,8 +387,6 @@ public class PlayerController : MonoBehaviour {
 		if (col.CompareTag ("Beanstalk") && isClimbing) {
 			//we know that player is exiting off the top
 			atTopOfStalk = true;
-			//Climb (false);
-
 		}
 		if (col.gameObject.CompareTag ("SceneChangeTrigger") && col.gameObject.GetComponent<SceneChangeTrigger>().isTunnel) {
 			inFrontOfTunnel = false;
@@ -404,11 +400,11 @@ public class PlayerController : MonoBehaviour {
 			if (Health.instance.hp <= 0 && !isDead) {
 				Die (false, "enemy");
 			} else {
+				SoundManager.instance.PlaySound ("death");
 				Knocked ((col.transform.position.x < transform.position.x));
 				hurting = true;
 				anim.SetTrigger ("isHurt");
 			}
-
 		}
 	}
 
@@ -429,7 +425,6 @@ public class PlayerController : MonoBehaviour {
 		anim.ResetTrigger ("isDead");
 		anim.ResetTrigger ("isAttacking");
 	}
-		
 
 	//################################ Beanstalk ################################
 
@@ -467,7 +462,6 @@ public class PlayerController : MonoBehaviour {
 		hurting = false;
 		Enable (true);
 	}
-
 
 	//#####################################33
 	public void Disable(bool loseVelocity){
