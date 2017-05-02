@@ -60,8 +60,6 @@ public class BaseEnemyBehavior : MonoBehaviour {
 		foreach (GameObject child in childList) {
 			child.GetComponent<SpriteRenderer> ().color = new Color (1, 0, 0, 1);
 		}
-
-		StartCoroutine (Revert ());
 	}
 
 	// turns golem back to grey after being hit
