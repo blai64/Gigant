@@ -33,7 +33,6 @@ public class BaseEnemyBehavior : MonoBehaviour {
 	// Ignore collision between player if inactive
 	public GameObject playerPrefab;
 
-	// Use this for initialization
 	void Start () {
 		rb2d = GetComponent<Rigidbody2D> ();
 		anim = GetComponentInChildren<Animator> ();
@@ -55,7 +54,7 @@ public class BaseEnemyBehavior : MonoBehaviour {
 	}
 
 	// turns golem red when hit
-	public void RedFlash(){
+	public void RedFlash() {
 		renderer.color = new Color (1, 0, 0, 1);
 		foreach (GameObject child in childList) {
 			child.GetComponent<SpriteRenderer> ().color = new Color (1, 0, 0, 1);
@@ -72,12 +71,11 @@ public class BaseEnemyBehavior : MonoBehaviour {
 		}
 	}
 
-	IEnumerator Revert(){
+	IEnumerator Revert() {
 		yield return new WaitForSeconds (0.5f);
 		RevertFromRed ();
 	}
-	
-	// Update is called once per frame
+
 	virtual protected void Update () {
 		// Turns boxColliders on arms on and off depending on whether the enemy is attacking or not
 		if (isAttacking) {
@@ -112,52 +110,55 @@ public class BaseEnemyBehavior : MonoBehaviour {
 		}
 	}
 
-
-
-	void OnTriggerEnter2D (Collider2D col){
+	void OnTriggerEnter2D (Collider2D col) {
 		if (col.CompareTag ("Player") && !isActive && canBeActivated) {
 			anim.SetTrigger ("isActivated");
 		}
 
 		if (col.CompareTag ("Weapon") && PlayerController.instance.isAttacking) {
-	//		GetDamaged (1);
 		}
 	}
 
-
-	void OnCollisionEnter2D(Collision2D collision)
-	{
-		if (collision.gameObject.tag == "Player" && !isActive)
-		{
-			Physics2D.IgnoreCollision(playerPrefab.GetComponent<PolygonCollider2D>(), GetComponent<PolygonCollider2D>(), true);
+	void OnCollisionEnter2D(Collision2D collision) {
+		if (collision.gameObject.tag == "Player" && !isActive) {
+			Physics2D.IgnoreCollision(playerPrefab.GetComponent<PolygonCollider2D>(),
+									  GetComponent<PolygonCollider2D>(), true);
 		}
 	}
-
-
-	void OnTriggerStay2D (Collider2D col){
+		
+	void OnTriggerStay2D (Collider2D col) {
 		if (col.CompareTag("Player") && !isActive && canBeActivated){
 			anim.SetTrigger("isActivated");
 		}		
 	}
-	public void EndAttack(){
+
+	public void EndAttack() {
 		isAttacking = false;
 		anim.SetTrigger ("isWalking");
 	}
 
-	virtual public void DoAttack(){
+	virtual public void DoAttack() {
+		SoundManager.instance.PlaySound ("enemy attack");
 	}
+		
+	public void GetDamaged (int damage) {
 
+		float rand = Random.value;
+		if (rand < 0.5) {
+			SoundManager.instance.PlaySound ("sword hit 1");
+		} else {
+			SoundManager.instance.PlaySound ("sword hit 1");
+		}
 
-	public void GetDamaged (int damage){
 		health -= damage;
 
 		if (health <= 0 && isActive)
 			Die ();
 	}
 
-	void Die(){
-		//Destroy (gameObject);//temporary...
-		//start Death animation
+	void Die() {
+		SoundManager.instance.PlaySound ("enemy crumble");
+
 		isActive = false;
 		isAttacking = false;
 
@@ -165,24 +166,26 @@ public class BaseEnemyBehavior : MonoBehaviour {
 		anim.SetTrigger ("isDeactivated");
 		StartCoroutine (DisableForTime (3.0f));
 	}
-
-
-	IEnumerator DisableForTime(float seconds){
+		
+	IEnumerator DisableForTime(float seconds) {
 		yield return new WaitForSeconds (seconds);
 		canBeActivated = true;
 	}
 
-	public void Activate(){
-		isActive = true;
-		Physics2D.IgnoreCollision(playerPrefab.GetComponent<PolygonCollider2D>(), GetComponent<PolygonCollider2D>(), false);
-		anim.ResetTrigger ("isActivated");
+	public void Activate() {
 
+		SoundManager.instance.PlaySound ("enemy crumble");
+
+		isActive = true;
+		Physics2D.IgnoreCollision(playerPrefab.GetComponent<PolygonCollider2D>(),
+							      GetComponent<PolygonCollider2D>(), false);
+		anim.ResetTrigger ("isActivated");
 
 		anim.SetTrigger ("isWalking");
 		health = 3;
 	}
 
-	public void Reset(){
+	public void Reset() {
 		if (isActive) {
 			anim.SetTrigger ("isDeactivated");
 		}
@@ -191,16 +194,14 @@ public class BaseEnemyBehavior : MonoBehaviour {
 		isActive = false; 
 		isAttacked = false; 
 		isAttacking = false;
-
-
 	}
 
-	public void DoEmit(){
+	public void DoEmit() {
 		if (psystem != null)
 			psystem.Emit (2);
 	}
 
-	public void StopDamaging(){
+	public void StopDamaging() {
 		isAttacking = false;
 	}
 }

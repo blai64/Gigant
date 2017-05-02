@@ -8,7 +8,7 @@ public class BeanstalkScript : MonoBehaviour {
 	public GameObject pivotPointPrefab;
 	private Rigidbody2D pivotBody;
 
-	SpriteRenderer renderer;
+	SpriteRenderer sr;
 
 	// Time variables
 	public float waitTillGrowth = 3;
@@ -24,8 +24,10 @@ public class BeanstalkScript : MonoBehaviour {
 	private float fullyRotated = 2;
 	public float growSize = .5f;
 
+	private bool isPlaying = false;
+
 	void Start () {
-		renderer = this.GetComponent<SpriteRenderer> ();
+		sr = this.GetComponent<SpriteRenderer> ();
 		colorChangeRate = .001f * (10 / decayCountdown);
 		// Place the pivot gameobject on the top of the beanstalk
 		GameObject pivotPoint = Instantiate (pivotPointPrefab);
@@ -34,17 +36,18 @@ public class BeanstalkScript : MonoBehaviour {
 		pivotBody = pivotPoint.GetComponent<Rigidbody2D> ();
 		grown = false;
 		decayTimer = decayCountdown;
+
+		SoundManager.instance.PlaySound ("stalk grow");
 	}
 
 	// Allows player to climb only if the beanstalk is sufficiently large
-	public bool FullyGrown(){
+	public bool FullyGrown() {
 		return grown;
 	}
 
-	public bool isCut(){
+	public bool isCut() {
 		return cut;
 	}
-		
 
 	// Begins to tilt over the beanstalk if the player cuts it down
 	public void PlayerCutBeanstalk(){
@@ -72,7 +75,7 @@ public class BeanstalkScript : MonoBehaviour {
 			waitTillGrowth -= Time.deltaTime;
 		} 
 		// Growing the beanstalk
-		else{
+		else {
 			if (!grown) {
 				transform.localScale += new Vector3 (growthSpeed, growthSpeed, 0);
 				if(growSize >= .8f)
@@ -103,21 +106,26 @@ public class BeanstalkScript : MonoBehaviour {
 	}
 
 	// Makes the beanstalk decay over time
-	void Decay(){
+	void Decay() {
 		decayCountdown -= Time.deltaTime;
 
 		if (decayCountdown > decayTimer * 0.5f) {
-			renderer.color -= new Color(colorChangeRate / 2,
+			sr.color -= new Color(colorChangeRate / 2,
 				colorChangeRate, colorChangeRate,0);
 		} else if (decayCountdown > decayTimer * 0.3f) {
-			renderer.color -= new Color(colorChangeRate / 2,
+			sr.color -= new Color(colorChangeRate / 2,
 										colorChangeRate, colorChangeRate,0);
 			transform.localScale -= new Vector3 (0.01f * growthSpeed, 0.01f * growthSpeed, 0);
 			transform.Translate (new Vector2 (0, -1.5f * growthSpeed));
 			if(transform.localScale.y < .2f)
 				Destroy (this.gameObject);
+
+			if (!isPlaying) {
+				SoundManager.instance.PlaySound ("stalk die");
+				isPlaying = true;
+			}
 		} else if (decayCountdown > decayTimer * 0.05f) {
-			renderer.color -= new Color(colorChangeRate / 2,
+			sr.color -= new Color(colorChangeRate / 2,
 										colorChangeRate, colorChangeRate, 10f *  colorChangeRate);
 			transform.localScale -= new Vector3 (2f * growthSpeed, 2f * growthSpeed, 0);
 			transform.Translate (new Vector2 (0, -20f * growthSpeed));

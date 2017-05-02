@@ -81,12 +81,14 @@ public class CutsceneManager : MonoBehaviour {
 		//cutscene1
 		tutorialText.Add ("Why, if it isn't <color=#B1883F>Jack</color>!\nMy have you grown.");
 		tutorialText.Add ("I remember the first time I gave you some <color=#5FC96A>magic</color> <color=#5FC96A>beans</color>\nfor this here cow of yers.");
+		// MOO
 		tutorialText.Add ("I hear you've come to\n<color=#AC4744>slay</color> <color=#AC4744>the</color> <color=#AC4744>giant</color>!\nYou'll need to climb to the top and reach his head.");
 
 		level1Text1.Add ("Why if it isn't <color=#B1883F>Jack!</color>\nYou're a slow fella aren't ya?");
 		level1Text2.Add ("How did you even get here?");
 		level1Text3.Add ("I just rode <color=#FF94D1>ol' Bessie</color> here");
 		level1Text4.Add ("So you're saying my <color=#FF94D1>cow</color> got you here faster than the <color=#5FC96A>beans</color> you gave me before?");
+		// MOO
 		level1Text5.Add ("Ehhh.... enough chit chat. Get to the top of this giant already!\nI thought you were a famous <color=#AC4744>giant</color> <color=#AC4744>slayer</color> or somethin'");
 
 		level2Text1.Add ("Why if it isn't <color=#B1883F>Jack</color> again!");
@@ -99,6 +101,7 @@ public class CutsceneManager : MonoBehaviour {
 		level3Text2.Add ("......\n......");
 		level3Text2.Add ("Why don't you just <color=#AC4744>slay</color> <color=#AC4744>the</color> <color=#AC4744>giant</color>?");
 		level3Text3.Add ("Aww I would but I'm a <color=#FF94D1>lover</color> not a <color=#AC4744>killer</color>.\nAin't that right <color=#FF94D1>Bessie</color>?");
+		// MOO
 		level3Text4.Add ("......");
 		level3Text5.Add ("Anywhoo, there are a couple of <color=grey>guardians</color> up ahead that you'll neeed to <color=#AC4744>defeat</color> to unlock the way to the top.\nNow get goin'!");
 
@@ -185,6 +188,11 @@ public class CutsceneManager : MonoBehaviour {
 
 	private void Talking(bool isTalking) {
 		hermitAnim.SetBool("isTalking", isTalking);
+	}
+
+	private void Moo() {
+		SoundManager.instance.PlaySound ("moo");
+		cowAnim.SetTrigger ("Moo");
 	}
 
 	IEnumerator StartCutsceneTutorial() {

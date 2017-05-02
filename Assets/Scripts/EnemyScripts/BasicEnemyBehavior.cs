@@ -28,9 +28,7 @@ public class BasicEnemyBehavior : BaseEnemyBehavior {
 	}
 
 	override public void DoAttack() {
-		//attack logic, e.g. creating hitbox in front of enemy, throwing object, etc
 		base.isAttacking = true;
-		//StartCoroutine(BasicAttack());
 	}
 
 	IEnumerator BasicAttack() {
