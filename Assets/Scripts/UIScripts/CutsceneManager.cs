@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class CutsceneManager : MonoBehaviour {
+
 	public static CutsceneManager instance;
 
 	[HideInInspector] public bool initialized;
@@ -49,16 +50,18 @@ public class CutsceneManager : MonoBehaviour {
 	private List<string> bossText4 = new List<string> ();
 	private List<string> bossText5 = new List<string> ();
 
-
 	private List<string> fallRespawnText1 = new List<string> ();
-
 
 	//cutscene boss
 	public GameObject boss;
 	public GameObject bossSpeechBubble;
 	private SpeechBubble bossSb;
 
-	void Awake(){
+	// Animator objects
+	private Animator cowAnim;
+	private Animator hermitAnim;
+
+	void Awake() {
 		if (instance == null)
 			instance = this;
 		else
@@ -66,6 +69,10 @@ public class CutsceneManager : MonoBehaviour {
 	}
 
 	void Start(){
+
+		cowAnim = GameObject.Find("Cow").GetComponent<Animator>();
+		hermitAnim = GameObject.Find("Hermit Char").GetComponent<Animator>();
+
 		anim = player.GetComponentInChildren<Animator> ();
 		hermitSb = (hermitSpeechBubble != null) ? hermitSpeechBubble.GetComponent<SpeechBubble> () : null;
 		playerSb = (playerSpeechBubble != null) ? playerSpeechBubble.GetComponent<SpeechBubble> () : null;
@@ -109,12 +116,12 @@ public class CutsceneManager : MonoBehaviour {
 		fallRespawnText1.Add ("Jump better, scrubb.");
 	}
 
-	public IEnumerator MoveOn(){
+	public IEnumerator MoveOn() {
 		moveOn = true;
 		yield return 0;
 	}
 
-	public IEnumerator Wait(){
+	public IEnumerator Wait() {
 		while (!moveOn) {
 			yield return 0;
 		}
@@ -122,10 +129,10 @@ public class CutsceneManager : MonoBehaviour {
 		yield return 0;
 	}
 
-	void OnTriggerEnter2D (Collider2D col){
+	void OnTriggerEnter2D (Collider2D col) {
 		if (col.CompareTag ("Player") && !initialized) {
 			initialized = true; 
-			//TODO: case on which scene this is, start the correct cutscene
+
 			switch (SceneManager.GetActiveScene ().name) {
 			case "Level1":
 				StartCoroutine (StartCutsceneLevel1 ());
@@ -158,28 +165,30 @@ public class CutsceneManager : MonoBehaviour {
 			default:
 				break;
 			}
-
 		}
 	}
 		
-	void SetActiveBubble(GameObject newSpeechBubble, SpeechBubble newSb){
+	void SetActiveBubble(GameObject newSpeechBubble, SpeechBubble newSb) {
+
 		if (activeSpeechBubble != null) {
 			activeSpeechBubble.SetActive (false);
 			activeSb = null;
 		}
 
-
 		if (newSpeechBubble != null) {
 			newSpeechBubble.SetActive (true);
 			activeSb = newSb;
 		}
-			
 
 		activeSpeechBubble = newSpeechBubble;
 	}
 
+	private void Talking(bool isTalking) {
+		hermitAnim.SetBool("isTalking", isTalking);
+	}
 
 	IEnumerator StartCutsceneTutorial() {
+
 		PlayerController.instance.Disable (true);
 
 		yield return 0;
@@ -189,11 +198,13 @@ public class CutsceneManager : MonoBehaviour {
 
 		yield return new WaitForSeconds (0.3f);
 
+		Talking(true);
 		SetActiveBubble (hermitSpeechBubble, hermitSb);
 		activeSb.Play(tutorialText);
 
 		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
 
+		Talking(false);
 		StartCoroutine (EndCutsceneTutorial());
 	}
 
@@ -212,6 +223,7 @@ public class CutsceneManager : MonoBehaviour {
 	//###################################################################################
 
 	IEnumerator StartCutsceneLevel1() {
+
 		PlayerController.instance.Disable (true);
 
 		yield return 0;
@@ -221,31 +233,37 @@ public class CutsceneManager : MonoBehaviour {
 
 		yield return new WaitForSeconds (0.3f);
 
+		Talking(true);
 		SetActiveBubble (hermitSpeechBubble, hermitSb);
 		activeSb.Play(level1Text1);
 
 		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
 
+		Talking(false);
 		SetActiveBubble (playerSpeechBubble, playerSb);
 		activeSb.Play(level1Text2);
 
 		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
 
+		Talking(true);
 		SetActiveBubble (hermitSpeechBubble, hermitSb);
 		activeSb.Play(level1Text3);
 
 		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
 		//yield return 0;
+		Talking(false);
 		SetActiveBubble (playerSpeechBubble, playerSb);
 		activeSb.Play(level1Text4);
 
 		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
 
+		Talking(true);
 		SetActiveBubble (hermitSpeechBubble, hermitSb);
 		activeSb.Play(level1Text5);
 
 		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
 
+		Talking(false);
 		StartCoroutine (EndCutsceneLevel1());
 	}
 
@@ -264,6 +282,7 @@ public class CutsceneManager : MonoBehaviour {
 	//###################################################################################
 
 	IEnumerator StartCutsceneLevel2() {
+
 		PlayerController.instance.Disable (true);
 
 		yield return 0;
@@ -273,16 +292,19 @@ public class CutsceneManager : MonoBehaviour {
 
 		yield return new WaitForSeconds (0.3f);
 
+		Talking(true);
 		SetActiveBubble (hermitSpeechBubble, hermitSb);
 		activeSb.Play(level2Text1);
 
 		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
 
+		Talking(false);
 		SetActiveBubble (playerSpeechBubble, playerSb);
 		activeSb.Play(level2Text2);
 
 		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
 
+		Talking(true);
 		SetActiveBubble (hermitSpeechBubble, hermitSb);
 		activeSb.Play(level2Text3);
 
@@ -290,6 +312,7 @@ public class CutsceneManager : MonoBehaviour {
 
 		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
 
+		Talking(false);
 		StartCoroutine (EndCutsceneLevel1());
 	}
 
@@ -305,10 +328,10 @@ public class CutsceneManager : MonoBehaviour {
 		yield return 0;
 	}
 
-
 	//###################################################################################
 
 	IEnumerator StartCutsceneLevel3() {
+
 		PlayerController.instance.Disable (true);
 
 		yield return 0;
@@ -318,31 +341,37 @@ public class CutsceneManager : MonoBehaviour {
 
 		yield return new WaitForSeconds (0.3f);
 
+		Talking(true);
 		SetActiveBubble (hermitSpeechBubble, hermitSb);
 		activeSb.Play(level3Text1);
 
 		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
 
+		Talking(false);
 		SetActiveBubble (playerSpeechBubble, playerSb);
 		activeSb.Play(level3Text2);
 
 		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
 
+		Talking(true);
 		SetActiveBubble (hermitSpeechBubble, hermitSb);
 		activeSb.Play(level3Text3);
 
 		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
-		//yield return 0;
+		
+		Talking(false);
 		SetActiveBubble (playerSpeechBubble, playerSb);
 		activeSb.Play(level3Text4);
 
 		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
 
+		Talking(true);
 		SetActiveBubble (hermitSpeechBubble, hermitSb);
 		activeSb.Play(level3Text5);
 
 		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
 
+		Talking(false);
 		StartCoroutine (EndCutsceneLevel1());
 	}
 
@@ -358,11 +387,10 @@ public class CutsceneManager : MonoBehaviour {
 		yield return 0;
 	}
 
-
-
 	//###################################################################################
 
 	IEnumerator StartCutsceneBoss() {
+
 		PlayerController.instance.Disable (true);
 
 		yield return 0;
@@ -398,7 +426,7 @@ public class CutsceneManager : MonoBehaviour {
 
 	//###################################################################################
 
-	public IEnumerator StartCutsceneBossP2(){
+	public IEnumerator StartCutsceneBossP2() {
 		PlayerController.instance.Disable (true);
 
 		yield return 0;
@@ -492,8 +520,6 @@ public class CutsceneManager : MonoBehaviour {
 		yield return StartCoroutine (Wait ());
 
 		StartCoroutine (EndCutsceneBossP4());
-
-
 	}
 
 	public IEnumerator EndCutsceneBossP4() {
@@ -508,10 +534,7 @@ public class CutsceneManager : MonoBehaviour {
 		StartCoroutine (CameraManager.instance.Zoom (true));
 		yield return StartCoroutine (CameraManager.instance.MoveCinematic (false,true, 0.05f));
 
-
 		PlayerController.instance.Enable (true);
-
-
 
 		yield return 0;
 	}
