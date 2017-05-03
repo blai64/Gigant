@@ -13,4 +13,8 @@ public class EnemySound : MonoBehaviour {
 	public void FootStep() {
 		sm.PlaySound ("enemy step");
 	}
+
+	public void Attack() {
+		sm.PlaySound ("enemy attack");
+	}
 }

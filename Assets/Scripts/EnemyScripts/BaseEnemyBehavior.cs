@@ -136,7 +136,7 @@ public class BaseEnemyBehavior : MonoBehaviour {
 	}
 
 	virtual public void DoAttack() {
-		SoundManager.instance.PlaySound ("enemy attack");
+//		SoundManager.instance.PlaySound ("enemy attack");
 	}
 		
 	public void GetDamaged (int damage) {
