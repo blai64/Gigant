@@ -24,11 +24,12 @@ public class ParentCaller : MonoBehaviour {
 		parentScript.EndAttack ();
 	}
 
-	public void DoEmit(){
-		parentScript.DoEmit ();
+	public void DoEmit(string method){
+		parentScript.DoEmit (method);
 	}
 
 	public void StopDamaging(){
 		parentScript.StopDamaging ();
+		parentScript.DoEmit ("arms");
 	}
 }

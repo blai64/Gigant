@@ -17,8 +17,10 @@ public class BaseEnemyBehavior : MonoBehaviour {
 
 	public int health;
 
-	public GameObject psystemObject;
-	private ParticleSystem psystem;
+	public GameObject psystemPrefab;
+	public Transform dustSpawnFeet;
+	public Transform dustSpawnArmRight;
+	public Transform dustSpawnArmLeft;
 
 	private Rigidbody2D rb2d; 
 
@@ -48,11 +50,6 @@ public class BaseEnemyBehavior : MonoBehaviour {
 		}
 
 		originalPosition = transform.position;
-
-
-		if (psystemObject != null) {
-			psystem = psystemObject.GetComponent<ParticleSystem> ();
-		}
 	}
 
 	public void KnockBack(float enemyPos, float swordPos){
@@ -112,10 +109,6 @@ public class BaseEnemyBehavior : MonoBehaviour {
 
 		} else {
 			rb2d.velocity = Vector2.zero;
-		}
-			
-		if (Input.GetKeyDown (KeyCode.Y)) {
-			DoEmit ();
 		}
 	}
 
@@ -190,6 +183,7 @@ public class BaseEnemyBehavior : MonoBehaviour {
 		Physics2D.IgnoreCollision(playerPrefab.GetComponent<PolygonCollider2D>(),
 							      GetComponent<PolygonCollider2D>(), false);
 		anim.ResetTrigger ("isActivated");
+		anim.ResetTrigger ("isAttacking");
 
 		anim.SetTrigger ("isWalking");
 		health = 3;
@@ -206,9 +200,25 @@ public class BaseEnemyBehavior : MonoBehaviour {
 		isAttacking = false;
 	}
 
-	public void DoEmit() {
-		if (psystem != null)
-			psystem.Emit (2);
+	public void DoEmit(string method) {
+		
+		print ("should emit cloud");
+		if (psystemPrefab != null) {
+			for (int i = -1; i < 2; i++) {
+				GameObject newParticleSystem = Instantiate (psystemPrefab);
+				if (method == "feet")
+					newParticleSystem.transform.position = dustSpawnFeet.position + new Vector3(i * 0.5f, 0,0);
+				else {
+					if (direction < 0)
+						newParticleSystem.transform.position = dustSpawnArmLeft.position + new Vector3(i * 0.5f, 0,0);
+					else
+						newParticleSystem.transform.position = dustSpawnArmRight.position + new Vector3(i * 0.5f, 0,0);
+				}
+			}
+
+				
+				
+		}
 	}
 
 	public void StopDamaging() {

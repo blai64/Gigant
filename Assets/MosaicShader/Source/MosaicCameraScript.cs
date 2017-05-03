@@ -94,12 +94,23 @@ public class MosaicCameraScript : MonoBehaviour {
     }
 
     void Update() {
+
+		Debug.Log ("longerTransition is "+ PlayerController.instance.longerTransition);
 		
 		if (pixelizing && !depixelizing) {
 			isMosaic = true;
-			MosaicOpacity += 0.1f;
-			rendererAlpha.a += 0.05f;
+			if (PlayerController.instance.longerTransition) {
+				MosaicOpacity += 0.05f;
+				rendererAlpha.a += 0.025f;
+			} else {
+				MosaicOpacity += 0.1f;
+				rendererAlpha.a += 0.05f;
+			}
+
 			white.GetComponent<SpriteRenderer> ().color = rendererAlpha;
+//			anim.ResetTrigger ("isHurt");
+//			anim.ResetTrigger ("isDead");
+//			anim.ResetTrigger ("isAttacking");
 		}
 
 		// Move camera
@@ -118,16 +129,24 @@ public class MosaicCameraScript : MonoBehaviour {
 			foreach (BaseAdvancedEnemyBehavior enemy in enemies2) {
 				enemy.Reset ();
 			}
+
 		}
 
 		if (depixelizing && !pixelizing) {
-			MosaicOpacity -= 0.1f;
-			rendererAlpha.a -= 0.05f;
+			if (PlayerController.instance.longerTransition) {
+				MosaicOpacity -= 0.05f;
+				rendererAlpha.a -= 0.025f;
+			} else {
+				MosaicOpacity -= 0.1f;
+				rendererAlpha.a -= 0.05f;
+			}
 			white.GetComponent<SpriteRenderer> ().color = rendererAlpha;
 			anim.SetBool ("isRunning", false);
+			Debug.Log ("??????");
 		}
 
 		if (MosaicOpacity <= 0.0f && depixelizing) {
+			//PlayerController.instance.longerTransition = false;
 			isMosaic = false;
 			depixelizing = false;
 			PlayerController.instance.Enable(true);
