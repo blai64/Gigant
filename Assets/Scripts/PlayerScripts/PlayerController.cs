@@ -317,6 +317,7 @@ public class PlayerController : MonoBehaviour {
 		anim.SetBool ("isClimbing", false);
 	}
 
+
 	private void Die(bool fell, string cause) {
 		SoundManager.instance.PlaySound ("death");
 

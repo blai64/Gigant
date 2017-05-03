@@ -13,6 +13,8 @@ public class BaseEnemyBehavior : MonoBehaviour {
 
 	private float moveSpeed = 1.0f;
 
+	public BoxCollider2D deathBox;
+
 	public int health;
 
 	public GameObject psystemObject;
@@ -81,6 +83,7 @@ public class BaseEnemyBehavior : MonoBehaviour {
 		yield return new WaitForSeconds (0.5f);
 		RevertFromRed ();
 	}
+		
 
 	virtual protected void Update () {
 		// Turns boxColliders on arms on and off depending on whether the enemy is attacking or not
@@ -167,7 +170,7 @@ public class BaseEnemyBehavior : MonoBehaviour {
 
 		isActive = false;
 		isAttacking = false;
-
+		deathBox.enabled = (false);
 		canBeActivated = false;
 		anim.SetTrigger ("isDeactivated");
 		StartCoroutine (DisableForTime (3.0f));
@@ -176,6 +179,7 @@ public class BaseEnemyBehavior : MonoBehaviour {
 	IEnumerator DisableForTime(float seconds) {
 		yield return new WaitForSeconds (seconds);
 		canBeActivated = true;
+		deathBox.enabled = (true);
 	}
 
 	public void Activate() {
