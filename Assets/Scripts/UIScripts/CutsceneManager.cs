@@ -21,10 +21,12 @@ public class CutsceneManager : MonoBehaviour {
 	private SpeechBubble hermitSb;
 	public GameObject playerSpeechBubble;
 	private SpeechBubble playerSb;
+	public GameObject cowSpeechBubble;
+	private SpeechBubble cowSb;
 
 	public GameObject player;
 	private Animator anim;
-	private List<string> tutorialText = new List<string> ();
+	private List<string> tutorialText1 = new List<string> ();
 	private List<string> tutorialText2 = new List<string> ();
 	private List<string> tutorialText3 = new List<string> ();
 
@@ -33,6 +35,8 @@ public class CutsceneManager : MonoBehaviour {
 	private List<string> level1Text3 = new List<string> ();
 	private List<string> level1Text4 = new List<string> ();
 	private List<string> level1Text5 = new List<string> ();
+	private List<string> level1TextMoo = new List<string> ();
+
 
 	private List<string> level2Text1 = new List<string> ();
 	private List<string> level2Text2 = new List<string> ();
@@ -43,6 +47,7 @@ public class CutsceneManager : MonoBehaviour {
 	private List<string> level3Text3 = new List<string> ();
 	private List<string> level3Text4 = new List<string> ();
 	private List<string> level3Text5 = new List<string> ();
+	private List<string> level3TextMoo = new List<string> ();
 
 	private List<string> bossText1 = new List<string> ();
 	private List<string> bossText2 = new List<string> ();
@@ -78,19 +83,20 @@ public class CutsceneManager : MonoBehaviour {
 		anim = player.GetComponentInChildren<Animator> ();
 		hermitSb = (hermitSpeechBubble != null) ? hermitSpeechBubble.GetComponent<SpeechBubble> () : null;
 		playerSb = (playerSpeechBubble != null) ? playerSpeechBubble.GetComponent<SpeechBubble> () : null;
+		cowSb = (cowSpeechBubble != null) ? cowSpeechBubble.GetComponent<SpeechBubble> () : null;
 		bossSb = (bossSpeechBubble != null) ? bossSpeechBubble.GetComponent<SpeechBubble> () : null;
 
 		//cutscene1
-		tutorialText.Add ("Why, if it isn't <color=#B1883F>Jack</color>!\nMy have you grown.");
-		tutorialText.Add ("I remember the first time I gave you some <color=#5FC96A>magic</color> <color=#5FC96A>beans</color>\nfor this here cow of yers.");
-		// MOO
-		tutorialText.Add ("I hear you've come to\n<color=#AC4744>slay</color> <color=#AC4744>the</color> <color=#AC4744>giant</color>!\nYou'll need to climb to the top and reach his head.");
+		tutorialText1.Add ("Why, if it isn't <color=#B1883F>Jack</color>!\nMy have you grown.");
+		tutorialText1.Add ("I remember the first time I gave you some <color=#5FC96A>magic</color> <color=#5FC96A>beans</color>\nfor this here cow of yers.");
+		tutorialText2.Add ("MOO.");
+		tutorialText3.Add ("I hear you've come to\n<color=#AC4744>slay</color> <color=#AC4744>the</color> <color=#AC4744>giant</color>!\nYou'll need to climb to the top and reach his head.");
 
 		level1Text1.Add ("Why if it isn't <color=#B1883F>Jack!</color>\nYou're a slow fella aren't ya?");
 		level1Text2.Add ("How did you even get here?");
-		level1Text3.Add ("I just rode <color=#FF94D1>ol' Bessie</color> here");
+		level1Text3.Add ("I just rode <color=#FF94D1>ol' Bessie</color> here ");
 		level1Text4.Add ("So you're saying my <color=#FF94D1>cow</color> got you here faster than the <color=#5FC96A>beans</color> you gave me before?");
-		// MOO
+		level1TextMoo.Add ("MOO.");
 		level1Text5.Add ("Ehhh.... enough chit chat. Get to the top of this giant already!\nI thought you were a famous <color=#AC4744>giant</color> <color=#AC4744>slayer</color> or somethin'");
 
 		level2Text1.Add ("Why if it isn't <color=#B1883F>Jack</color> again!");
@@ -103,7 +109,7 @@ public class CutsceneManager : MonoBehaviour {
 		level3Text2.Add ("......\n......");
 		level3Text2.Add ("Why don't you just <color=#AC4744>slay</color> <color=#AC4744>the</color> <color=#AC4744>giant</color>?");
 		level3Text3.Add ("Aww I would but I'm a <color=#FF94D1>lover</color> not a <color=#AC4744>killer</color>.\nAin't that right <color=#FF94D1>Bessie</color>?");
-		// MOO
+		level3TextMoo.Add ("MOO.");
 		level3Text4.Add ("......");
 		level3Text5.Add ("Anywhoo, there are a couple of <color=grey>guardians</color> up ahead that you'll neeed to <color=#AC4744>defeat</color> to unlock the way to the top.\nNow get goin'!");
 
@@ -205,7 +211,19 @@ public class CutsceneManager : MonoBehaviour {
 
 		Talking(true);
 		SetActiveBubble (hermitSpeechBubble, hermitSb);
-		activeSb.Play(tutorialText);
+		activeSb.Play(tutorialText1);
+
+		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
+
+		Talking(false);
+		SetActiveBubble (cowSpeechBubble, cowSb);
+		activeSb.Play(tutorialText2);
+
+		yield return StartCoroutine (Wait ()); 
+
+		Talking(true);
+		SetActiveBubble (hermitSpeechBubble, hermitSb);
+		activeSb.Play(tutorialText3);
 
 		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
 
@@ -248,7 +266,7 @@ public class CutsceneManager : MonoBehaviour {
 		SetActiveBubble (playerSpeechBubble, playerSb);
 		activeSb.Play(level1Text2);
 
-		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
+		yield return StartCoroutine (Wait ()); 
 
 		Talking(true);
 		SetActiveBubble (hermitSpeechBubble, hermitSb);
@@ -259,6 +277,11 @@ public class CutsceneManager : MonoBehaviour {
 		Talking(false);
 		SetActiveBubble (playerSpeechBubble, playerSb);
 		activeSb.Play(level1Text4);
+
+		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
+
+		SetActiveBubble (cowSpeechBubble, cowSb);
+		activeSb.Play(level1TextMoo);
 
 		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
 
@@ -363,8 +386,13 @@ public class CutsceneManager : MonoBehaviour {
 		activeSb.Play(level3Text3);
 
 		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
-		
+
 		Talking(false);
+		SetActiveBubble (cowSpeechBubble, cowSb);
+		activeSb.Play(level3TextMoo);
+
+		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
+
 		SetActiveBubble (playerSpeechBubble, playerSb);
 		activeSb.Play(level3Text4);
 
