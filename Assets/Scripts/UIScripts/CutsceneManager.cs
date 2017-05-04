@@ -94,7 +94,7 @@ public class CutsceneManager : MonoBehaviour {
 
 		level1Text1.Add ("Why if it isn't <color=#B1883F>Jack!</color>\nYou're a slow fella aren't ya?");
 		level1Text2.Add ("How did you even get here?");
-		level1Text3.Add ("I just rode <color=#FF94D1>ol' Bessie</color> here");
+		level1Text3.Add ("I just rode <color=#FF94D1>ol' Bessie</color> here ");
 		level1Text4.Add ("So you're saying my <color=#FF94D1>cow</color> got you here faster than the <color=#5FC96A>beans</color> you gave me before?");
 		level1TextMoo.Add ("MOO.");
 		level1Text5.Add ("Ehhh.... enough chit chat. Get to the top of this giant already!\nI thought you were a famous <color=#AC4744>giant</color> <color=#AC4744>slayer</color> or somethin'");
