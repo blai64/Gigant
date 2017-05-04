@@ -98,7 +98,7 @@ public class SpeechBubble : MonoBehaviour {
 			remainingText = Regex.Replace (temp, regex, "");
 
 			textBox.text = text.Substring (0, i) + "<color=#00000000>" + remainingText + "</color>";
-			yield return new WaitForSeconds (0.05f);
+			yield return new WaitForSeconds (0.025f);
 		}
 	}
 }

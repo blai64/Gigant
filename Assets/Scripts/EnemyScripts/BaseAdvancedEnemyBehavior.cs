@@ -17,6 +17,8 @@ public class BaseAdvancedEnemyBehavior : MonoBehaviour {
 
 	private Rigidbody2D rb2d; 
 
+	public BoxCollider2D deathBox;
+
 	protected Animator anim;
 
 	private Vector3 originalPosition;
@@ -33,7 +35,7 @@ public class BaseAdvancedEnemyBehavior : MonoBehaviour {
 		rb2d = GetComponent<Rigidbody2D> ();
 		anim = GetComponentInChildren<Animator> ();
 		canBeActivated = true;
-		health = 10;
+		health = 5;
 		anim.SetBool ("isLeft", true);
 		renderer = this.GetComponentInChildren<SpriteRenderer> ();
 		originalColor = this.GetComponentInChildren<SpriteRenderer> ().color;
@@ -127,7 +129,7 @@ public class BaseAdvancedEnemyBehavior : MonoBehaviour {
 		//start Death animation
 		isActive = false;
 		isAttacking = false;
-
+		deathBox.enabled = (false);
 		canBeActivated = false;
 		anim.SetTrigger ("isDeactivated");
 		StartCoroutine (DisableForTime (3.0f));
@@ -152,7 +154,7 @@ public class BaseAdvancedEnemyBehavior : MonoBehaviour {
 		anim.ResetTrigger ("isActivated");
 
 		anim.SetTrigger ("isWalking");
-		health = 10;
+		health = 5;
 	}
 
 	public void Reset(){

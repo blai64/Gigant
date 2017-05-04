@@ -326,8 +326,10 @@ public class PlayerController : MonoBehaviour {
 		anim.SetTrigger ("isAttacking");
 		anim.SetBool ("isClimbing", false);
 	}
+		
 
-	private void Die(bool fell) {
+	private void Die(bool fell, string cause) {
+		SoundManager.instance.PlaySound ("death");
 		anim.SetBool ("isClimbing", false);
 		if (!fell)
 			anim.SetTrigger ("isDead");
@@ -350,13 +352,13 @@ public class PlayerController : MonoBehaviour {
 			checkpointCameraBound = MainCamera.instance.cameraBounds;
 		}
 		if(col.gameObject.CompareTag("Pit")) {
-			Die(true);
+			Die(true, "fall");
 		}
 		if(col.gameObject.CompareTag("Boulder")) {
 			Health.instance.hp--;
 			if (Health.instance.hp <= 0 && !isDead) {
 				anim.SetTrigger ("isHurt");
-				Die (false);
+				Die (false, "Boulder");
 			} else {
 				Knocked ((col.transform.position.x < transform.position.x));
 				hurting = true;
@@ -409,7 +411,7 @@ public class PlayerController : MonoBehaviour {
 		if (col.gameObject.CompareTag ("Damage") && !hurting) {
 			Health.instance.hp--;
 			if (Health.instance.hp <= 0 && !isDead) {
-				Die (false);
+				Die (false, "enemy");
 			} else {
 				Knocked ((col.transform.position.x < transform.position.x));
 				hurting = true;
