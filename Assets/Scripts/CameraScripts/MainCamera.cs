@@ -57,7 +57,7 @@ public class MainCamera : MonoBehaviour
 			float oldZ = transform.position.z;
 
 			//float direction = (float) pb.GetDirection ();
-			Vector3 delta = player.position - mainCamera.ViewportToWorldPoint(new Vector3(0.5f - xOffset,
+			Vector3 delta = player.position - mainCamera.ViewportToWorldPoint(new Vector3(0.5f + xOffset,
 				0.5f + yOffset,
 				0f));
 			destination = transform.position + delta;

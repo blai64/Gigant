@@ -23,6 +23,11 @@ public class BaseAdvancedEnemyBehavior : MonoBehaviour {
 
 	private Vector3 originalPosition;
 
+	public GameObject psystemPrefab;
+	public Transform dustSpawnFeet;
+	public Transform dustSpawnArmRight;
+	public Transform dustSpawnArmLeft;
+
 	// Color changing parameters
 	private SpriteRenderer renderer;
 	private Color originalColor;
@@ -120,13 +125,17 @@ public class BaseAdvancedEnemyBehavior : MonoBehaviour {
 	public void GetDamaged (int damage){
 		health -= damage;
 
-		if (health <= 0 && isActive)
+		if (health <= 0 && isActive) {
 			Die ();
+		}
 	}
 
 	void Die(){
 		//Destroy (gameObject);//temporary...
 		//start Death animation
+		this.gameObject.GetComponent<PolygonCollider2D>().enabled = false;
+		this.gameObject.GetComponent<Rigidbody2D> ().gravityScale = 0;
+		this.gameObject.transform.position = new Vector3 (this.gameObject.transform.position.x,this.gameObject.transform.position.y,-2);
 		isActive = false;
 		isAttacking = false;
 		deathBox.enabled = (false);
@@ -139,7 +148,7 @@ public class BaseAdvancedEnemyBehavior : MonoBehaviour {
 			GameObject vine = Instantiate (VictoryVine);
 			vine.transform.position = new Vector3 (PlayerController.instance.transform.position.x, 
 												   PlayerController.instance.transform.position.y - 1.22f,
-												   transform.position.z);
+												   -2);
 		}
 	}
 
@@ -166,8 +175,27 @@ public class BaseAdvancedEnemyBehavior : MonoBehaviour {
 		isActive = false; 
 		isAttacked = false; 
 		isAttacking = false;
+	}
+
+	public void DoEmit(string method) {
+
+		print ("should emit cloud");
+		if (psystemPrefab != null) {
+			for (int i = -1; i < 2; i++) {
+				GameObject newParticleSystem = Instantiate (psystemPrefab);
+				if (method == "feet")
+					newParticleSystem.transform.position = dustSpawnFeet.position + new Vector3(i * 0.5f, 0,0);
+				else {
+					if (direction < 0)
+						newParticleSystem.transform.position = dustSpawnArmLeft.position + new Vector3(i * 0.5f, 0,0);
+					else
+						newParticleSystem.transform.position = dustSpawnArmRight.position + new Vector3(i * 0.5f, 0,0);
+				}
+			}
 
 
+
+		}
 	}
 
 	public void StartDamaging(){
