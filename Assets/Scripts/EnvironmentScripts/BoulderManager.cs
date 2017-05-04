@@ -99,7 +99,6 @@ public class BoulderManager : MonoBehaviour {
 				reset = true;
 			}
 		}
-
 	}
 
 	void Rotate(GameObject obj) {
@@ -110,7 +109,12 @@ public class BoulderManager : MonoBehaviour {
 		if (col.CompareTag("Player")) {
 			startFalling = true;
 		}
+	}
 
+	void OnTriggerExit2D (Collider2D col) {
+		if (col.CompareTag("Player")) {
+			startFalling = false;
+		}
 	}
 
 	IEnumerator DestroyDebris(GameObject debris){

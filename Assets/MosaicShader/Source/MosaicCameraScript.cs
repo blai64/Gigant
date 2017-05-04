@@ -94,8 +94,6 @@ public class MosaicCameraScript : MonoBehaviour {
     }
 
     void Update() {
-
-		Debug.Log ("longerTransition is "+ PlayerController.instance.longerTransition);
 		
 		if (pixelizing && !depixelizing) {
 			isMosaic = true;
@@ -142,7 +140,6 @@ public class MosaicCameraScript : MonoBehaviour {
 			}
 			white.GetComponent<SpriteRenderer> ().color = rendererAlpha;
 			anim.SetBool ("isRunning", false);
-			Debug.Log ("??????");
 		}
 
 		if (MosaicOpacity <= 0.0f && depixelizing) {

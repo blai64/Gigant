@@ -22,7 +22,6 @@ public class SpeechBubble : MonoBehaviour {
 
 	void Awake() {
 		isHermit = (transform.parent.name.Contains("Hermit"));
-		Debug.Log (isHermit);
 		csm = CSManager.GetComponent<CutsceneManager> ();
 		textBox = transform.Find ("Panel/Text").GetComponent<Text> ();
 	}
