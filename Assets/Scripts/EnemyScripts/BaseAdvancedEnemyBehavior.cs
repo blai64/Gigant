@@ -17,7 +17,6 @@ public class BaseAdvancedEnemyBehavior : MonoBehaviour {
 
 	private Rigidbody2D rb2d; 
 
-	public BoxCollider2D deathBox;
 
 	protected Animator anim;
 
@@ -138,7 +137,6 @@ public class BaseAdvancedEnemyBehavior : MonoBehaviour {
 		this.gameObject.transform.position = new Vector3 (this.gameObject.transform.position.x,this.gameObject.transform.position.y,-2);
 		isActive = false;
 		isAttacking = false;
-		deathBox.enabled = (false);
 		canBeActivated = false;
 		anim.SetTrigger ("isDeactivated");
 		StartCoroutine (DisableForTime (3.0f));
