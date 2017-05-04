@@ -135,6 +135,7 @@ public class BaseAdvancedEnemyBehavior : MonoBehaviour {
 		//start Death animation
 		this.gameObject.GetComponent<PolygonCollider2D>().enabled = false;
 		this.gameObject.GetComponent<Rigidbody2D> ().gravityScale = 0;
+		this.gameObject.transform.position = new Vector3 (this.gameObject.transform.position.x,this.gameObject.transform.position.y,-2);
 		isActive = false;
 		isAttacking = false;
 		deathBox.enabled = (false);
