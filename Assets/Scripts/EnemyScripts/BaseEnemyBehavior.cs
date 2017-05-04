@@ -202,12 +202,13 @@ public class BaseEnemyBehavior : MonoBehaviour {
 
 	public void DoEmit(string method) {
 		
-		print ("should emit cloud");
 		if (psystemPrefab != null) {
 			for (int i = -1; i < 2; i++) {
 				GameObject newParticleSystem = Instantiate (psystemPrefab);
-				if (method == "feet")
-					newParticleSystem.transform.position = dustSpawnFeet.position + new Vector3(i * 0.5f, 0,0);
+				if (method == "feet") {
+					newParticleSystem.transform.position = dustSpawnFeet.position;
+				}
+					
 				else {
 					if (direction < 0)
 						newParticleSystem.transform.position = dustSpawnArmLeft.position + new Vector3(i * 0.5f, 0,0);
