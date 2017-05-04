@@ -13,10 +13,14 @@ public class BaseEnemyBehavior : MonoBehaviour {
 
 	private float moveSpeed = 1.0f;
 
+	public BoxCollider2D deathBox;
+
 	public int health;
 
-	public GameObject psystemObject;
-	private ParticleSystem psystem;
+	public GameObject psystemPrefab;
+	public Transform dustSpawnFeet;
+	public Transform dustSpawnArmRight;
+	public Transform dustSpawnArmLeft;
 
 	private Rigidbody2D rb2d; 
 
@@ -46,10 +50,13 @@ public class BaseEnemyBehavior : MonoBehaviour {
 		}
 
 		originalPosition = transform.position;
+	}
 
-
-		if (psystemObject != null) {
-			psystem = psystemObject.GetComponent<ParticleSystem> ();
+	public void KnockBack(float enemyPos, float swordPos){
+		if (enemyPos >= swordPos) {
+			rb2d.velocity = new Vector2 (10, 0);
+		} else {
+			rb2d.velocity = new Vector2 (-10, 0);
 		}
 	}
 
@@ -73,6 +80,7 @@ public class BaseEnemyBehavior : MonoBehaviour {
 		yield return new WaitForSeconds (0.5f);
 		RevertFromRed ();
 	}
+		
 
 	virtual protected void Update () {
 		// Turns boxColliders on arms on and off depending on whether the enemy is attacking or not
@@ -101,10 +109,6 @@ public class BaseEnemyBehavior : MonoBehaviour {
 
 		} else {
 			rb2d.velocity = Vector2.zero;
-		}
-			
-		if (Input.GetKeyDown (KeyCode.Y)) {
-			DoEmit ();
 		}
 	}
 
@@ -159,7 +163,7 @@ public class BaseEnemyBehavior : MonoBehaviour {
 
 		isActive = false;
 		isAttacking = false;
-
+		deathBox.enabled = (false);
 		canBeActivated = false;
 		anim.SetTrigger ("isDeactivated");
 		StartCoroutine (DisableForTime (3.0f));
@@ -168,6 +172,7 @@ public class BaseEnemyBehavior : MonoBehaviour {
 	IEnumerator DisableForTime(float seconds) {
 		yield return new WaitForSeconds (seconds);
 		canBeActivated = true;
+		deathBox.enabled = (true);
 	}
 
 	public void Activate() {
@@ -178,6 +183,7 @@ public class BaseEnemyBehavior : MonoBehaviour {
 		Physics2D.IgnoreCollision(playerPrefab.GetComponent<PolygonCollider2D>(),
 							      GetComponent<PolygonCollider2D>(), false);
 		anim.ResetTrigger ("isActivated");
+		anim.ResetTrigger ("isAttacking");
 
 		anim.SetTrigger ("isWalking");
 		health = 3;
@@ -194,9 +200,25 @@ public class BaseEnemyBehavior : MonoBehaviour {
 		isAttacking = false;
 	}
 
-	public void DoEmit() {
-		if (psystem != null)
-			psystem.Emit (2);
+	public void DoEmit(string method) {
+		
+		print ("should emit cloud");
+		if (psystemPrefab != null) {
+			for (int i = -1; i < 2; i++) {
+				GameObject newParticleSystem = Instantiate (psystemPrefab);
+				if (method == "feet")
+					newParticleSystem.transform.position = dustSpawnFeet.position + new Vector3(i * 0.5f, 0,0);
+				else {
+					if (direction < 0)
+						newParticleSystem.transform.position = dustSpawnArmLeft.position + new Vector3(i * 0.5f, 0,0);
+					else
+						newParticleSystem.transform.position = dustSpawnArmRight.position + new Vector3(i * 0.5f, 0,0);
+				}
+			}
+
+				
+				
+		}
 	}
 
 	public void StopDamaging() {

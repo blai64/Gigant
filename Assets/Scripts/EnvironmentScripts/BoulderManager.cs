@@ -7,12 +7,16 @@ public class BoulderManager : MonoBehaviour {
 	public static BoulderManager instance;
 
 	public GameObject boulderPrefab;
+	public Transform[] debrisSpawns;
+	public GameObject debrisPrefab;
+
 	public GameObject exclamationPointPrefab;
 	public Transform spawnTrans;
 	public Transform disappearTrans;
 	public float rotateSpeed = 500f;
 	public float scaleMin = 0.8f;
 	public float scaleMax = 1.0f;
+	private float debrisDelta = 1.0f;
 	private float newRotate;
 
 	private Vector3 spawnPos;
@@ -55,10 +59,32 @@ public class BoulderManager : MonoBehaviour {
 			if (reset) {
 				if (PlayerController.instance.transform.position.y + 3 < spawnPos.y && 
 					this.gameObject.transform.GetChild(1).transform.position.y <= PlayerController.instance.transform.position.y) {
-					GameObject warning = Instantiate (exclamationPointPrefab);
-					warning.transform.position = new Vector3 (boulderPrefab.transform.position.x,
-						PlayerController.instance.transform.position.y + 3,
-						spawnPos.z);
+					if (debrisPrefab != null) {
+						foreach (Transform debrisSpawn in debrisSpawns) {
+							for (int i = 0; i < 3; i++) {
+								float offsetX = Random.Range (-debrisDelta, debrisDelta);
+								float offsetY = Random.Range (-debrisDelta, debrisDelta);
+
+								GameObject debris = Instantiate (debrisPrefab);
+								debris.transform.position = new Vector3 (boulderPrefab.transform.position.x + offsetX,
+									debrisSpawn.position.y + offsetY,
+									spawnPos.z);
+
+								debris.GetComponent<Rigidbody2D>().gravityScale += Random.Range (-debrisDelta, debrisDelta);
+
+								StartCoroutine (DestroyDebris (debris));
+								
+							}
+
+						} 
+
+					} else {
+						GameObject warning = Instantiate (exclamationPointPrefab);
+						warning.transform.position = new Vector3 (boulderPrefab.transform.position.x,
+							PlayerController.instance.transform.position.y + 3,
+							spawnPos.z);
+					}
+
 				}
 			}
 			reset = false;
@@ -84,6 +110,12 @@ public class BoulderManager : MonoBehaviour {
 		if (col.CompareTag("Player")) {
 			startFalling = true;
 		}
+
+	}
+
+	IEnumerator DestroyDebris(GameObject debris){
+		yield return new WaitForSeconds (3.0f);
+		Destroy (debris);
 	}
 		
 }
