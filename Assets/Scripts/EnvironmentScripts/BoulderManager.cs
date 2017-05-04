@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class BoulderManager : MonoBehaviour {
 
-	public static BoulderManager instance;
-
 	public GameObject boulderPrefab;
 	public Transform[] debrisSpawns;
 	public GameObject debrisPrefab;
@@ -24,6 +22,7 @@ public class BoulderManager : MonoBehaviour {
 
 	public bool startFalling; // use flag to check if the boulder reaches the bottom
 	public bool reset;
+	private bool resetting;
 	public float range;
 	public float speed;
 
@@ -36,10 +35,7 @@ public class BoulderManager : MonoBehaviour {
 		newRotate = Random.Range (-rotateSpeed, rotateSpeed);
 	}
 
-	void Awake() {
-		if (instance == null)
-			instance = this;
-	}
+
 
 
 	void Update(){
@@ -47,7 +43,7 @@ public class BoulderManager : MonoBehaviour {
 
 		if (reset) {
 			boulderPrefab.transform.position = new Vector3 (spawnPos.x + range * Random.Range(-1f, 1f),
-															spawnPos.y, spawnPos.z);
+				spawnPos.y, spawnPos.z);
 			float newScale = Random.Range (scaleMin, scaleMax);
 			boulderPrefab.transform.localScale = new Vector3 (newScale, newScale, newScale);
 			newRotate = Random.Range (-rotateSpeed, rotateSpeed);
@@ -58,7 +54,7 @@ public class BoulderManager : MonoBehaviour {
 		if (startFalling) {
 			if (reset) {
 				if (PlayerController.instance.transform.position.y + 3 < spawnPos.y && 
-					this.gameObject.transform.GetChild(1).transform.position.y <= PlayerController.instance.transform.position.y) {
+					disappearTrans.position.y <= PlayerController.instance.transform.position.y) {
 					if (debrisPrefab != null) {
 						foreach (Transform debrisSpawn in debrisSpawns) {
 							for (int i = 0; i < 3; i++) {
@@ -97,6 +93,9 @@ public class BoulderManager : MonoBehaviour {
 
 			if (Mathf.Abs (boulderPrefab.transform.position.y - disappearTrans.transform.position.y) <= 2.0f) {
 				reset = true;
+				//resetting = true;
+				//StartCoroutine (DelayFall ());
+
 			}
 		}
 
@@ -116,6 +115,12 @@ public class BoulderManager : MonoBehaviour {
 	IEnumerator DestroyDebris(GameObject debris){
 		yield return new WaitForSeconds (3.0f);
 		Destroy (debris);
+	}
+
+	IEnumerator DelayFall(){
+		yield return new WaitForSeconds (Random.Range (0f, 1f));
+		reset = true;
+		resetting = false;
 	}
 		
 }

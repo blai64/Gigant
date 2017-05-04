@@ -374,9 +374,7 @@ public class PlayerController : MonoBehaviour {
 		if (col.gameObject.CompareTag ("SceneChangeTrigger") && col.gameObject.GetComponent<SceneChangeTrigger>().isTunnel) {
 			inFrontOfTunnel = true;
 		}
-		if (col.gameObject.CompareTag ("BoulderStart")) {
-			BoulderManager.instance.startFalling = true;
-		}
+
 	}
 
 	void OnTriggerStay2D(Collider2D col) {
