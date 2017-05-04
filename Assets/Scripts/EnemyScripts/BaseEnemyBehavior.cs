@@ -96,7 +96,7 @@ public class BaseEnemyBehavior : MonoBehaviour {
 			direction = Mathf.Sign (PlayerController.instance.transform.position.x - transform.position.x);
 			anim.SetBool ("isLeft", (direction < 0));
 			rb2d.velocity = new Vector2 (direction * moveSpeed, rb2d.velocity.y);
-			this.gameObject.transform.GetChild(3).gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2 (direction * moveSpeed, rb2d.velocity.y);
+			this.gameObject.transform.GetChild(6).gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2 (direction * moveSpeed, rb2d.velocity.y);
 			if (bounds != null) {
 				float x = transform.position.x;
 				float y = transform.position.y;
@@ -110,7 +110,7 @@ public class BaseEnemyBehavior : MonoBehaviour {
 
 		} else {
 			rb2d.velocity = Vector2.zero;
-			this.gameObject.transform.GetChild (3).gameObject.GetComponent<Rigidbody2D> ().velocity = Vector2.zero;
+			this.gameObject.transform.GetChild (6).gameObject.GetComponent<Rigidbody2D> ().velocity = Vector2.zero;
 		}
 	}
 
