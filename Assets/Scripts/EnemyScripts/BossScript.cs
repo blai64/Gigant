@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class BossScript : MonoBehaviour {
+	public static BossScript instance;
 	public GameObject CSManager;
 	private CutsceneManager csm;
 
@@ -13,6 +14,13 @@ public class BossScript : MonoBehaviour {
 	private int health;
 	public Image bosshealth;
 	public GameObject healthFrame;
+
+	void Awake(){
+		if (instance == null)
+			instance = this;
+		else
+			Destroy (this);
+	}
 
 	void Start() {
 		csm = CSManager.GetComponent<CutsceneManager> ();
@@ -42,23 +50,21 @@ public class BossScript : MonoBehaviour {
 		}
 
 		health -= damage;
-		Debug.Log (health);
+		Debug.Log (bosshealth.fillAmount);
 
-		if (bosshealth.fillAmount < 0.9f) {
-			if (stage == 0) {
-				bosshealth.gameObject.SetActive (false);
-				healthFrame.SetActive (false);
-				StartCoroutine (csm.StartCutsceneBossP2 ());
-				PlayerController.instance.isAttacking = false;
-				stage++;
-			}
-		} else if (bosshealth.fillAmount < 0.8f) {
-			if (stage == 1) {
-				bosshealth.gameObject.SetActive (true);
-				healthFrame.SetActive (true);
-				StartCoroutine (csm.StartCutsceneBossP4 ());
-				stage++;
-			}
+		if (bosshealth.fillAmount < 0.9f && stage == 0) {
+			//bosshealth.gameObject.SetActive (false);
+
+			StartCoroutine (csm.StartCutsceneBossP2 ());
+			PlayerController.instance.isAttacking = false;
+			stage++;
+
+		}
+		else if (bosshealth.fillAmount < 0.8f && stage == 1) {
+			//bosshealth.gameObject.SetActive (true);
+			//healthFrame.SetActive (true);
+			StartCoroutine (csm.StartCutsceneBossP4 ());
+			stage++;
 		}
 //			switch (stage) {
 //			case 0:
