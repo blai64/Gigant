@@ -16,6 +16,9 @@ public class PlayerController : MonoBehaviour {
 
 	[HideInInspector] public bool isDead;
 
+	private float jumpTimerVal = 0.5f;
+	private float jumpTimer = 0.5f;
+	private bool isJumping = false;
 
 	[HideInInspector] public bool disabled;
 
@@ -101,7 +104,7 @@ public class PlayerController : MonoBehaviour {
 
 	}
 
-	void DoGroundCheck(){
+	void DoGroundCheck() {
 		foreach (Transform groundCheck in groundChecks) {
 			canPlantBean = Physics2D.Linecast (transform.position, groundCheck.position,
 				1 << LayerMask.NameToLayer ("Ground"));
@@ -175,6 +178,7 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		Fall ();
+
 		//Do Combat thing
 	}
 
@@ -302,10 +306,20 @@ public class PlayerController : MonoBehaviour {
 		anim.SetBool ("isJumping", true);
 		anim.SetBool ("isClimbing", false);
 		doJump = true;
+		isJumping = true;
 	}
 
 	private void Fall() {
 		float currHeight = rb2d.position.y;
+
+		if (isJumping) {
+			jumpTimer -= Time.deltaTime;
+			if (jumpTimer < 0f) {
+				isJumping = false;
+				jumpTimer = jumpTimerVal;
+			}
+		}
+
 		if (!isGrounded) {
 			if (!isClimbing) {
 				if (currHeight - prevHeight < 0f && !hurting) {
@@ -317,7 +331,10 @@ public class PlayerController : MonoBehaviour {
 		} else if (anim.GetBool ("isFalling")) {
 			anim.SetBool ("isJumping", false);
 			anim.SetBool ("isFalling", false);
+		} else if (!isJumping) {
+			anim.SetBool ("isJumping", false);
 		}
+
 		prevHeight = currHeight;
 	}
 
@@ -503,5 +520,3 @@ public class PlayerController : MonoBehaviour {
 		//longerTransition = true;
 	}
 }
-
-
