@@ -14,10 +14,16 @@ public class MainCamera : MonoBehaviour
 	private float dampTime = 0.2f;
 	public float xOffset = 0f;
 	public float yOffset = 0f;
+	public bool bounded;
 
 	public float DampTime {
 		get { return dampTime; } 
-		set { dampTime = value; } 
+		set { 
+			if (value < 0)
+				dampTime = 0.2f;
+			else 
+				dampTime = value;
+		} 
 	}
 
 	private Vector3 velocity = Vector3.zero;
@@ -46,6 +52,7 @@ public class MainCamera : MonoBehaviour
 		isFollowing = true;
 		mainCamera = GetComponent<Camera>();
 
+		bounded = true;
 	}
 
 	void Update()
@@ -70,14 +77,14 @@ public class MainCamera : MonoBehaviour
 			
 
 		// ortographicSize is the haldf of the height of the Camera.
-		var cameraHalfWidth = mainCamera.orthographicSize * ((float)Screen.width / Screen.height);
+		if (bounded){
+			var cameraHalfWidth = mainCamera.orthographicSize * ((float)Screen.width / Screen.height);
 
-		x = Mathf.Clamp(x, min.x + cameraHalfWidth, max.x - cameraHalfWidth);
-		y = Mathf.Clamp(y, min.y + mainCamera.orthographicSize, max.y - mainCamera.orthographicSize);
+			x = Mathf.Clamp(x, min.x + cameraHalfWidth, max.x - cameraHalfWidth);
+			y = Mathf.Clamp(y, min.y + mainCamera.orthographicSize, max.y - mainCamera.orthographicSize);
 
-		transform.position = new Vector3(x, y, transform.position.z);
-
-
+			transform.position = new Vector3(x, y, transform.position.z);	
+		}
 	}
 
 	// PixelPerfectScript.

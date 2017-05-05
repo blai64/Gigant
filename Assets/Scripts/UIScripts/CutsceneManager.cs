@@ -464,15 +464,12 @@ public class CutsceneManager : MonoBehaviour {
 
 		yield return 0;
 
-		StartCoroutine (CameraManager.instance.Zoom (false));
-		yield return StartCoroutine (CameraManager.instance.MoveCinematic (true,true, -0.05f));
+		for (int i = 0; i < 5; i++) {
+			StartCoroutine (CameraManager.instance.Zoom (false));
+			yield return StartCoroutine (CameraManager.instance.MoveCinematic (true,true, -1.0f));
 
-		StartCoroutine (CameraManager.instance.Zoom (false));
-		yield return StartCoroutine (CameraManager.instance.MoveCinematic (true,true, -0.05f));
-
-		StartCoroutine (CameraManager.instance.Zoom (false));
-		yield return StartCoroutine (CameraManager.instance.MoveCinematic (true,true, -0.05f));
-
+		}
+			
 		MainCamera.instance.player = boss.transform;
 
 		yield return new WaitForSeconds (0.3f);
@@ -490,16 +487,10 @@ public class CutsceneManager : MonoBehaviour {
 	public IEnumerator EndCutsceneBossP2() {
 		MainCamera.instance.player = player.transform;
 
-		StartCoroutine (CameraManager.instance.Zoom (true));
-		yield return StartCoroutine (CameraManager.instance.MoveCinematic (false,true, 0.05f));
-
-		StartCoroutine (CameraManager.instance.Zoom (true));
-		yield return StartCoroutine (CameraManager.instance.MoveCinematic (false,true, 0.05f));
-
-		StartCoroutine (CameraManager.instance.Zoom (true));
-		yield return StartCoroutine (CameraManager.instance.MoveCinematic (false,true, 0.05f));
-
-
+		for (int i = 0; i < 5; i++) {
+			StartCoroutine (CameraManager.instance.Zoom (true));
+			yield return StartCoroutine (CameraManager.instance.MoveCinematic (false,true, -1.0f));
+		}
 		PlayerController.instance.Enable (true);
 
 
