@@ -25,7 +25,7 @@ public class ButtonMenu : MonoBehaviour {
 		switch (btnName) {
 
 		case "Play":
-			btn.onClick.AddListener (delegate{ChangeScene("Tutorial");});
+			btn.onClick.AddListener (delegate{ChangeScene("Prologue");});
 			break;
 
 		case "Main Menu":

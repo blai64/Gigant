@@ -1,7 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
+
+
 [RequireComponent(typeof(Book))]
 public class AutoFlip : MonoBehaviour {
+	public static AutoFlip instance;
+
     public FlipMode Mode;
     public float PageFlipTime = 1;
     public float TimeBetweenPages = 1;
@@ -9,8 +14,13 @@ public class AutoFlip : MonoBehaviour {
     public bool AutoStartFlip=true;
     public Book ControledBook;
     public int AnimationFramesCount = 40;
-    bool isFlipping = false;
+    public bool isFlipping = false;
     // Use this for initialization
+	void Awake(){
+		if (instance == null)
+			instance = this;
+	}
+
     void Start () {
         if (!ControledBook)
             ControledBook = GetComponent<Book>();
@@ -18,6 +28,21 @@ public class AutoFlip : MonoBehaviour {
             StartFlipping();
         ControledBook.OnFlip.AddListener(new UnityEngine.Events.UnityAction(PageFlipped));
 	}
+
+	void Update(){
+		if (ControledBook.currentPage >= ControledBook.TotalPageCount) {
+			StartCoroutine (ChangeScene ());
+
+		}
+
+		Debug.Log ("isFlipping =  " + isFlipping);
+	}
+
+	IEnumerator ChangeScene(){
+		yield return new WaitForSeconds (3.0f);
+		SceneManager.LoadScene ("Tutorial");
+	}
+
     void PageFlipped()
     {
         isFlipping = false;
@@ -26,6 +51,8 @@ public class AutoFlip : MonoBehaviour {
     {
         StartCoroutine(FlipToEnd());
     }
+
+
     public void FlipRightPage()
     {
         if (isFlipping) return;
