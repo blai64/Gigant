@@ -213,4 +213,8 @@ public class BaseAdvancedEnemyBehavior : MonoBehaviour {
 	public void StartDamaging(){
 		isAttacking = true;
 	}
+
+	public void StopDamaging() {
+		isAttacking = false;
+	}
 }
