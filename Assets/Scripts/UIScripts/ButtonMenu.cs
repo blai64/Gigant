@@ -57,6 +57,7 @@ public class ButtonMenu : MonoBehaviour {
 			break;
 
 		default:
+			btn.onClick.AddListener (delegate{ChangeScene(next);});
 			break;
 		}
 	}

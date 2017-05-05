@@ -121,8 +121,10 @@ public class BeanstalkScript : MonoBehaviour {
 				Destroy (this.gameObject);
 
 			if (!isPlaying) {
-				SoundManager.instance.PlaySound ("stalk die");
-				isPlaying = true;
+				if (sr.isVisible) {
+					SoundManager.instance.PlaySound ("stalk die");
+					isPlaying = true;
+				}
 			}
 		} else if (decayCountdown > decayTimer * 0.05f) {
 			sr.color -= new Color(colorChangeRate / 2,
@@ -134,6 +136,10 @@ public class BeanstalkScript : MonoBehaviour {
 		}  else {
 			Destroy (this.gameObject);
 			PlayerController.instance.Climb (false);
+		}
+
+		if (isPlaying && !sr.isVisible) {
+			SoundManager.instance.StopSound ("stalk die");
 		}
 	}
 }
