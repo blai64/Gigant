@@ -125,7 +125,7 @@ public class BaseEnemyBehavior : MonoBehaviour {
 		}
 	}
 
-	void OnCollisionEnter2D(Collision2D collision) {
+	void OnCollisionStay2D(Collision2D collision) {
 		if (collision.gameObject.tag == "Player" && !isActive) {
 			Physics2D.IgnoreCollision(playerPrefab.GetComponent<PolygonCollider2D>(),
 									  GetComponent<PolygonCollider2D>(), true);

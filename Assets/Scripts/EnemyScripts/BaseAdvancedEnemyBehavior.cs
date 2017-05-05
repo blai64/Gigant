@@ -121,7 +121,15 @@ public class BaseAdvancedEnemyBehavior : MonoBehaviour {
 	}
 
 
-	public void GetDamaged (int damage){
+	public void GetDamaged (int damage) {
+
+		float rand = Random.value;
+		if (rand < 0.5) {
+			SoundManager.instance.PlaySound ("sword hit 1");
+		} else {
+			SoundManager.instance.PlaySound ("sword hit 1");
+		}
+
 		health -= damage;
 
 		if (health <= 0 && isActive) {
@@ -131,6 +139,9 @@ public class BaseAdvancedEnemyBehavior : MonoBehaviour {
 
 	void Die(){
 		//Destroy (gameObject);//temporary...
+
+		SoundManager.instance.PlaySound ("enemy crumble");
+
 		//start Death animation
 		this.gameObject.GetComponent<PolygonCollider2D>().enabled = false;
 		this.gameObject.GetComponent<Rigidbody2D> ().gravityScale = 0;
@@ -156,7 +167,10 @@ public class BaseAdvancedEnemyBehavior : MonoBehaviour {
 		//canBeActivated = true;
 	}
 
-	public void Activate(){
+	public void Activate() {
+
+		SoundManager.instance.PlaySound ("enemy crumble");
+
 		isActive = true;
 		anim.ResetTrigger ("isActivated");
 
