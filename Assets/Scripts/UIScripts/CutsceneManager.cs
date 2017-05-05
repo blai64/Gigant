@@ -67,6 +67,7 @@ public class CutsceneManager : MonoBehaviour {
 	// Animator objects
 	private Animator cowAnim;
 	private Animator hermitAnim;
+	private Animator bossAnim;
 
 	void Awake() {
 		if (instance == null)
@@ -77,8 +78,19 @@ public class CutsceneManager : MonoBehaviour {
 
 	void Start(){
 
-		cowAnim = GameObject.Find("Cow").GetComponent<Animator>();
-		hermitAnim = GameObject.Find("Hermit Char").GetComponent<Animator>();
+		GameObject cow = GameObject.Find ("Cow");
+		if (cow != null) {
+			cowAnim = cow.GetComponent<Animator>();
+		}
+
+		GameObject hermit = GameObject.Find ("Hermit Char");
+		if (hermit != null) {
+			hermitAnim = hermit.GetComponent<Animator>();
+		}
+
+		if (boss != null) {
+			bossAnim = boss.GetComponent<Animator> ();
+		}
 
 		anim = player.GetComponentInChildren<Animator> ();
 		hermitSb = (hermitSpeechBubble != null) ? hermitSpeechBubble.GetComponent<SpeechBubble> () : null;
@@ -97,7 +109,7 @@ public class CutsceneManager : MonoBehaviour {
 		level1Text3.Add ("I just rode <color=#e24a92>Ol' Bessie</color>! ");
 		level1Text4.Add ("So you're saying my <color=#e24a92>cow</color> got you here faster than the <color=#356430>beans</color> you gave me before? ");
 		level1TextMoo.Add ("Moo... ");
-		level1Text5.Add ("Ehhh... enough chit chat. Get to the top of this giant already!\nI thought you were a famous <color=#AC4744>giant</color> <color=#AC4744>slayer</color> or somethin'! ");
+		level1Text5.Add ("Ehhh... enough chit chat. Get to the top of this giant already!\nI thought ya were a famous <color=#AC4744>giant</color> <color=#AC4744>slayer</color> or somethin'! ");
 
 		level2Text1.Add ("Why if it isn't <color=#764e33>Jack</color> again! ");
 		level2Text2.Add ("...... ");
@@ -123,12 +135,12 @@ public class CutsceneManager : MonoBehaviour {
 		bossText5.Add ("Ewww I've always hated bugs... Well that was enough exercise for the century. Time for another nap! ");
 
 		//############################# RESPAWNING DIALOGUE
-		enemyRespawnText1.Add ("They’re trying to kill ya, not hug ya");
+		enemyRespawnText1.Add ("They’re trying to kill ya, not hug ya. ");
 
-		fallRespawnText1.Add ("Good thinking. Maybe if you fall enough, gravity will magically change directions and bring ya to the top of the giant.");
+		fallRespawnText1.Add ("Good thinking. Maybe if you fall enough, gravity will change directions and bring ya to the top of this here giant. ");
 
-		boulderRespawnText1.Add ("Ya know why them rocks fall?");
-		boulderRespawnText1.Add ("It’s the giant crying from yer stupidity");
+		boulderRespawnText1.Add ("Ya know why them rocks fall? ");
+		boulderRespawnText1.Add ("It’s the giant crying from yer stupidity! ");
 	}
 
 	public IEnumerator MoveOn() {
@@ -190,12 +202,22 @@ public class CutsceneManager : MonoBehaviour {
 	}
 
 	private void Talking(bool isTalking) {
-		hermitAnim.SetBool("isTalking", isTalking);
+		if (hermitAnim != null) {
+			hermitAnim.SetBool ("isTalking", isTalking);
+		}
+	}
+
+	private void BossTalking(bool isTalking) {
+		if (bossAnim != null) {
+			bossAnim.SetBool ("isTalking", isTalking);
+		}
 	}
 
 	private void Moo() {
-		SoundManager.instance.PlaySound ("moo");
-		cowAnim.SetTrigger ("Moo");
+		if (cowAnim != null) {
+			SoundManager.instance.PlaySound ("moo");
+			cowAnim.SetTrigger ("Moo");
+		}
 	}
 
 	IEnumerator StartCutsceneTutorial() {
@@ -480,11 +502,13 @@ public class CutsceneManager : MonoBehaviour {
 
 		yield return new WaitForSeconds (0.3f);
 
+		BossTalking (true);
 		SetActiveBubble (bossSpeechBubble, bossSb);
 		activeSb.Play(bossText3);
 
 		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
 
+		BossTalking (false);
 		StartCoroutine (EndCutsceneBossP2());
 	}
 
@@ -500,10 +524,7 @@ public class CutsceneManager : MonoBehaviour {
 		StartCoroutine (CameraManager.instance.Zoom (true));
 		yield return StartCoroutine (CameraManager.instance.MoveCinematic (false,true, 0.05f));
 
-
 		PlayerController.instance.Enable (true);
-
-
 
 		StartCoroutine (StartCutsceneBossP3 ());
 	}
@@ -520,11 +541,13 @@ public class CutsceneManager : MonoBehaviour {
 
 		yield return new WaitForSeconds (0.3f);
 
+		BossTalking (true);
 		SetActiveBubble (playerSpeechBubble, playerSb);
 		activeSb.Play(bossText4);
 
 		yield return StartCoroutine (Wait ());
 
+		BossTalking (false);
 		StartCoroutine (EndCutsceneBoss());
 	}
 
@@ -548,11 +571,13 @@ public class CutsceneManager : MonoBehaviour {
 
 		yield return new WaitForSeconds (0.3f);
 
+		BossTalking (true);
 		SetActiveBubble (bossSpeechBubble, bossSb);
 		activeSb.Play(bossText5);
 
 		yield return StartCoroutine (Wait ());
 
+		BossTalking (false);
 		StartCoroutine (EndCutsceneBossP4());
 	}
 
