@@ -127,7 +127,7 @@ public class BaseAdvancedEnemyBehavior : MonoBehaviour {
 		if (rand < 0.5) {
 			SoundManager.instance.PlaySound ("sword hit 1");
 		} else {
-			SoundManager.instance.PlaySound ("sword hit 1");
+			SoundManager.instance.PlaySound ("sword hit 2");
 		}
 
 		health -= damage;
