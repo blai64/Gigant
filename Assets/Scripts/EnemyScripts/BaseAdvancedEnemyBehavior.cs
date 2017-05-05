@@ -17,7 +17,6 @@ public class BaseAdvancedEnemyBehavior : MonoBehaviour {
 
 	private Rigidbody2D rb2d; 
 
-	public BoxCollider2D deathBox;
 
 	protected Animator anim;
 
@@ -122,7 +121,15 @@ public class BaseAdvancedEnemyBehavior : MonoBehaviour {
 	}
 
 
-	public void GetDamaged (int damage){
+	public void GetDamaged (int damage) {
+
+		float rand = Random.value;
+		if (rand < 0.5) {
+			SoundManager.instance.PlaySound ("sword hit 1");
+		} else {
+			SoundManager.instance.PlaySound ("sword hit 2");
+		}
+
 		health -= damage;
 
 		if (health <= 0 && isActive) {
@@ -132,13 +139,15 @@ public class BaseAdvancedEnemyBehavior : MonoBehaviour {
 
 	void Die(){
 		//Destroy (gameObject);//temporary...
+
+		SoundManager.instance.PlaySound ("enemy crumble");
+
 		//start Death animation
 		this.gameObject.GetComponent<PolygonCollider2D>().enabled = false;
 		this.gameObject.GetComponent<Rigidbody2D> ().gravityScale = 0;
 		this.gameObject.transform.position = new Vector3 (this.gameObject.transform.position.x,this.gameObject.transform.position.y,-2);
 		isActive = false;
 		isAttacking = false;
-		deathBox.enabled = (false);
 		canBeActivated = false;
 		anim.SetTrigger ("isDeactivated");
 		StartCoroutine (DisableForTime (3.0f));
@@ -158,7 +167,10 @@ public class BaseAdvancedEnemyBehavior : MonoBehaviour {
 		//canBeActivated = true;
 	}
 
-	public void Activate(){
+	public void Activate() {
+
+		SoundManager.instance.PlaySound ("enemy crumble");
+
 		isActive = true;
 		anim.ResetTrigger ("isActivated");
 

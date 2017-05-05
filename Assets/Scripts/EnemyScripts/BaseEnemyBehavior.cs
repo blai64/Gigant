@@ -9,6 +9,8 @@ public class BaseEnemyBehavior : MonoBehaviour {
 	[HideInInspector] public float direction;
 	[HideInInspector] public bool isAttacked; //flag for attacked by Jack
 
+	private EnemySide es;
+
 	private bool canBeActivated;
 
 	private float moveSpeed = 1.0f;
@@ -40,6 +42,7 @@ public class BaseEnemyBehavior : MonoBehaviour {
 	void Start () {
 		rb2d = GetComponent<Rigidbody2D> ();
 		anim = GetComponentInChildren<Animator> ();
+		es = GetComponent<EnemySide> ();
 		canBeActivated = true;
 		health = 3;
 		anim.SetBool ("isLeft", true);
@@ -80,7 +83,6 @@ public class BaseEnemyBehavior : MonoBehaviour {
 		yield return new WaitForSeconds (0.5f);
 		RevertFromRed ();
 	}
-		
 
 	virtual protected void Update () {
 		// Turns boxColliders on arms on and off depending on whether the enemy is attacking or not
@@ -96,7 +98,7 @@ public class BaseEnemyBehavior : MonoBehaviour {
 			direction = Mathf.Sign (PlayerController.instance.transform.position.x - transform.position.x);
 			anim.SetBool ("isLeft", (direction < 0));
 			rb2d.velocity = new Vector2 (direction * moveSpeed, rb2d.velocity.y);
-			this.gameObject.transform.GetChild(3).gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2 (direction * moveSpeed, rb2d.velocity.y);
+			this.gameObject.transform.GetChild(6).gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2 (direction * moveSpeed, rb2d.velocity.y);
 			if (bounds != null) {
 				float x = transform.position.x;
 				float y = transform.position.y;
@@ -110,7 +112,7 @@ public class BaseEnemyBehavior : MonoBehaviour {
 
 		} else {
 			rb2d.velocity = Vector2.zero;
-			this.gameObject.transform.GetChild (3).gameObject.GetComponent<Rigidbody2D> ().velocity = Vector2.zero;
+			this.gameObject.transform.GetChild (6).gameObject.GetComponent<Rigidbody2D> ().velocity = Vector2.zero;
 		}
 	}
 
@@ -123,7 +125,7 @@ public class BaseEnemyBehavior : MonoBehaviour {
 		}
 	}
 
-	void OnCollisionEnter2D(Collision2D collision) {
+	void OnCollisionStay2D(Collision2D collision) {
 		if (collision.gameObject.tag == "Player" && !isActive) {
 			Physics2D.IgnoreCollision(playerPrefab.GetComponent<PolygonCollider2D>(),
 									  GetComponent<PolygonCollider2D>(), true);
@@ -142,7 +144,7 @@ public class BaseEnemyBehavior : MonoBehaviour {
 	}
 
 	virtual public void DoAttack() {
-		SoundManager.instance.PlaySound ("enemy attack");
+//		SoundManager.instance.PlaySound ("enemy attack");
 	}
 		
 	public void GetDamaged (int damage) {
@@ -151,7 +153,7 @@ public class BaseEnemyBehavior : MonoBehaviour {
 		if (rand < 0.5) {
 			SoundManager.instance.PlaySound ("sword hit 1");
 		} else {
-			SoundManager.instance.PlaySound ("sword hit 1");
+			SoundManager.instance.PlaySound ("sword hit 2");
 		}
 
 		health -= damage;
@@ -161,6 +163,7 @@ public class BaseEnemyBehavior : MonoBehaviour {
 	}
 
 	void Die() {
+//		es.EnemyPlay (gameObject, "enemy crumble");
 		SoundManager.instance.PlaySound ("enemy crumble");
 
 		isActive = false;
@@ -178,7 +181,7 @@ public class BaseEnemyBehavior : MonoBehaviour {
 	}
 
 	public void Activate() {
-
+//		es.EnemyPlay (gameObject, "enemy crumble");
 		SoundManager.instance.PlaySound ("enemy crumble");
 
 		isActive = true;
@@ -203,7 +206,6 @@ public class BaseEnemyBehavior : MonoBehaviour {
 	}
 
 	public void DoEmit(string method) {
-		
 		if (psystemPrefab != null) {
 			for (int i = -1; i < 2; i++) {
 				GameObject newParticleSystem = Instantiate (psystemPrefab);
@@ -218,9 +220,6 @@ public class BaseEnemyBehavior : MonoBehaviour {
 						newParticleSystem.transform.position = dustSpawnArmRight.position + new Vector3(i * 0.5f, 0,0);
 				}
 			}
-
-				
-				
 		}
 	}
 

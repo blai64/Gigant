@@ -20,7 +20,7 @@ public class SceneIndicator : MonoBehaviour {
 	void Start () {
 		currentScene = SceneManager.GetActiveScene ().name;
 		txt = Indicator.GetComponent<Text> ();
-		txt.text = "current";
+		txt.text = currentScene;
 		//face.GetComponent<SpriteRenderer> ().sprite = front;
 		face.sprite = front;
 	}
@@ -31,30 +31,32 @@ public class SceneIndicator : MonoBehaviour {
 		if (currentScene == "Tutorial") {
 			if (xPosition > 80.0f && xPosition < 160.0f) {
 				face.sprite = front;
-//				txt.text = currentScene + ": North";
+				txt.text = currentScene + ": North";
 			} else if (xPosition > -35.0f && xPosition < 38.0f) {
 				face.sprite = right;
-//				txt.text = currentScene + ": West";
+				txt.text = currentScene + ": West";
 			} else if (xPosition > 200.0f && xPosition < 275.0f) {
 				face.sprite = left;
-//				txt.text = currentScene + ": East";
+				txt.text = currentScene + ": East";
 			} else if (xPosition > 320.0f && xPosition < 395.0f) {
 				face.sprite = back;
-//				txt.text = currentScene + ": South";
+				txt.text = currentScene + ": South";
 			}
+		} else if (currentScene == "Zao_newboss") {
+			Destroy (face);
 		} else {
 			if (xPosition > 80.0f && xPosition < 150.0f) {
 				face.sprite = front;
-//				txt.text = currentScene + ": North";
+				txt.text = currentScene + ": North";
 			} else if (xPosition > -30.0f && xPosition < 30.0f) {
 				face.sprite = right;
-//				txt.text = currentScene + ": West";
+				txt.text = currentScene + ": West";
 			} else if (xPosition > 200.0f && xPosition < 265.0f) {
 				face.sprite = left;
-//				txt.text = currentScene + ": East";
+				txt.text = currentScene + ": East";
 			} else if (xPosition > 325.0f && xPosition < 380.0f) {
 				face.sprite = back;
-//				txt.text = currentScene + ": South";
+				txt.text = currentScene + ": South";
 			}
 		}
 

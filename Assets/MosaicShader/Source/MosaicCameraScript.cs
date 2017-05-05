@@ -140,7 +140,6 @@ public class MosaicCameraScript : MonoBehaviour {
 			}
 			white.GetComponent<SpriteRenderer> ().color = rendererAlpha;
 			anim.SetBool ("isRunning", false);
-
 		}
 
 		if (MosaicOpacity <= 0.0f && depixelizing) {
