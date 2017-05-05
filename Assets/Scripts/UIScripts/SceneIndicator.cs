@@ -20,7 +20,7 @@ public class SceneIndicator : MonoBehaviour {
 	void Start () {
 		currentScene = SceneManager.GetActiveScene ().name;
 		txt = Indicator.GetComponent<Text> ();
-		txt.text = "Level#: North";
+		txt.text = currentScene;
 		//face.GetComponent<SpriteRenderer> ().sprite = front;
 		face.sprite = front;
 	}
@@ -42,6 +42,8 @@ public class SceneIndicator : MonoBehaviour {
 				face.sprite = back;
 				txt.text = currentScene + ": South";
 			}
+		} else if (currentScene == "Zao_newboss") {
+			Destroy (face);
 		} else {
 			if (xPosition > 80.0f && xPosition < 150.0f) {
 				face.sprite = front;

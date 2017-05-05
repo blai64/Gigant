@@ -125,6 +125,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void Update () {
+		Debug.Log (longerTransition);
 		DoGroundCheck ();
 		if (isGrounded && isClimbing && !(Input.GetKey (KeyCode.UpArrow) || Input.GetKey (KeyCode.W))) {
 			Climb (false);
@@ -519,5 +520,3 @@ public class PlayerController : MonoBehaviour {
 		//longerTransition = true;
 	}
 }
-
-

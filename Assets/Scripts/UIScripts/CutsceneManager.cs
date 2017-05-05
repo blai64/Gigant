@@ -625,7 +625,7 @@ public class CutsceneManager : MonoBehaviour {
 			activeSb.Play(fallRespawnText1);
 			break; 
 		}
-
+			
 		yield return StartCoroutine (Wait ()); // wait for person to be done with hermit speaking
 
 		StartCoroutine (EndCutsceneTutorial());
