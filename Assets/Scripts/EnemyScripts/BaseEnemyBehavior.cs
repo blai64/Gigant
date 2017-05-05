@@ -9,6 +9,8 @@ public class BaseEnemyBehavior : MonoBehaviour {
 	[HideInInspector] public float direction;
 	[HideInInspector] public bool isAttacked; //flag for attacked by Jack
 
+	private EnemySide es;
+
 	private bool canBeActivated;
 
 	private float moveSpeed = 1.0f;
@@ -40,6 +42,7 @@ public class BaseEnemyBehavior : MonoBehaviour {
 	void Start () {
 		rb2d = GetComponent<Rigidbody2D> ();
 		anim = GetComponentInChildren<Animator> ();
+		es = GetComponent<EnemySide> ();
 		canBeActivated = true;
 		health = 3;
 		anim.SetBool ("isLeft", true);
@@ -80,7 +83,6 @@ public class BaseEnemyBehavior : MonoBehaviour {
 		yield return new WaitForSeconds (0.5f);
 		RevertFromRed ();
 	}
-		
 
 	virtual protected void Update () {
 		// Turns boxColliders on arms on and off depending on whether the enemy is attacking or not
@@ -142,7 +144,7 @@ public class BaseEnemyBehavior : MonoBehaviour {
 	}
 
 	virtual public void DoAttack() {
-		SoundManager.instance.PlaySound ("enemy attack");
+//		SoundManager.instance.PlaySound ("enemy attack");
 	}
 		
 	public void GetDamaged (int damage) {
@@ -161,6 +163,7 @@ public class BaseEnemyBehavior : MonoBehaviour {
 	}
 
 	void Die() {
+//		es.EnemyPlay (gameObject, "enemy crumble");
 		SoundManager.instance.PlaySound ("enemy crumble");
 
 		isActive = false;
@@ -178,7 +181,7 @@ public class BaseEnemyBehavior : MonoBehaviour {
 	}
 
 	public void Activate() {
-
+//		es.EnemyPlay (gameObject, "enemy crumble");
 		SoundManager.instance.PlaySound ("enemy crumble");
 
 		isActive = true;
@@ -203,7 +206,6 @@ public class BaseEnemyBehavior : MonoBehaviour {
 	}
 
 	public void DoEmit(string method) {
-		
 		if (psystemPrefab != null) {
 			for (int i = -1; i < 2; i++) {
 				GameObject newParticleSystem = Instantiate (psystemPrefab);
@@ -218,9 +220,6 @@ public class BaseEnemyBehavior : MonoBehaviour {
 						newParticleSystem.transform.position = dustSpawnArmRight.position + new Vector3(i * 0.5f, 0,0);
 				}
 			}
-
-				
-				
 		}
 	}
 

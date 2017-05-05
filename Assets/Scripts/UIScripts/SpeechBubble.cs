@@ -21,8 +21,7 @@ public class SpeechBubble : MonoBehaviour {
 	private IEnumerator curRoutine;
 
 	void Awake() {
-		isHermit = (transform.parent.name.Contains("Hermit"));
-		Debug.Log (isHermit);
+		isHermit = (gameObject.name=="SpeechBubble");
 		csm = CSManager.GetComponent<CutsceneManager> ();
 		textBox = transform.Find ("Panel/Text").GetComponent<Text> ();
 	}
@@ -30,6 +29,7 @@ public class SpeechBubble : MonoBehaviour {
 	void Update() {
 		if (hasStarted && !isPlaying && Input.anyKeyDown) {
 			if (index >= textToShow.Count) {
+				SoundManager.instance.StopSound ("talking 1");
 				StartCoroutine (csm.MoveOn ());
 			} else {
 				StartCoroutine (PlayNext ());
@@ -55,16 +55,8 @@ public class SpeechBubble : MonoBehaviour {
 	public IEnumerator PlayNext() {
 
 		if (isHermit) {
-			float rand = Random.value;
-			if (rand < 0.25) {
-				SoundManager.instance.PlaySound ("talking 1");
-			} else if (rand < 0.50) {
-				SoundManager.instance.PlaySound ("talking 2");
-			} else if (rand < 0.75) {
-				SoundManager.instance.PlaySound ("talking 3");
-			} else {
-				SoundManager.instance.PlaySound ("talking 3");
-			}
+			SoundManager.instance.StopSound ("talking 1");
+			SoundManager.instance.PlaySound ("talking 1");
 		}
 
 		isPlaying = true;
