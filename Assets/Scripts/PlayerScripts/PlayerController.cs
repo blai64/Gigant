@@ -502,5 +502,3 @@ public class PlayerController : MonoBehaviour {
 		//longerTransition = true;
 	}
 }
-
-
